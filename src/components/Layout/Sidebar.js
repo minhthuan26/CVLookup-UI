@@ -7,7 +7,7 @@ function Sidebar() {
     const [show, setShow] = useState(false)
 
     return (
-        <main className={show ? 'space-toggle' : null}>
+        <main className={show ? 'spgace-toggle' : null}>
             <header className={`header ${show ? 'space-toggle' : null}`}>
                 <div className="header-toggle" onClick={() => setShow(!show)}>
                     <i
