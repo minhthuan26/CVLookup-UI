@@ -24,7 +24,8 @@ function Header() {
                         &nbsp;&nbsp;&nbsp; Đăng nhập
                     </span>
                 </Link>
-                {/* <Link>Dành cho nhà tuyển dụng</Link> */}
+                {/* button 
+                <Link>Dành cho nhà tuyển dụng</Link> */}
             </nav>
         </header>
     )
