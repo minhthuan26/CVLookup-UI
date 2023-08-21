@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito Sans', sans-serif;
+    /* font-family: 'Roboto Mono', monospace; */
+}
+:root {
+    --mainColor: #eee;
+    --mainColorLight: #5767aa;
+    --secondaryColor: #2193d1;
+    --textColor: #000044b0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 100px;
+    padding: 0 2rem;
+    background-color: var(--mainColor);
+    color: var(--textColor);
+}
+.logo {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.logo img {
+    height: 80px;
+}
+.nav-link {
+    position: relative;
+    color: var(--secondaryColor);
+    transition: 0.5s;
+    margin-bottom: 1.5rem;
+}
+nav a {
+    margin: 0 1rem;
+    color: var(--textColor);
+    font-weight: 400;
+    text-decoration: none;
+}
+nav a:hover {
+    color: var(--secondaryColor);
+}
+
+.nav-right {
+    margin-left: auto;
+}
+.nav-right a {
+    margin-left: 1rem;
+    padding: 0.4rem;
+    border: 1px ridge white;
+    border-radius: 5px;
+    background-color: #2193d1;
+    color: white;
+}
+.nav-right a:hover {
+    background-color: var(--mainColorLight);
+    color: var(--textColor);
+}
