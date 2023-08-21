@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import Header from './components/Layout/Header'
 import Sidebar from './components/Layout/Sidebar'
 function App() {
+  
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
     useEffect(() => {
@@ -18,12 +19,37 @@ function App() {
             window.removeEventListener('resize', handleResize)
         }
     }, [])
+  
     return (
         <BrowserRouter>
             {isMobile ? <Sidebar /> : <Header />}
-            <main>
-                <h1>Content</h1>
-            </main>
+            <Routes>
+            {
+              publicRoutes.map((route, index) => {
+                const Page = route.page
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={<Page />} />
+                )
+              })}
+
+            {
+              privateRoutes.map((route, index) => {
+                const Page = route.page
+                return (
+                  <Route key={index} element={<SecureRoute />}>
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={<Page />} />
+                  </Route>
+                )
+              })
+            }
+
+          </Routes>
         </BrowserRouter>
     )
 }
