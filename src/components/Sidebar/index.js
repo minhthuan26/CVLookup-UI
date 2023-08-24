@@ -49,7 +49,7 @@ function Sidebar() {
 
                     <Link to="/login" className="nav-link">
                         <i className="fas fa-sign-in nav-link-icon"></i>
-                        <span className="nav-link-name">Đăng nhập</span>
+                        <span className="nav-link-name"> Đăng nhập</span>
                     </Link>
                     {/* Viết toán tử 3 ngôi khi login thì hiển thị logout /*}
                     {/* <Link to="/logout" className="nav-link">

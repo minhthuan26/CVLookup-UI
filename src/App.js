@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Link, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { privateRoutes, publicRoutes } from './router'
 import SecureRoute from './components/SecureRoute'
 
