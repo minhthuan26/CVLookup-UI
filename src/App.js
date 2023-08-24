@@ -1,57 +1,50 @@
 import './App.css'
 import { BrowserRouter, Link, Routes, Route } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { privateRoutes, publicRoutes } from './router'
+import SecureRoute from './components/SecureRoute'
 
-import Header from './components/Layout/Header'
-import Sidebar from './components/Layout/Sidebar'
 function App() {
-  
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 1024)
-        }
+	return (
+		<BrowserRouter>
+			<Routes>
+				{
+					publicRoutes.map((route, index) => {
+						const Page = route.page
+						const Layout = route.layout
+						return (
+							<Route
+								key={index}
+								path={route.path}
+								element={
+									<Layout>
+										<Page />
+									</Layout>
+								} />
+						)
+					})}
 
-        window.addEventListener('resize', handleResize)
+				{
+					privateRoutes.map((route, index) => {
+						const Page = route.page
+						const Layout = route.layout
+						return (
+							<Route key={index} element={<SecureRoute />}>
+								<Route
+									key={index}
+									path={route.path}
+									element={
+										<Layout>
+											<Page />
+										</Layout>} />
+							</Route>
+						)
+					})
+				}
 
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
-  
-    return (
-        <BrowserRouter>
-            {isMobile ? <Sidebar /> : <Header />}
-            <Routes>
-            {
-              publicRoutes.map((route, index) => {
-                const Page = route.page
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={<Page />} />
-                )
-              })}
-
-            {
-              privateRoutes.map((route, index) => {
-                const Page = route.page
-                return (
-                  <Route key={index} element={<SecureRoute />}>
-                    <Route
-                      key={index}
-                      path={route.path}
-                      element={<Page />} />
-                  </Route>
-                )
-              })
-            }
-
-          </Routes>
-        </BrowserRouter>
-    )
+			</Routes>
+		</BrowserRouter>
+	)
 }
 
 export default App

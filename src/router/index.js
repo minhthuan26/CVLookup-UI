@@ -1,8 +1,11 @@
+import HomePage from "~/Pages/HomePage"
+import DefaultLayout from "~/components/Layout/DefaultLayout"
 const publicRoutes = [
-    // {
-    //     path: '/',
-    //     page: HomePage
-    // },
+    {
+        path: '/',
+        layout: DefaultLayout,
+        page: HomePage
+    },
 
 ]
 
