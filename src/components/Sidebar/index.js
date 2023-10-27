@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import logo from '~/assets/logo.png'
 import { useState } from 'react'
 import './sidebar.css'
-function Sidebar() {
+function Sidebar({ children }) {
     const [show, setShow] = useState(false)
 
     return (
@@ -11,8 +11,9 @@ function Sidebar() {
             <header className={`header ${show ? 'space-toggle' : null}`}>
                 <div className="header-toggle" onClick={() => setShow(!show)}>
                     <i
-                        className={`fas fa-bars ${show ? 'fa-solid fa-xmark' : null
-                            }`}></i>
+                        className={`fas fa-bars ${
+                            show ? 'fa-solid fa-xmark' : null
+                        }`}></i>
                 </div>
                 <div className="logo-container">
                     <Link to="/" className="nav-logo">
@@ -24,11 +25,11 @@ function Sidebar() {
                 <nav className="nav">
                     <div>
                         <div className="nav-list">
-                            <Link to="/" className="nav-link active">
+                            <Link to="/jobs" className="nav-link active">
                                 <i className="fas fa-search nav-link-icon"></i>
                                 <span className="nav-link-name">Tìm việc</span>
                             </Link>
-                            <Link to="/" className="nav-link">
+                            <Link to="/curriculum-vitae" className="nav-link">
                                 <i className="fas fa-id-card-alt nav-link-icon"></i>
                                 <span className="nav-link-name">Hồ sơ</span>
                             </Link>
@@ -36,7 +37,7 @@ function Sidebar() {
                                 <i className="fas fa-book nav-link-icon"></i>
                                 <span className="nav-link-name">Cẩm nang</span>
                             </Link>
-                            <Link to="/" className="nav-link">
+                            <Link to="/company-list" className="nav-link">
                                 <i className="fas fa-building nav-link-icon"></i>
                                 <span className="nav-link-name">Công ty</span>
                             </Link>
@@ -58,6 +59,7 @@ function Sidebar() {
                     </Link> */}
                 </nav>
             </aside>
+            {children}
         </main>
     )
 }

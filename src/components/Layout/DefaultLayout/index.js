@@ -19,9 +19,13 @@ const DefaultLayout = ({ children }) => {
     }, [])
     return (
         <>
-            {isMobile ? <Sidebar /> : <Header />}
-            {children}
-            <Footer />
+            {isMobile ? (
+                <Sidebar>{children}</Sidebar>
+            ) : (
+                <Header>{children}</Header>
+            )}
+
+            {isMobile ? <></> : <Footer />}
         </>
     )
 }
