@@ -1,0 +1,14 @@
+/* Ẩn phần tử <select> ban đầu */
+#locationDropdown {
+    display: none;
+}
+
+/* Hiển thị phần tử <select> khi chọn một tùy chọn khác */
+#locationDropdown:checked + label + select {
+    display: block;
+}
+
+/* Ẩn label khi phần tử <select> được hiển thị */
+#locationDropdown:checked + label {
+    display: none;
+}
