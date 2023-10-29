@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as LoginComponents from './LoginComponents'
-import { loginUser, registerCandidate } from '~/Redux/APIREquest'
+import { loginUser, registerCandidate } from '~/Redux/Auth/APIRequest'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { registerFail } from '~/Redux/authSlice'
+import { registerFail } from '~/Redux/Auth/authSlice'
+import { doLogin } from '~/action/authApi'
 function LoginPage() {
     const [signIn, toggle] = useState(true)
     const [selectedFileName, setSelectedFileName] = useState(null)
@@ -28,13 +29,16 @@ function LoginPage() {
         setSelectedFileName(fileName)
         setAvatar(event.target.value)
     }
+
     const handleLogin = (e) => {
         e.preventDefault()
         const newUser = {
             email: email,
             password: password,
         }
-        loginUser(newUser, dispatch, navigate)
+        // loginUser(newUser, dispatch, navigate)
+        const login = async (user, dispatch, navigate) => await doLogin(user, dispatch, navigate)
+        login(newUser, dispatch, navigate)
     }
 
     const handleRegister = (e) => {
@@ -82,7 +86,7 @@ function LoginPage() {
     }
     return (
         <LoginComponents.Container>
-            <LoginComponents.SignUpContainer signinIn={signIn}>
+            <LoginComponents.SignUpContainer signin={signIn}>
                 <LoginComponents.Form onSubmit={handleRegister}>
                     <LoginComponents.Title>
                         Đăng ký tài khoản
@@ -162,7 +166,7 @@ function LoginPage() {
                 </LoginComponents.Form>
             </LoginComponents.SignUpContainer>
 
-            <LoginComponents.SignInContainer signinIn={signIn}>
+            <LoginComponents.SignInContainer signin={signIn}>
                 <LoginComponents.Form onSubmit={handleLogin}>
                     <LoginComponents.Title>Đăng nhập</LoginComponents.Title>
                     <LoginComponents.Input
@@ -184,9 +188,9 @@ function LoginPage() {
                 </LoginComponents.Form>
             </LoginComponents.SignInContainer>
 
-            <LoginComponents.OverlayContainer signinIn={signIn}>
-                <LoginComponents.Overlay signinIn={signIn}>
-                    <LoginComponents.LeftOverlayPanel signinIn={signIn}>
+            <LoginComponents.OverlayContainer signin={signIn}>
+                <LoginComponents.Overlay signin={signIn}>
+                    <LoginComponents.LeftOverlayPanel signin={signIn}>
                         <LoginComponents.Title style={{ color: 'white' }}>
                             Chào mừng bạn
                         </LoginComponents.Title>
@@ -200,7 +204,7 @@ function LoginPage() {
                         </LoginComponents.GhostButton>
                     </LoginComponents.LeftOverlayPanel>
 
-                    <LoginComponents.RightOverlayPanel signinIn={signIn}>
+                    <LoginComponents.RightOverlayPanel signin={signIn}>
                         <LoginComponents.Title style={{ color: 'white' }}>
                             Xin chào
                         </LoginComponents.Title>

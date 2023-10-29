@@ -2,11 +2,19 @@ import React, { useState } from 'react'
 import * as HeaderComponent from './HeaderComponent'
 import { Link } from 'react-router-dom'
 import logo from '~/assets/logo-transparent.png'
-import { useSelector } from 'react-redux'
+import { doLogout } from '~/action/authApi'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { selectCurrentUser } from '~/Redux/Auth/authSliceRedux'
 
 function Header({ children }) {
-    const user = useSelector((state) => state.auth.login.currentUser)
-
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const user = selectCurrentUser()
+    const handleLogout = (e) => {
+        const logout = async (dispatch, navigate) => await doLogout(dispatch, navigate)
+        logout(dispatch, navigate)
+    }
     return (
         <>
             <HeaderComponent.HeaderContainer>
@@ -39,9 +47,8 @@ function Header({ children }) {
                 {user ? (
                     <>
                         <HeaderComponent.LinkName
-                            to="/logout"
                             className="link-name">
-                            <span>Đăng xuất</span>
+                            <span onClick={handleLogout}>Đăng xuất</span>
                         </HeaderComponent.LinkName>
                         <HeaderComponent.LinkName2
                             to="/profile"
@@ -55,7 +62,7 @@ function Header({ children }) {
                                 viewBox="0 0 16 16">
                                 <path d="M8 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1c-2.667 0-8 1.334-8 4v1h16v-1c0-2.666-5.333-4-8-4z" />
                             </svg>
-                            &emsp; Xin chào, {user.data.user.username}
+                            &emsp; Xin chào, {user.username}
                         </HeaderComponent.LinkName2>
                     </>
                 ) : (
