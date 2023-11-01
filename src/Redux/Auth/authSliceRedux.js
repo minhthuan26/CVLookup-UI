@@ -25,10 +25,10 @@ const authSliceRedux = createSlice({
         },
 
         logout: (state, action) => {
-            state.user = null
-            state.roleId = ''
-            state.accessToken = ''
-            state.accountId = ''
+            state.credentials.user = null
+            state.credentials.roleId = ''
+            state.credentials.accessToken = ''
+            state.credentials.accountId = ''
         }
     }
 })

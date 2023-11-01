@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom'
 import usePrivateAxios from '~/action/AxiosCredentials'
 
 function Header({ children }) {
-    console.log("render")
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector(state => state.authSliceRedux.credentials.user)
