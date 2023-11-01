@@ -19,6 +19,11 @@ const authSliceRedux = createSlice({
             state.credentials.accountId = accountId
         },
 
+        renewToken: (state, action) => {
+            const { accessToken } = action.payload.data
+            state.credentials.accessToken = accessToken
+        },
+
         logout: (state, action) => {
             state.user = null
             state.roleId = ''
@@ -28,11 +33,14 @@ const authSliceRedux = createSlice({
     }
 })
 
-export const { setCredentials, logout } = authSliceRedux.actions
+export const { setCredentials, logout, renewToken } = authSliceRedux.actions
 
 export default authSliceRedux.reducer
 
-export const selectCurrentUser = (state) => state.credentials.user
+export const selectCurrentUser = (state) => {
+    console.log(state);
+    return state.credentials.user
+}
 export const selectCurrentRoleId = (state) => state.credentials.roleId
 export const selectCurrentAccountId = (state) => state.credentials.AccountId
 export const selectCurrentAccessToken = (state) => state.credentials.accessToken

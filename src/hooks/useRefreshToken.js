@@ -1,20 +1,27 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import axios from '~/action/AxiosConfiguration'
+import { setCredentials, renewToken } from '~/Redux/Auth/authSliceRedux'
+import axios, { axiosPrivate } from '~/action/AxiosConfiguration'
 import { authUrl } from '~/utils/ApiUrl'
+import { toast } from 'react-toastify'
 
-const useRefreshToken = () => {
+const useRefreshToken = (accessToken) => {
     const dispatch = useDispatch()
     const refresh = async () => {
-        const res = await axios(`${authUrl.renewToken}`, {
+        const res = await axios.post(`${authUrl.renewToken}`, {
             method: 'post',
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             },
-        }).then(data => {
-            console.log(data);
         })
+
+        if (res.data.success) {
+            dispatch(renewToken(res.data))
+        } else {
+            toast.error(res.data.message)
+        }
 
         return res.data.data.accessToken
     }

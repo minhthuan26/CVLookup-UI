@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { privateRoutes, publicRoutes } from './router'
 import SecureRoute from './components/SecureRoute'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 function App() {
     return (
@@ -24,11 +24,11 @@ function App() {
                     )
                 })}
 
-                {privateRoutes.map((route, index) => {
-                    const Page = route.page
-                    const Layout = route.layout
-                    return (
-                        <Route key={index} element={<SecureRoute />}>
+                <Route element={<SecureRoute />} >
+                    {privateRoutes.map((route, index) => {
+                        const Page = route.page
+                        const Layout = route.layout
+                        return (
                             <Route
                                 key={index}
                                 path={route.path}
@@ -38,11 +38,23 @@ function App() {
                                     </Layout>
                                 }
                             />
-                        </Route>
-                    )
-                })}
+                        )
+                    })}
+                </Route>
+
             </Routes>
-            <ToastContainer />
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+                theme="light"
+                transition={Slide} />
         </BrowserRouter>
     )
 }

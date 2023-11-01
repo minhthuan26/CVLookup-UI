@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as HeaderComponent from './HeaderComponent'
 import { Link } from 'react-router-dom'
 import logo from '~/assets/logo-transparent.png'
 import { doLogout } from '~/action/authApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { selectCurrentUser } from '~/Redux/Auth/authSliceRedux'
+import usePrivateAxios from '~/action/AxiosCredentials'
 
 function Header({ children }) {
+    console.log("render")
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const user = selectCurrentUser()
+    const user = useSelector(state => state.authSliceRedux.credentials.user)
+    const accessToken = useSelector(state => state.authSliceRedux.credentials.accessToken)
+    const axiosPrivate = usePrivateAxios(accessToken)
     const handleLogout = (e) => {
-        const logout = async (dispatch, navigate) => await doLogout(dispatch, navigate)
-        logout(dispatch, navigate)
+        const logout = async (axiosPrivate, dispatch, navigate) => await doLogout(axiosPrivate, dispatch, navigate)
+        logout(axiosPrivate, dispatch, navigate)
     }
+
     return (
         <>
             <HeaderComponent.HeaderContainer>
