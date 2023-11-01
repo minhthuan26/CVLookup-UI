@@ -3,6 +3,7 @@ import { defaultUrl } from '~/utils/ApiUrl'
 
 export default axios.create({
     baseURL: defaultUrl,
+    withCredentials: true,
 })
 
 export const axiosPrivate = axios.create({

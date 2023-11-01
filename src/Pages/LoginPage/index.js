@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as LoginComponents from './LoginComponents'
 import { loginUser, registerCandidate } from '~/Redux/Auth/APIRequest'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { registerFail } from '~/Redux/Auth/authSlice'
@@ -24,6 +24,8 @@ function LoginPage() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/"
     const handleNameFileChange = (event) => {
         const fileName = event.target.files[0]?.name
         setSelectedFileName(fileName)
@@ -37,8 +39,8 @@ function LoginPage() {
             password: password,
         }
         // loginUser(newUser, dispatch, navigate)
-        const login = async (user, dispatch, navigate) => await doLogin(user, dispatch, navigate)
-        login(newUser, dispatch, navigate)
+        const login = async (user, dispatch, navigate, from) => await doLogin(user, dispatch, navigate, from)
+        login(newUser, dispatch, navigate, from)
     }
 
     const handleRegister = (e) => {
@@ -86,7 +88,7 @@ function LoginPage() {
     }
     return (
         <LoginComponents.Container>
-            <LoginComponents.SignUpContainer signin={signIn}>
+            <LoginComponents.SignUpContainer signin={+signIn}>
                 <LoginComponents.Form onSubmit={handleRegister}>
                     <LoginComponents.Title>
                         Đăng ký tài khoản
@@ -140,7 +142,7 @@ function LoginPage() {
                     </LoginComponents.Row>
                     <LoginComponents.Row>
                         <LoginComponents.Label
-                            for="getImage"
+                            // for="getImage"
                             style={{ position: 'relative' }}>
                             {selectedFileName
                                 ? `Chọn ảnh: ${selectedFileName}`
@@ -166,7 +168,7 @@ function LoginPage() {
                 </LoginComponents.Form>
             </LoginComponents.SignUpContainer>
 
-            <LoginComponents.SignInContainer signin={signIn}>
+            <LoginComponents.SignInContainer signin={+signIn}>
                 <LoginComponents.Form onSubmit={handleLogin}>
                     <LoginComponents.Title>Đăng nhập</LoginComponents.Title>
                     <LoginComponents.Input
@@ -188,9 +190,9 @@ function LoginPage() {
                 </LoginComponents.Form>
             </LoginComponents.SignInContainer>
 
-            <LoginComponents.OverlayContainer signin={signIn}>
-                <LoginComponents.Overlay signin={signIn}>
-                    <LoginComponents.LeftOverlayPanel signin={signIn}>
+            <LoginComponents.OverlayContainer signin={+signIn}>
+                <LoginComponents.Overlay signin={+signIn}>
+                    <LoginComponents.LeftOverlayPanel signin={+signIn}>
                         <LoginComponents.Title style={{ color: 'white' }}>
                             Chào mừng bạn
                         </LoginComponents.Title>
@@ -204,7 +206,7 @@ function LoginPage() {
                         </LoginComponents.GhostButton>
                     </LoginComponents.LeftOverlayPanel>
 
-                    <LoginComponents.RightOverlayPanel signin={signIn}>
+                    <LoginComponents.RightOverlayPanel signin={+signIn}>
                         <LoginComponents.Title style={{ color: 'white' }}>
                             Xin chào
                         </LoginComponents.Title>

@@ -3,7 +3,7 @@ import useRefreshToken from '~/hooks/useRefreshToken'
 import { selectCurrentAccessToken } from '~/Redux/Auth/authSliceRedux'
 import React from 'react'
 
-const usePrivateAxios = () => {
+const usePrivateAxios = (accessToken) => {
     const refresh = useRefreshToken()
     React.useEffect(
         () => {
@@ -13,7 +13,7 @@ const usePrivateAxios = () => {
                     if (!config.headers['Authorization']) {
                         config.headers[
                             'Authorization'
-                        ] = `Bearer ${selectCurrentAccessToken}`
+                        ] = `Bearer ${accessToken}`
                     }
                     return config
                 },
@@ -55,7 +55,7 @@ const usePrivateAxios = () => {
             }
         },
         // eslint-disable-next-line
-        [selectCurrentAccessToken, refresh]
+        [refresh]
     )
 
     return axiosPrivate

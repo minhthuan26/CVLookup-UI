@@ -26,13 +26,16 @@ export const SignUpContainer = styled.div`
     opacity: 0;
     z-index: 1;
     ${(props) =>
-        props.signin !== true
-            ? `
-    transform: translateX(45%);
-    opacity: 1;
-    z-index: 5;
-  `
-            : null}
+        props.signin !== 1
+            ?
+            `
+            transform: translateX(45%);
+            opacity: 1;
+            z-index: 5;
+            `
+            :
+            null
+    }
 `
 
 export const SignInContainer = styled.div`
@@ -44,7 +47,7 @@ export const SignInContainer = styled.div`
     width: 70%;
     z-index: 2;
     ${(props) =>
-        props.signin !== true ? `transform: translateX(100%);` : null}
+        props.signin !== 1 ? `transform: translateX(100%);` : null}
 `
 
 export const Form = styled.form`
@@ -123,7 +126,7 @@ export const OverlayContainer = styled.div`
     transition: transform 0.6s ease-in-out;
     z-index: 100;
     ${(props) =>
-        props.signin !== true ? `transform: translateX(-234%);` : null}
+        props.signin !== 1 ? `transform: translateX(-234%);` : null}
 `
 
 export const Overlay = styled.div`
@@ -141,7 +144,7 @@ export const Overlay = styled.div`
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
     ${(props) =>
-        props.signin !== true ? `transform: translateX(50%);` : null}
+        props.signin !== 1 ? `transform: translateX(50%);` : null}
 `
 
 export const OverlayPanel = styled.div`
@@ -161,14 +164,14 @@ export const OverlayPanel = styled.div`
 
 export const LeftOverlayPanel = styled(OverlayPanel)`
     transform: translateX(-20%);
-    ${(props) => (props.signin !== true ? `transform: translateX(0);` : null)}
+    ${(props) => (props.signin !== 1 ? `transform: translateX(0);` : null)}
 `
 
 export const RightOverlayPanel = styled(OverlayPanel)`
     right: 0;
     transform: translateX(0);
     ${(props) =>
-        props.signin !== true ? `transform: translateX(20%);` : null}
+        props.signin !== 1 ? `transform: translateX(20%);` : null}
 `
 
 export const Paragraph = styled.p`

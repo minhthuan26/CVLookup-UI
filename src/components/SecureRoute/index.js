@@ -1,8 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 const SecureRoute = () => {
+    const location = useLocation()
+    const credentials = useSelector(state => state.authSliceRedux.credentials)
     return (
-        <div>SecureRoute</div>
+        credentials?.user ?
+            <Outlet />
+            :
+            <Navigate to='/login' state={{ from: location }} replace />
     )
 }
 

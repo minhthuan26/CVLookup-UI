@@ -26,13 +26,14 @@ const publicRoutes = [
         layout: DefaultLayout,
         page: CompanyListPage,
     },
+]
+
+const privateRoutes = [
     {
         path: '/curriculum-vitae',
         layout: DefaultLayout,
         page: CVPage,
     },
 ]
-
-const privateRoutes = []
 
 export { publicRoutes, privateRoutes }
