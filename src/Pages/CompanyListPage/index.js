@@ -1,9 +1,8 @@
 import React from 'react'
 import * as CompanyListComponent from './CompanyListComponent'
 import { Companies } from '~/FakeData/FakeData'
-import { Container } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
-import { Row, Col, Card } from 'react-bootstrap'
+import { Row, Col, Card, Container } from 'react-bootstrap'
 
 function CompanyListPage() {
     return (
