@@ -24,13 +24,13 @@ function App() {
                     )
                 })}
 
-                <Route element={<SecureRoute />} >
-                    {privateRoutes.map((route, index) => {
-                        const Page = route.page
-                        const Layout = route.layout
-                        return (
+
+                {privateRoutes.map((route, index) => {
+                    const Page = route.page
+                    const Layout = route.layout
+                    return (
+                        <Route key={index} element={<SecureRoute />} allowedRoles={route.allowedRoles}>
                             <Route
-                                key={index}
                                 path={route.path}
                                 element={
                                     <Layout>
@@ -38,9 +38,10 @@ function App() {
                                     </Layout>
                                 }
                             />
-                        )
-                    })}
-                </Route>
+                        </Route>
+                    )
+                })}
+
 
             </Routes>
             <ToastContainer
