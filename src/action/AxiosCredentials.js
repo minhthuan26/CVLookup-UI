@@ -1,6 +1,6 @@
 import { axiosPrivate } from './AxiosConfiguration'
 import useRefreshToken from '~/hooks/useRefreshToken'
-import { selectCurrentAccessToken } from '~/Redux/Auth/authSliceRedux'
+import { selectCurrentAccessToken } from '~/Redux/Auth/authSlice'
 import React from 'react'
 
 const usePrivateAxios = (accessToken) => {
@@ -24,8 +24,10 @@ const usePrivateAxios = (accessToken) => {
                 async (response) => {
                     if (
                         !response.data.status &&
-                        response.data.message === 'Thất bại. Token đã hết hạn'
+                        response.data.message.includes('Thất bại. Token đã hết hạn') &&
+                        response.data.code === 403
                     ) {
+                        console.log('in');
                         const preRequest = response?.config
                         const newAccessToken = await refresh()
                         preRequest.headers[

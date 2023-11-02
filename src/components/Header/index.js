@@ -10,8 +10,8 @@ import usePrivateAxios from '~/action/AxiosCredentials'
 function Header({ children }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const user = useSelector(state => state.authSliceRedux.credentials.user)
-    const accessToken = useSelector(state => state.authSliceRedux.credentials.accessToken)
+    const user = useSelector(state => state.auth.credentials.user)
+    const accessToken = useSelector(state => state.auth.credentials.accessToken)
     const axiosPrivate = usePrivateAxios(accessToken)
     const handleLogout = (e) => {
         const logout = async (axiosPrivate, dispatch, navigate) => await doLogout(axiosPrivate, dispatch, navigate)

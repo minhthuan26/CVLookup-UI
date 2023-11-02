@@ -40,6 +40,7 @@ const privateRoutes = [
         path: '/curriculum-vitae',
         layout: DefaultLayout,
         page: CVPage,
+        allowedRoles: ['Admin', 'Candidate']
     },
 ]
 
