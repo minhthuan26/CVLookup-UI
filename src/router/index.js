@@ -1,9 +1,11 @@
 import CVPage from '~/Pages/CV-Page'
 import CompanyListPage from '~/Pages/CompanyListPage'
+import EmployerPage from '~/Pages/EmployerPage'
 import HomePage from '~/Pages/HomePage'
 import JobsPage from '~/Pages/JobsPage'
 import LoginPage from '~/Pages/LoginPage'
 import DefaultLayout from '~/components/Layout/DefaultLayout'
+import EmployerLayout from '~/components/Layout/EmployerLayout'
 import LoginLayout from '~/components/Layout/LoginLayout'
 const publicRoutes = [
     {
@@ -15,6 +17,11 @@ const publicRoutes = [
         path: '/login',
         layout: LoginLayout,
         page: LoginPage,
+    },
+    {
+        path: '/employer',
+        layout: EmployerLayout,
+        page: EmployerPage,
     },
     {
         path: '/jobs',

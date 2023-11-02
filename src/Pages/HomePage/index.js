@@ -1,4 +1,6 @@
 import React from 'react'
+import CompanyElements from '~/components/CompanyElement'
+import JobCareer from '~/components/JobCareer'
 import JobElement from '~/components/JobElements'
 import Searchbar from '~/components/Searchbar'
 
@@ -7,6 +9,10 @@ const HomePage = () => {
         <div>
             <Searchbar />
             <JobElement />
+            <hr />
+            <CompanyElements />
+            <hr />
+            <JobCareer />
         </div>
     )
 }

@@ -1,36 +1,9 @@
 import React from 'react'
-import * as JobElementComponent from './JobElementComponent'
-import { LisJob, Location, Categories } from '~/FakeData/FakeData'
+import { LisJob } from '~/FakeData/FakeData'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
-
 import 'slick-carousel/slick/slick-theme.css'
 import { Col, Container, Row } from 'react-bootstrap'
-
-const SampleNextArrow = (props) => {
-    const { className, onClick } = props
-    return (
-        <div
-            className={className}
-            style={{
-                backgroundColor: 'blue',
-            }}
-            onClick={onClick}
-        />
-    )
-}
-
-const SamplePrevArrow = (props) => {
-    const { className, style, onClick } = props
-    return (
-        <div
-            className={className}
-            style={{ display: 'block', background: 'green' }}
-            onClick={onClick}
-        />
-    )
-}
-
 function JobElement() {
     var settings = {
         dots: true,
@@ -38,8 +11,6 @@ function JobElement() {
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 2,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />,
         rows: 2,
 
         responsive: [
@@ -50,13 +21,19 @@ function JobElement() {
                     rows: 1,
                     slidesToScroll: 1,
                     infinite: true,
+                    dots: false,
                 },
             },
         ],
     }
     return (
         <div style={{ margin: ' 0 5rem' }}>
-            <h3 style={{ padding: '1rem 0 0 3rem', color: '#0d0053' }}>
+            <h3
+                style={{
+                    padding: '2rem 0 0 3rem',
+                    color: '#0d0053',
+                    fontWeight: 'revert',
+                }}>
                 Top công việc mới nhất:
             </h3>
             <Slider
@@ -74,14 +51,15 @@ function JobElement() {
                                 border: '1px solid #0d0053',
                                 borderRadius: '15px',
                                 margin: '1rem',
+                                cursor: 'pointer',
                             }}>
                             <Row style={{ padding: '0.5rem' }}>
                                 <Col md="4">
                                     <img
                                         style={{
                                             objectFit: 'contain',
-                                            width: '100%',
-                                            height: '100%',
+                                            width: '100px',
+                                            height: '100px',
                                             borderRadius: '10px',
                                             border: 'solid 1px #5767aa',
                                         }}
