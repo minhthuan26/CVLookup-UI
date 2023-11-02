@@ -24,8 +24,10 @@ const usePrivateAxios = (accessToken) => {
                 async (response) => {
                     if (
                         !response.data.status &&
-                        response.data.message === 'Thất bại. Token đã hết hạn'
+                        response.data.message.includes('Thất bại. Token đã hết hạn') &&
+                        response.data.code === 403
                     ) {
+                        console.log('in');
                         const preRequest = response?.config
                         const newAccessToken = await refresh()
                         preRequest.headers[

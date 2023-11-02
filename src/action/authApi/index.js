@@ -1,9 +1,11 @@
 import axios from "~/action/AxiosConfiguration"
 import { toast } from "react-toastify"
 import { authUrl } from "~/utils/ApiUrl"
-import authSlice, { setCredentials, logout } from "~/Redux/Auth/authSlice"
+import { setCredentials, logout } from "~/Redux/Auth/authSlice"
+import { inLoading, successLoading } from "~/Redux/Loader/loaderSlice"
 
 export const doLogin = async (user, dispatch, navigate, from) => {
+    dispatch(inLoading())
     try {
         const res = await axios.post(authUrl.login, user)
 
@@ -16,6 +18,7 @@ export const doLogin = async (user, dispatch, navigate, from) => {
 
             })
         }
+        dispatch(successLoading())
     }
     catch (error) {
         toast.error(error)
@@ -23,6 +26,7 @@ export const doLogin = async (user, dispatch, navigate, from) => {
 }
 
 export const doLogout = async (axiosPrivate, dispatch, navigate) => {
+    dispatch(inLoading())
     try {
         const res = await axiosPrivate.post(authUrl.logout)
 
@@ -33,6 +37,7 @@ export const doLogout = async (axiosPrivate, dispatch, navigate) => {
         } else {
             toast.success(res.data.message)
         }
+        dispatch(successLoading())
     }
     catch (error) {
         toast.error(error)

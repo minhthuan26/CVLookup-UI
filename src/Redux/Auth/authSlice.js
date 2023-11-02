@@ -33,14 +33,6 @@ const authSlice = createSlice({
     }
 })
 
-export const { setCredentials, logout, renewToken } = authSlice.actions
+export const { setCredentials, logout, renewToken, inFetching, successFetching } = authSlice.actions
 
 export default authSlice.reducer
-
-export const selectCurrentUser = (state) => {
-    console.log(state);
-    return state.credentials.user
-}
-export const selectCurrentRole = (state) => state.credentials.role
-export const selectCurrentAccountId = (state) => state.credentials.AccountId
-export const selectCurrentAccessToken = (state) => state.credentials.accessToken
