@@ -4,7 +4,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 const SecureRoute = () => {
     const location = useLocation()
-    const credentials = useSelector(state => state.authSliceRedux.credentials)
+    const credentials = useSelector(state => state.auth.credentials)
     return (
         credentials?.user ?
             <Outlet />

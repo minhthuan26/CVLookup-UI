@@ -1,6 +1,6 @@
 import { axiosPrivate } from './AxiosConfiguration'
 import useRefreshToken from '~/hooks/useRefreshToken'
-import { selectCurrentAccessToken } from '~/Redux/Auth/authSliceRedux'
+import { selectCurrentAccessToken } from '~/Redux/Auth/authSlice'
 import React from 'react'
 
 const usePrivateAxios = (accessToken) => {

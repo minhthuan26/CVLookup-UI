@@ -1,7 +1,7 @@
 import axios from "~/action/AxiosConfiguration"
 import { toast } from "react-toastify"
 import { authUrl } from "~/utils/ApiUrl"
-import authSliceRedux, { setCredentials, logout } from "~/Redux/Auth/authSliceRedux"
+import authSlice, { setCredentials, logout } from "~/Redux/Auth/authSlice"
 
 export const doLogin = async (user, dispatch, navigate, from) => {
     try {

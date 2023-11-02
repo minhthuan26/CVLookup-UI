@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import * as LoginComponents from './LoginComponents'
-import { loginUser, registerCandidate } from '~/Redux/Auth/APIRequest'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { registerFail } from '~/Redux/Auth/authSlice'
 import { doLogin } from '~/action/authApi'
 function LoginPage() {
     const [signIn, toggle] = useState(true)
@@ -46,45 +44,45 @@ function LoginPage() {
     const handleRegister = (e) => {
         e.preventDefault()
 
-        const phoneRegex = /^\d{10}$/
-        const username = `${firstName}${lastName}`
-        const newUser = {
-            candidate: {
-                email: registerEmail,
-                phoneNumber: phoneNumber,
-                avatar: avatar,
-                username: username,
-                lastName: lastName,
-                firstName: firstName,
-                dateOfBirth: birthDay,
-            },
-            account: {
-                password: registerPassword,
-                email: registerEmail,
-            },
-        }
+        // const phoneRegex = /^\d{10}$/
+        // const username = `${firstName}${lastName}`
+        // const newUser = {
+        //     candidate: {
+        //         email: registerEmail,
+        //         phoneNumber: phoneNumber,
+        //         avatar: avatar,
+        //         username: username,
+        //         lastName: lastName,
+        //         firstName: firstName,
+        //         dateOfBirth: birthDay,
+        //     },
+        //     account: {
+        //         password: registerPassword,
+        //         email: registerEmail,
+        //     },
+        // }
 
-        if (
-            registerEmail === '' ||
-            registerPassword === '' ||
-            retryPass === '' ||
-            lastName === '' ||
-            firstName === '' ||
-            birthDay === '' ||
-            avatar === '' ||
-            phoneNumber === ''
-        ) {
-            toast.error('Vui lòng điền đầy đủ thông tin.')
-            dispatch(registerFail())
-        } else if (!phoneRegex.test(phoneNumber)) {
-            toast.error('Số điện thoại không đúng định dạng.')
-            dispatch(registerFail())
-        } else if (registerPassword !== retryPass) {
-            toast.error('Mật khẩu không khớp.')
-            dispatch(registerFail())
-        } else {
-            registerCandidate(newUser, dispatch, navigate)
-        }
+        // if (
+        //     registerEmail === '' ||
+        //     registerPassword === '' ||
+        //     retryPass === '' ||
+        //     lastName === '' ||
+        //     firstName === '' ||
+        //     birthDay === '' ||
+        //     avatar === '' ||
+        //     phoneNumber === ''
+        // ) {
+        //     toast.error('Vui lòng điền đầy đủ thông tin.')
+        //     dispatch(registerFail())
+        // } else if (!phoneRegex.test(phoneNumber)) {
+        //     toast.error('Số điện thoại không đúng định dạng.')
+        //     dispatch(registerFail())
+        // } else if (registerPassword !== retryPass) {
+        //     toast.error('Mật khẩu không khớp.')
+        //     dispatch(registerFail())
+        // } else {
+        //     registerCandidate(newUser, dispatch, navigate)
+        // }
     }
     return (
         <LoginComponents.Container>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { setCredentials, renewToken } from '~/Redux/Auth/authSliceRedux'
+import { setCredentials, renewToken } from '~/Redux/Auth/authSlice'
 import axios, { axiosPrivate } from '~/action/AxiosConfiguration'
 import { authUrl } from '~/utils/ApiUrl'
 import { toast } from 'react-toastify'

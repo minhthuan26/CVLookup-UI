@@ -3,53 +3,44 @@ import { createSlice } from '@reduxjs/toolkit'
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        login: {
-            currentUser: null,
-            isFetching: false,
-            error: false,
-        },
-        register: {
-            isFetching: false,
-            error: false,
-            currentUser: null,
-        },
+        credentials: {
+            user: null,
+            role: '',
+            accessToken: '',
+            accountId: ''
+        }
     },
     reducers: {
-        loginStart: (state) => {
-            state.login.isFetching = true
+        setCredentials: (state, action) => {
+            const { user, role, accessToken, accountId } = action.payload.data
+            state.credentials.user = user
+            state.credentials.role = role
+            state.credentials.accessToken = accessToken
+            state.credentials.accountId = accountId
         },
-        loginSuccess: (state, action) => {
-            state.login.isFetching = false
-            state.login.currentUser = action.payload
-            state.login.error = false
+
+        renewToken: (state, action) => {
+            const { accessToken } = action.payload.data
+            state.credentials.accessToken = accessToken
         },
-        loginFail: (state) => {
-            state.login.error = true
-            state.login.isFetching = false
-        },
-        registerStart: (state) => {
-            state.register.isFetching = true
-        },
-        registerSuccess: (state, action) => {
-            state.register.isFetching = false
-            state.register.error = false
-            state.register.currentUser = action.payload
-        },
-        registerFail: (state) => {
-            state.register.error = true
-            state.register.isFetching = false
-            state.register.success = false
-        },
-    },
+
+        logout: (state, action) => {
+            state.credentials.user = null
+            state.credentials.role = ''
+            state.credentials.accessToken = ''
+            state.credentials.accountId = ''
+        }
+    }
 })
 
-export const {
-    loginStart,
-    loginFail,
-    loginSuccess,
-    registerFail,
-    registerSuccess,
-    registerStart,
-} = authSlice.actions
+export const { setCredentials, logout, renewToken } = authSlice.actions
 
 export default authSlice.reducer
+
+export const selectCurrentUser = (state) => {
+    console.log(state);
+    return state.credentials.user
+}
+export const selectCurrentRole = (state) => state.credentials.role
+export const selectCurrentAccountId = (state) => state.credentials.AccountId
+export const selectCurrentAccessToken = (state) => state.credentials.accessToken
