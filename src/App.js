@@ -47,7 +47,7 @@ function App() {
                     const Page = route.page
                     const Layout = route.layout
                     return (
-                        <Route key={index} element={<SecureRoute />} allowedRoles={route.allowedRoles}>
+                        <Route key={index} element={<SecureRoute allowedRoles={route.allowedRoles} />} >
                             <Route
                                 path={route.path}
                                 element={

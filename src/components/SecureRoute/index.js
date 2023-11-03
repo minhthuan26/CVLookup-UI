@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import NotAllowed from '~/Pages/NotAllowed'
 
 const SecureRoute = ({ allowedRoles }) => {
     const location = useLocation()
     const credentials = useSelector(state => state.auth.credentials)
 
     return (
-        credentials?.role?.find(role => allowedRoles?.includes(role)) ?
-            <Outlet />
-            :
-            <Navigate to='/login' state={{ from: location }} replace />
+        credentials?.user
+            ? allowedRoles.includes(credentials.role)
+                ? <Outlet />
+                : <NotAllowed />
+            : <Navigate to='/login' state={{ from: location }} replace />
     )
 }
 
