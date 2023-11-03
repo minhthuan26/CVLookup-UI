@@ -44,7 +44,7 @@ export const doLogout = async (axiosPrivate, dispatch, navigate) => {
         if (res.data.success) {
             toast.success(res.data.message)
             dispatch(logout())
-            navigate("/", { replace: true })
+            navigate("/")
         } else {
             if (typeof res.data.message !== String) {
                 res.data.message.forEach(messageList => {

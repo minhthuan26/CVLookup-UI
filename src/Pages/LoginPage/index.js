@@ -32,13 +32,23 @@ function LoginPage() {
 
     const handleLogin = (e) => {
         e.preventDefault()
-        const newUser = {
+
+        if (!email.trim()) {
+            toast.error('Email không được để trống')
+            return
+        }
+        if (!password.trim()) {
+            toast.error('Password không được để trống')
+            return
+        }
+
+        const account = {
             email: email,
             password: password,
         }
-        // loginUser(newUser, dispatch, navigate)
-        const login = async (user, dispatch, navigate, from) => await doLogin(user, dispatch, navigate, from)
-        login(newUser, dispatch, navigate, from)
+
+        const login = async (account, dispatch, navigate, from) => await doLogin(account, dispatch, navigate, from)
+        login(account, dispatch, navigate, from)
     }
 
     const handleRegister = (e) => {
