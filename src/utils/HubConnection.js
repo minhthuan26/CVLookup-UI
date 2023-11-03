@@ -1,9 +1,9 @@
 import { HttpTransportType, HubConnectionBuilder } from '@microsoft/signalr'
-import hubConnectionRoute from '~/utils/ApiUrl'
+import { hubConnectionUrl } from '~/utils/ApiUrl'
 
 export const connection = () => {
     var connect = new HubConnectionBuilder()
-        .withUrl(hubConnectionRoute, {
+        .withUrl(hubConnectionUrl, {
             skipNegotiation: true,
             transport: HttpTransportType.WebSockets
         })

@@ -3,6 +3,10 @@ import { toast } from "react-toastify"
 import { authUrl } from "~/utils/ApiUrl"
 import { setCredentials, logout } from "~/Redux/Auth/authSlice"
 import { inLoading, successLoading } from "~/Redux/Loader/loaderSlice"
+import { connection } from "~/utils/HubConnection"
+import { persistor } from "~/Redux/store"
+
+const connect = connection()
 
 export const doLogin = async (user, dispatch, navigate, from) => {
     dispatch(inLoading())
@@ -13,10 +17,12 @@ export const doLogin = async (user, dispatch, navigate, from) => {
             toast.success(res.data.message)
             dispatch(setCredentials(res.data))
             navigate(from, { replace: true })
-        } else {
-            toast.error(res.data.message, {
 
+            connect.start().then(() => {
+                connect.invoke("AddHubConnection", res.data.data.user.id)
             })
+        } else {
+            toast.error(res.data.message)
         }
         dispatch(successLoading())
     }
@@ -34,10 +40,12 @@ export const doLogout = async (axiosPrivate, dispatch, navigate) => {
             toast.success(res.data.message)
             dispatch(logout())
             navigate("/", { replace: true })
+            connect.stop()
         } else {
             toast.success(res.data.message)
         }
         dispatch(successLoading())
+        persistor.purge()
     }
     catch (error) {
         toast.error(error)
