@@ -6,8 +6,23 @@ import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Loader from './components/Loader/Loader'
 import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { connection } from './utils/HubConnection'
+
+const connect = connection()
+
 function App() {
     const isLoading = useSelector(state => state.loader.loading)
+    const user = useSelector(state => state.auth.credentials.user)
+    useEffect(() => {
+        if (user) {
+            connect.start().then(() => {
+                connect.invoke("AddHubConnection", user.id)
+            })
+        } else {
+            connect.stop()
+        }
+    }, [user])
     return (
         <BrowserRouter>
             <Routes>
