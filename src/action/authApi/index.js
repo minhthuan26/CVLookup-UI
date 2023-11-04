@@ -33,6 +33,7 @@ export const doLogin = async (user, dispatch, navigate, from) => {
     }
     catch (error) {
         toast.error(error.message)
+        dispatch(successLoading())
     }
 }
 
@@ -58,10 +59,11 @@ export const doLogout = async (axiosPrivate, dispatch, navigate) => {
                 toast.error(res.data.message)
             }
         }
-        dispatch(successLoading())
         persistor.purge()
+        dispatch(successLoading())
     }
     catch (error) {
         toast.error(error.message)
+        dispatch(successLoading())
     }
 }
