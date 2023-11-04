@@ -80,7 +80,7 @@ function App() {
             </Routes>
             {isLoading ? <Loader /> : null}
             <ToastContainer
-                position="top-right"
+                position="top-center"
                 autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
@@ -90,6 +90,7 @@ function App() {
                 draggable
                 pauseOnHover={false}
                 theme="light"
+                style={{ width: '40rem', textAlign: 'center' }}
                 transition={Slide} />
         </BrowserRouter>
     )

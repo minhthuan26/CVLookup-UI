@@ -23,7 +23,7 @@ export const LinkStyled = styled(Link)`
     color: #eee;
     font-weight: 400;
     text-decoration: none;
-    transition: 0.5s;
+    transition: 0.3s all ease-in-out;
 
     &:hover {
         color: #2193d1;
@@ -31,12 +31,12 @@ export const LinkStyled = styled(Link)`
 `
 
 export const LinkName = styled(Link)`
-    margin-left: auto;
+    // margin-left: auto;
     padding: 10px;
     border-radius: 8px;
     background-color: #5767aa;
     color: #eee;
-    transition: 0.75s;
+    transition: 0.3s all ease-in-out;
 
     &:hover {
         background-color: #eee;
@@ -45,12 +45,12 @@ export const LinkName = styled(Link)`
 `
 
 export const LinkName2 = styled(Link)`
-    margin-left: 10px;
+    // margin-left: 10px;
     padding: 10px;
     border-radius: 8px;
     background-color: #eee;
     color: #2193d1;
-    transition: 0.75s;
+    transition: 0.3s all ease-in-out;
 
     &:hover {
         background-color: #5767aa;
