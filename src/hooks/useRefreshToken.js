@@ -8,14 +8,16 @@ import { toast } from 'react-toastify'
 const useRefreshToken = (accessToken) => {
     const dispatch = useDispatch()
     const refresh = async () => {
-        const res = await axios.post(`${authUrl.renewToken}`, {
-            method: 'post',
-            withCredentials: true,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-        })
+        const res = await axios(
+            {
+                url: `${authUrl.renewToken}`,
+                method: 'post',
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+            })
 
         if (res.data.success) {
             dispatch(renewToken(res.data))

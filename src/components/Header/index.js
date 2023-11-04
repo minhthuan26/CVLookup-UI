@@ -75,11 +75,11 @@ function Header({ children }) {
                             className="link-name">
                             <span>Đăng nhập</span>
                         </HeaderComponent.LinkName>
-                        <HeaderComponent.LinkName2
+                        {/* <HeaderComponent.LinkName2
                             to="/employer"
                             className="link-name2">
                             <span>Dành cho nhà tuyển dụng</span>
-                        </HeaderComponent.LinkName2>
+                        </HeaderComponent.LinkName2> */}
                     </>
                 )}
             </HeaderComponent.HeaderContainer>

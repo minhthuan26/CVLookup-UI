@@ -4,7 +4,7 @@ import { selectCurrentAccessToken } from '~/Redux/Auth/authSlice'
 import React from 'react'
 
 const usePrivateAxios = (accessToken) => {
-    const refresh = useRefreshToken()
+    const refresh = useRefreshToken(accessToken)
     React.useEffect(
         () => {
             const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -27,7 +27,6 @@ const usePrivateAxios = (accessToken) => {
                         response.data.message.includes('Thất bại. Token đã hết hạn') &&
                         response.data.code === 403
                     ) {
-                        console.log('in');
                         const preRequest = response?.config
                         const newAccessToken = await refresh()
                         preRequest.headers[

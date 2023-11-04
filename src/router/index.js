@@ -19,11 +19,6 @@ const publicRoutes = [
         page: LoginPage,
     },
     {
-        path: '/employer',
-        layout: EmployerLayout,
-        page: EmployerPage,
-    },
-    {
         path: '/jobs',
         layout: DefaultLayout,
         page: JobsPage,
@@ -42,6 +37,12 @@ const privateRoutes = [
         page: CVPage,
         allowedRoles: ['Admin', 'Candidate']
     },
+    {
+        path: '/employer',
+        layout: EmployerLayout,
+        page: EmployerPage,
+        allowedRoles: ['Admin', 'Employer']
+    }
 ]
 
 export { publicRoutes, privateRoutes }

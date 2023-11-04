@@ -8,18 +8,36 @@ import Loader from './components/Loader/Loader'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { connection } from './utils/HubConnection'
+import { postRestoreRefreshToken } from './action/authApi'
+import Cookies from 'js-cookie'
 
 const connect = connection()
 
 function App() {
     const isLoading = useSelector(state => state.loader.loading)
     const user = useSelector(state => state.auth.credentials.user)
+
+    useEffect(() => {
+        const refreshTokenInCookie = Cookies.get('RefreshToken')
+        console.log(refreshTokenInCookie);
+        if (user && !refreshTokenInCookie) {
+            const restoreRefreshToken = async (userId) => await postRestoreRefreshToken(userId)
+            restoreRefreshToken(user.id)
+        }
+    },
+        // eslint-disable-next-line
+        []
+    )
+
     useEffect(() => {
         if (user) {
             connect.start().then(() => {
                 connect.invoke("AddHubConnection", user.id)
             })
         } else {
+            // connect.invoke("DeleteHubConnectionByConnectionId").then(() => {
+            //     connect.stop()
+            // })
             connect.stop()
         }
     }, [user])

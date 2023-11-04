@@ -17,7 +17,7 @@ export const doLogin = async (user, dispatch, navigate, from) => {
             navigate(from, { replace: true })
 
         } else {
-            if (typeof res.data.message !== String) {
+            if (typeof res.data.message !== 'string') {
                 res.data.message.forEach(messageList => {
                     messageList.forEach(messages => {
                         messages.forEach(message => {
@@ -47,7 +47,8 @@ export const doLogout = async (axiosPrivate, dispatch, navigate) => {
             dispatch(logout())
             navigate("/")
         } else {
-            if (typeof res.data.message !== String) {
+            console.log(typeof res.data.message)
+            if (typeof res.data.message !== 'string') {
                 res.data.message.forEach(messageList => {
                     messageList.forEach(messages => {
                         messages.forEach(message => {
@@ -65,5 +66,13 @@ export const doLogout = async (axiosPrivate, dispatch, navigate) => {
     catch (error) {
         toast.error(error.message)
         dispatch(successLoading())
+    }
+}
+
+export const postRestoreRefreshToken = async (userId) => {
+    try {
+        const res = await axios.post(authUrl.restoreRefreshToken + userId)
+    } catch (error) {
+        toast.error(error.message)
     }
 }
