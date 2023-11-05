@@ -6,6 +6,7 @@ import { doLogout } from '~/action/authApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import usePrivateAxios from '~/action/AxiosCredentials'
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 function Header({ children }) {
     const dispatch = useDispatch()
@@ -47,41 +48,49 @@ function Header({ children }) {
                         Công cụ
                     </HeaderComponent.LinkStyled>
                 </HeaderComponent.NavList>
-                {user ? (
-                    <>
-                        <HeaderComponent.LinkName
-                            className="link-name">
-                            <span onClick={handleLogout}>Đăng xuất</span>
-                        </HeaderComponent.LinkName>
-                        <HeaderComponent.LinkName2
-                            to="/profile"
-                            className="link-name2">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                className="bi bi-person"
-                                viewBox="0 0 16 16">
-                                <path d="M8 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1c-2.667 0-8 1.334-8 4v1h16v-1c0-2.666-5.333-4-8-4z" />
-                            </svg>
-                            &emsp; Xin chào, {user.username}
-                        </HeaderComponent.LinkName2>
-                    </>
-                ) : (
-                    <>
-                        <HeaderComponent.LinkName
-                            to="/login"
-                            className="link-name">
-                            <span>Đăng nhập</span>
-                        </HeaderComponent.LinkName>
-                        <HeaderComponent.LinkName2
+                <div className='ms-auto d-flex gap-2'>
+                    {user ? (
+                        <>
+
+                            <HeaderComponent.LinkName
+                                className="link-name">
+                                <NotificationsIcon />
+                            </HeaderComponent.LinkName>
+                            <HeaderComponent.LinkName onClick={handleLogout}
+                                className="link-name">
+                                <span>Đăng xuất</span>
+                            </HeaderComponent.LinkName>
+                            <HeaderComponent.LinkName2
+                                to="/profile"
+                                className="link-name2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    className="bi bi-person"
+                                    viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1c-2.667 0-8 1.334-8 4v1h16v-1c0-2.666-5.333-4-8-4z" />
+                                </svg>
+                                &emsp; {user.username}
+                            </HeaderComponent.LinkName2>
+
+                        </>
+                    ) : (
+                        <>
+                            <HeaderComponent.LinkName
+                                to="/login"
+                                className="link-name">
+                                <span>Đăng nhập</span>
+                            </HeaderComponent.LinkName>
+                            {/* <HeaderComponent.LinkName2
                             to="/employer"
                             className="link-name2">
                             <span>Dành cho nhà tuyển dụng</span>
-                        </HeaderComponent.LinkName2>
-                    </>
-                )}
+                        </HeaderComponent.LinkName2> */}
+                        </>
+                    )}
+                </div>
             </HeaderComponent.HeaderContainer>
             {children}
         </>
