@@ -48,7 +48,7 @@ function Header({ children }) {
                         Công cụ
                     </HeaderComponent.LinkStyled>
                 </HeaderComponent.NavList>
-                <div class='ms-auto d-flex gap-2'>
+                <div className='ms-auto d-flex gap-2'>
                     {user ? (
                         <>
 

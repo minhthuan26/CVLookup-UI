@@ -100,8 +100,9 @@ function LoginPage() {
     }
 
     const handleLogout = (e) => {
+        const currentPage = '/login'
         const logout = async (axiosPrivate, dispatch, navigate, from) => await doLogout(axiosPrivate, dispatch, navigate, from)
-        logout(axiosPrivate, dispatch, navigate, from)
+        logout(axiosPrivate, dispatch, navigate, currentPage)
     }
     return (
         <>
