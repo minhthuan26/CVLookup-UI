@@ -32,6 +32,7 @@ function JobCareer() {
                                         border: '1px solid #fff',
                                         cursor: 'pointer',
                                         transition: 'all 0.3s',
+                                        color: '#eee',
                                     }}
                                     onMouseEnter={(e) => {
                                         e.target.style.backgroundColor = '#eee'

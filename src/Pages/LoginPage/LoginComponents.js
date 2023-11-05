@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
     margin: auto;
     margin-top: 3% 0;
+    margin-bottom: 3%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,9 +12,9 @@ export const Container = styled.div`
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     overflow: hidden;
-    width: 750px;
+    width: 800px;
     max-width: 100%;
-    min-height: 600px;
+    min-height: 800px;
 `
 
 export const SignUpContainer = styled.div`
@@ -27,15 +28,12 @@ export const SignUpContainer = styled.div`
     z-index: 1;
     ${(props) =>
         props.signin !== 1
-            ?
-            `
+            ? `
             transform: translateX(45%);
             opacity: 1;
             z-index: 5;
             `
-            :
-            null
-    }
+            : null}
 `
 
 export const SignInContainer = styled.div`
@@ -46,8 +44,7 @@ export const SignInContainer = styled.div`
     left: 0;
     width: 70%;
     z-index: 2;
-    ${(props) =>
-        props.signin !== 1 ? `transform: translateX(100%);` : null}
+    ${(props) => (props.signin !== 1 ? `transform: translateX(100%);` : null)}
 `
 
 export const Form = styled.form`
@@ -85,6 +82,14 @@ export const Input = styled.input`
     margin: 8px 0;
     width: 100%;
 `
+export const TextArea = styled.textarea`
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    height: 120px;
+`
 export const Label = styled.label`
     cursor: pointer;
     display: flex;
@@ -108,10 +113,12 @@ export const Button = styled.button`
     padding: 12px 45px;
     letter-spacing: 1px;
     text-transform: uppercase;
-    transition: transform 80ms ease-in;
+    /* transition: transform 80ms ease-in;
     &:active {
         transform: scale(0.3);
-    }
+    } 
+    Thêm hiệu ứng này nó ảnh hưởng transition của overlay nên cmt lại
+    */
     &:focus {
         outline: none;
     }
@@ -119,6 +126,16 @@ export const Button = styled.button`
 export const GhostButton = styled(Button)`
     background-color: transparent;
     border-color: #ffffff;
+    padding: 15px;
+    &:hover {
+        background-color: #eee;
+        color: #5767aa;
+    }
+`
+export const WrapGhostButton = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 `
 
 export const Anchor = styled.a`
@@ -136,8 +153,7 @@ export const OverlayContainer = styled.div`
     overflow: hidden;
     transition: transform 0.6s ease-in-out;
     z-index: 100;
-    ${(props) =>
-        props.signin !== 1 ? `transform: translateX(-234%);` : null}
+    ${(props) => (props.signin !== 1 ? `transform: translateX(-234%);` : null)}
 `
 
 export const Overlay = styled.div`
@@ -154,8 +170,7 @@ export const Overlay = styled.div`
     width: 200%;
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
-    ${(props) =>
-        props.signin !== 1 ? `transform: translateX(50%);` : null}
+    ${(props) => (props.signin !== 1 ? `transform: translateX(50%);` : null)}
 `
 
 export const OverlayPanel = styled.div`
@@ -181,8 +196,7 @@ export const LeftOverlayPanel = styled(OverlayPanel)`
 export const RightOverlayPanel = styled(OverlayPanel)`
     right: 0;
     transform: translateX(0);
-    ${(props) =>
-        props.signin !== 1 ? `transform: translateX(20%);` : null}
+    ${(props) => (props.signin !== 1 ? `transform: translateX(20%);` : null)}
 `
 
 export const Paragraph = styled.p`
