@@ -61,6 +61,17 @@ export const Form = styled.form`
     text-align: center;
 `
 
+export const LogoutContainer = styled.div`
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+`
+
 export const Title = styled.h1`
     font-weight: bold;
     color: #2a1892;
@@ -99,7 +110,7 @@ export const Button = styled.button`
     text-transform: uppercase;
     transition: transform 80ms ease-in;
     &:active {
-        transform: scale(0.95);
+        transform: scale(0.3);
     }
     &:focus {
         outline: none;

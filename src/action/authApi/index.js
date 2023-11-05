@@ -37,7 +37,7 @@ export const doLogin = async (user, dispatch, navigate, from) => {
     }
 }
 
-export const doLogout = async (axiosPrivate, dispatch, navigate) => {
+export const doLogout = async (axiosPrivate, dispatch, navigate, from) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate.post(authUrl.logout)
@@ -45,7 +45,7 @@ export const doLogout = async (axiosPrivate, dispatch, navigate) => {
         if (res.data.success) {
             toast.success(res.data.message)
             dispatch(logout())
-            navigate("/", { replace: true })
+            navigate(from, { replace: true })
         } else {
             console.log(typeof res.data.message)
             if (typeof res.data.message !== 'string') {

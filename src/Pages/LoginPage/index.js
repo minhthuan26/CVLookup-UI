@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import * as LoginComponents from './LoginComponents'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Slide, ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { doLogin } from '~/action/authApi'
+import { doLogin, doLogout } from '~/action/authApi'
+import usePrivateAxios from '~/action/AxiosCredentials'
 function LoginPage() {
     const [signIn, toggle] = useState(true)
     const [selectedFileName, setSelectedFileName] = useState(null)
@@ -19,6 +20,9 @@ function LoginPage() {
     const [birthDay, setBirthDay] = useState('')
     const [avatar, setAvatar] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
+    const user = useSelector(state => state.auth.credentials.user)
+    const accessToken = useSelector(state => state.auth.credentials.accessToken)
+    const axiosPrivate = usePrivateAxios(accessToken)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -93,6 +97,11 @@ function LoginPage() {
         // } else {
         //     registerCandidate(newUser, dispatch, navigate)
         // }
+    }
+
+    const handleLogout = (e) => {
+        const logout = async (axiosPrivate, dispatch, navigate, from) => await doLogout(axiosPrivate, dispatch, navigate, from)
+        logout(axiosPrivate, dispatch, navigate, from)
     }
     return (
         <>
@@ -177,27 +186,41 @@ function LoginPage() {
                     </LoginComponents.Form>
                 </LoginComponents.SignUpContainer>
 
-                <LoginComponents.SignInContainer signin={+signIn}>
-                    <LoginComponents.Form onSubmit={handleLogin}>
-                        <LoginComponents.Title>Đăng nhập</LoginComponents.Title>
-                        <LoginComponents.Input
-                            type="email"
-                            placeholder="Email"
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <LoginComponents.Input
-                            type="password"
-                            placeholder="Mật khẩu"
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <LoginComponents.Anchor href="#">
-                            Quên mật khẩu?
-                        </LoginComponents.Anchor>
-                        <LoginComponents.Button type="submit" value="Submit">
-                            Đăng nhập
-                        </LoginComponents.Button>
-                    </LoginComponents.Form>
-                </LoginComponents.SignInContainer>
+                {!user
+                    ? <LoginComponents.SignInContainer signin={+signIn}>
+                        <LoginComponents.Form onSubmit={handleLogin}>
+                            <LoginComponents.Title>Đăng nhập</LoginComponents.Title>
+                            <LoginComponents.Input
+                                type="email"
+                                placeholder="Email"
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <LoginComponents.Input
+                                type="password"
+                                placeholder="Mật khẩu"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <LoginComponents.Anchor href="#">
+                                Quên mật khẩu?
+                            </LoginComponents.Anchor>
+                            <LoginComponents.Button type="submit" value="Submit">
+                                Đăng nhập
+                            </LoginComponents.Button>
+                        </LoginComponents.Form>
+                    </LoginComponents.SignInContainer>
+                    : (
+                        <LoginComponents.SignInContainer signin={+signIn}>
+                            <LoginComponents.LogoutContainer>
+                                <span style={{ color: 'red', marginBottom: '2rem' }}>
+                                    * Vui lòng đăng xuất khỏi tài khoản hiện tại trước khi đăng nhặp 1 tài khoản khác.
+                                </span>
+                                <LoginComponents.Button type="submit" value="Submit" onClick={handleLogout}>
+                                    Đăng xuẩt
+                                </LoginComponents.Button>
+                            </LoginComponents.LogoutContainer>
+                        </LoginComponents.SignInContainer>
+                    )
+                }
 
                 <LoginComponents.OverlayContainer signin={+signIn}>
                     <LoginComponents.Overlay signin={+signIn}>
