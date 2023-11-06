@@ -12,3 +12,8 @@ export const authUrl = {
     renewToken: `${host}${prefix}/Auth/renew-token`,
     restoreRefreshToken: `${host}${prefix}/Auth/restore-refresh-token?userId=`
 }
+
+export const recruitmentUrl = {
+    getNewestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_asc`,
+    getOldestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_desc`,
+}
