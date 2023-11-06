@@ -15,7 +15,6 @@ export const getNewestJob = async (dispatch) => {
         })
 
         if (res.data.success) {
-            toast.success(res.data.message)
             dispatch(successLoading())
             return res.data.data
         } else {
@@ -34,7 +33,6 @@ export const getNewestJob = async (dispatch) => {
         dispatch(successLoading())
         return []
     } catch (error) {
-        toast.error(error.message)
         dispatch(successLoading())
         return []
     }
