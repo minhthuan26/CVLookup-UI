@@ -116,7 +116,7 @@ function JobElement() {
                         </Container>
                     ))}
                 </Slider>)
-                : <p><strong>No job found</strong></p>
+                : <></>
             }
         </div>
     )
