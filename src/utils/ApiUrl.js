@@ -15,6 +15,6 @@ export const authUrl = {
 }
 
 export const recruitmentUrl = {
-    getNewestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_asc`,
-    getOldestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_desc`,
+    getNewestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_desc`,
+    getOldestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_asc`,
 }

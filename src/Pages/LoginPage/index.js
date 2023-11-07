@@ -21,9 +21,6 @@ function LoginPage() {
     const [registerEmail, setRegisterEmail] = useState('')
     const [registerPassword, setRegisterPassword] = useState('')
     const [retryPass, setRetryPass] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [firstName, setFirstName] = useState('')
-    const [fullName, setFullName] = useState('')
     const [userName, setUserName] = useState('')
     const [birthDay, setBirthDay] = useState('')
     const [avatar, setAvatar] = useState('')
@@ -83,36 +80,27 @@ function LoginPage() {
             registerEmail === '' ||
             registerPassword === '' ||
             retryPass === '' ||
-            lastName === '' ||
-            firstName === '' ||
-            birthDay === '' ||
-            avatar === '' ||
-            phoneNumber === ''
+            birthDay === ''
         ) {
             toast.error('Vui lòng điền đầy đủ thông tin.')
         } else if (!phoneRegex.test(phoneNumber)) {
             toast.error('Số điện thoại không đúng định dạng.')
         } else if (registerPassword !== retryPass) {
             toast.error('Mật khẩu không khớp.')
+        } else {
+            const registerCandidate = async (newUser, dispatch, navigate) =>
+                await doRegisterCandidate(newUser, dispatch, navigate)
+
+            var formData = new FormData()
+            formData.append('Account.Email', registerEmail)
+            formData.append('Account.Password', registerPassword)
+            formData.append('Candidate.Email', registerEmail)
+            formData.append('Candidate.PhoneNumber', registerEmail)
+            formData.append('Candidate.Avatar', avatar)
+            formData.append('Candidate.Username', userName)
+            formData.append('Candidate.DateOfBirth', birthDay)
+            registerCandidate(formData, dispatch, navigate, from)
         }
-        const newUser = {
-            candidate: {
-                email: registerEmail,
-                phoneNumber: phoneNumber,
-                avatar: avatar,
-                username: userName,
-                lastName: lastName,
-                firstName: firstName,
-                dateOfBirth: birthDay,
-            },
-            account: {
-                password: registerPassword,
-                email: registerEmail,
-            },
-        }
-        const registerCandidate = async (newUser, dispatch, navigate, from) =>
-            await doRegisterCandidate(newUser, dispatch, navigate, from)
-        registerCandidate(newUser, dispatch, navigate, from)
     }
 
     const handleRegisterEmployer = (e) => {
@@ -124,8 +112,6 @@ function LoginPage() {
             registerEmail === '' ||
             registerPassword === '' ||
             retryPass === '' ||
-            avatar === '' ||
-            phoneNumber === '' ||
             userName === '' ||
             description === ''
         ) {
@@ -134,25 +120,21 @@ function LoginPage() {
             toast.error('Số điện thoại không đúng định dạng.')
         } else if (registerPassword !== retryPass) {
             toast.error('Mật khẩu không khớp.')
+        } else {
+            const registerEmployer = async (newUser, dispatch, navigate) =>
+                await doRegisterEmployer(newUser, dispatch, navigate)
+
+            var formData = new FormData()
+            formData.append('Account.Email', registerEmail)
+            formData.append('Account.Password', registerPassword)
+            formData.append('Employer.Email', registerEmail)
+            formData.append('Employer.PhoneNumber', phoneNumber)
+            formData.append('Employer.Avatar', avatar)
+            formData.append('Employer.Username', userName)
+            formData.append('Employer.Address', address)
+            formData.append('Employer.Description', description)
+            registerEmployer(formData, dispatch, navigate)
         }
-        const newUser = {
-            employer: {
-                email: registerEmail,
-                phoneNumber: phoneNumber,
-                avatar: avatar,
-                username: userName,
-                employerName: fullName,
-                address: address,
-                description: description,
-            },
-            account: {
-                password: registerPassword,
-                email: registerEmail,
-            },
-        }
-        const registerEmployer = async (newUser, dispatch, navigate, from) =>
-            await doRegisterEmployer(newUser, dispatch, navigate, from)
-        registerEmployer(newUser, dispatch, navigate, from)
     }
 
     const handleLogout = (e) => {
@@ -171,25 +153,9 @@ function LoginPage() {
                             <LoginComponents.Title>
                                 Đăng ký tài khoản
                             </LoginComponents.Title>
-                            <LoginComponents.Row>
-                                <LoginComponents.Input
-                                    type="text"
-                                    placeholder="Họ"
-                                    onChange={(e) =>
-                                        setFirstName(e.target.value)
-                                    }
-                                />
-                                <LoginComponents.Input
-                                    type="text"
-                                    placeholder="Tên"
-                                    onChange={(e) =>
-                                        setLastName(e.target.value)
-                                    }
-                                />
-                            </LoginComponents.Row>
                             <LoginComponents.Input
                                 type="text"
-                                placeholder="Tên tài khoản"
+                                placeholder="Họ và tên"
                                 onChange={(e) => setUserName(e.target.value)}
                             />
                             <LoginComponents.Input
@@ -270,11 +236,6 @@ function LoginPage() {
                             <LoginComponents.Input
                                 type="text"
                                 placeholder="Họ và tên"
-                                onChange={(e) => setFullName(e.target.value)}
-                            />
-                            <LoginComponents.Input
-                                type="text"
-                                placeholder="Tên tài khoản"
                                 onChange={(e) => setUserName(e.target.value)}
                             />
                             <LoginComponents.Input

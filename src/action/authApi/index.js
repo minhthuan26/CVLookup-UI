@@ -74,10 +74,18 @@ export const postRestoreRefreshToken = async (userId) => {
     }
 }
 
-export const doRegisterCandidate = async (user, dispatch, navigate, from) => {
+export const doRegisterCandidate = async (data, dispatch, navigate) => {
     dispatch(inLoading())
     try {
-        const res = await axios.post(authUrl.registerCandidate, user)
+        const res = await axios({
+            url: `${authUrl.registerCandidate}`,
+            method: 'post',
+            data: data,
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        })
 
         if (res.data.success) {
             toast.success(res.data.message)
@@ -102,10 +110,18 @@ export const doRegisterCandidate = async (user, dispatch, navigate, from) => {
     }
 }
 
-export const doRegisterEmployer = async (user, dispatch, navigate, from) => {
+export const doRegisterEmployer = async (data, dispatch, navigate) => {
     dispatch(inLoading())
     try {
-        const res = await axios.post(authUrl.registerEmployer, user)
+        const res = await axios({
+            url: `${authUrl.registerEmployer}`,
+            method: 'post',
+            data: data,
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        })
 
         if (res.data.success) {
             toast.success(res.data.message)
