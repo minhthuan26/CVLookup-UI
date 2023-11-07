@@ -66,9 +66,9 @@ export const doLogout = async (axiosPrivate, dispatch, navigate, from) => {
     }
 }
 
-export const postRestoreRefreshToken = async (userId) => {
+export const postRestoreRefreshToken = async (userId, connectionId) => {
     try {
-        const res = await axios.post(authUrl.restoreRefreshToken + userId)
+        const res = await axios.post(authUrl.restoreRefreshToken + '?userId=' + userId + '&connectionId=' + connectionId)
     } catch (error) {
         toast.error(error.message)
     }
