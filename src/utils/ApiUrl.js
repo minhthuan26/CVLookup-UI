@@ -11,7 +11,8 @@ export const authUrl = {
     registerCandidate: `${host}${prefix}/Auth/register-candidate`,
     registerEmployer: `${host}${prefix}/Auth/register-employer`,
     renewToken: `${host}${prefix}/Auth/renew-token`,
-    restoreRefreshToken: `${host}${prefix}/Auth/restore-refresh-token?userId=`,
+    restoreRefreshToken: `${host}${prefix}/Auth/restore-refresh-token`,
+    activeAccount: `${host}${prefix}/Auth/active-account`
 }
 
 export const recruitmentUrl = {
