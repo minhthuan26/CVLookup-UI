@@ -145,3 +145,41 @@ export const doRegisterEmployer = async (data, dispatch, navigate) => {
         dispatch(successLoading())
     }
 }
+
+export const doActiveAccount = async (token, dispatch) => {
+    dispatch(inLoading())
+    try {
+        const res = await axios({
+            url: `${authUrl.activeAccount + '?token=' + token}`,
+            method: 'post',
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+
+        var resultMessage = ''
+
+        if (res.data.success) {
+            resultMessage = res.data.message
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            resultMessage += message + '\n'
+                        })
+                    })
+                })
+            } else {
+                resultMessage += res.data.message
+            }
+        }
+        dispatch(successLoading())
+        return resultMessage
+    } catch (error) {
+        toast.error(error.message)
+        dispatch(successLoading())
+        return ''
+    }
+}

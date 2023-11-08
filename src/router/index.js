@@ -1,3 +1,4 @@
+import ActiveAccountPage from '~/Pages/ActiveAccountPage'
 import CVPage from '~/Pages/CV-Page'
 import CompanyListPage from '~/Pages/CompanyListPage'
 import EmployerPage from '~/Pages/EmployerPage'
@@ -27,6 +28,11 @@ const publicRoutes = [
         path: '/company-list',
         layout: DefaultLayout,
         page: CompanyListPage,
+    },
+    {
+        path: '/active-account',
+        layout: DefaultLayout,
+        page: ActiveAccountPage,
     },
 ]
 

@@ -38,9 +38,9 @@ function LoginPage() {
     const location = useLocation()
     const from = location.state?.from?.pathname || '/'
     const handleNameFileChange = (event) => {
-        const fileName = event.target.files[0]?.name
-        setSelectedFileName(fileName)
-        setAvatar(event.target.value)
+        const file = event.target.files[0]
+        setSelectedFileName(file?.name)
+        setAvatar(file)
     }
 
     const handleLogin = (e) => {

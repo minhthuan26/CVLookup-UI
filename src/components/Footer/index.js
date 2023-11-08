@@ -5,7 +5,7 @@ import * as FooterComponent from './FooterComponent'
 function Footer() {
     return (
         <FooterComponent.Container>
-            <FooterComponent.FooterContainer className="padding_4x">
+            <FooterComponent.FooterContainer className="padding_4x fixed-bottom mt-auto">
                 <FooterComponent.FlexContainer>
                     <FooterComponent.Logo />
                     <FooterComponent.AboutSection />
