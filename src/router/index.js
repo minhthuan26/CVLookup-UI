@@ -5,6 +5,7 @@ import EmployerPage from '~/Pages/EmployerPage'
 import HomePage from '~/Pages/HomePage'
 import JobsPage from '~/Pages/JobsPage'
 import LoginPage from '~/Pages/LoginPage'
+import RecruitmentDetail from '~/Pages/RecruitmentDetail'
 import DefaultLayout from '~/components/Layout/DefaultLayout'
 import EmployerLayout from '~/components/Layout/EmployerLayout'
 import LoginLayout from '~/components/Layout/LoginLayout'
@@ -33,6 +34,11 @@ const publicRoutes = [
         path: '/active-account',
         layout: DefaultLayout,
         page: ActiveAccountPage,
+    },
+    {
+        path: '/recruitment-detail',
+        layout: DefaultLayout,
+        page: RecruitmentDetail,
     },
 ]
 

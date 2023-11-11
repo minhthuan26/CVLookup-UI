@@ -37,3 +37,39 @@ export const getNewestJob = async (dispatch) => {
         return []
     }
 }
+
+export const doGetRecruitmentDetail = async (recruitmentId, dispatch, navigate) => {
+    dispatch(inLoading())
+    try {
+        const res = await axios({
+            url: `${recruitmentUrl.getJobDetailById + '?id=' + recruitmentId}`,
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+
+        if (res.data.success) {
+            dispatch(successLoading())
+            // navigate('?id=' + recruitmentId)
+            return res.data.data
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach(messageList => {
+                    messageList.forEach(messages => {
+                        messages.forEach(message => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return
+    } catch (error) {
+        dispatch(successLoading())
+        return
+    }
+}
