@@ -9,6 +9,7 @@ import SearchBarAdvance from '~/components/SearchBarAdvance'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { doGetRecruitmentDetail } from '~/action/recruitmentApi'
+import LoginModal from '~/components/LoginModal'
 
 const RecruitmentDetail = () => {
     const [searchParams, setSearchParams] = useSearchParams()

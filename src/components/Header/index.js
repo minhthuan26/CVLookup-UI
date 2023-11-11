@@ -15,8 +15,8 @@ function Header({ children }) {
     const accessToken = useSelector(state => state.auth.credentials.accessToken)
     const axiosPrivate = usePrivateAxios(accessToken)
     const handleLogout = (e) => {
-        const logout = async (axiosPrivate, dispatch, navigate) => await doLogout(axiosPrivate, dispatch, navigate)
-        logout(axiosPrivate, dispatch, navigate)
+        const logout = async (axiosPrivate, dispatch, navigate, from) => await doLogout(axiosPrivate, dispatch, navigate, from)
+        logout(axiosPrivate, dispatch, navigate, '/login')
     }
 
     return (

@@ -1,12 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import PaidRoundedIcon from '@mui/icons-material/PaidRounded'
 import PlaceRoundedIcon from '@mui/icons-material/PlaceRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded'
+import { useSelector } from 'react-redux';
+import useLoginModal from '~/hooks/useLoginModal';
 
 const RecruitmentHeader = ({ recruitment }) => {
+    const user = useSelector(state => state.auth.credentials.user)
+    const { loginModal, setLoginModal } = useLoginModal()
 
+    const handleApply = () => {
+        if (!user) {
+            setLoginModal(true)
+        }
+    }
+
+    useEffect(() => {
+        if (user) {
+            setLoginModal(false)
+        }
+    },
+        //eslint-disable-next-line
+        [user])
     return (
         <Container style={{ width: '90%' }} className='d-flex flex-column gap-2 justify-content-center p-3 mb-2'>
             <div>
@@ -52,7 +69,7 @@ const RecruitmentHeader = ({ recruitment }) => {
                 </div>
             </div>
             <div>
-                <Button className='w-100 text-center' variant='primary'>
+                <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
                     <b>
                         <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
                         Ứng tuyển ngay

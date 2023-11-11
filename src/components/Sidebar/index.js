@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '~/assets/logo.png'
 import { useState } from 'react'
-import './sidebar.css'
+import './sidebar.module.scss'
 function Sidebar({ children }) {
     const [show, setShow] = useState(false)
 
@@ -10,10 +10,7 @@ function Sidebar({ children }) {
         <main className={show ? 'spgace-toggle' : null}>
             <header className={`header ${show ? 'space-toggle' : null}`}>
                 <div className="header-toggle" onClick={() => setShow(!show)}>
-                    <i
-                        className={`fas fa-bars ${
-                            show ? 'fa-solid fa-xmark' : null
-                        }`}></i>
+                    <i className={`fas fa-bars ${show ? 'fa-solid fa-xmark' : null}`}></i>
                 </div>
                 <div className="logo-container">
                     <Link to="/" className="nav-logo">
