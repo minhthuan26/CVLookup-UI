@@ -18,4 +18,21 @@ export const authUrl = {
 export const recruitmentUrl = {
     getNewestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_desc`,
     getOldestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_asc`,
+    getJobDetailById: `${host}${prefix}/Recruitment/get-recruitment-by-id`
+}
+
+export const jobFieldUrl = {
+    getAll: `${host}${prefix}/JobField/get-all-job-field`
+}
+
+export const jobCareerUrl = {
+    getAll: `${host}${prefix}/JobCareer/get-all-job-career`
+}
+
+export const jobAddressUrl = {
+    getAllProvince: `${host}${prefix}/JobAddress/get-all-province`
+}
+
+export const experienceUrl = {
+    getAllExperience: `${host}${prefix}/Experience/get-all-experience`
 }

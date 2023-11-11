@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { getNewestJob } from '~/action/recruitmentApi'
+import { useNavigate } from 'react-router-dom'
 function JobElement() {
     var settings = {
         dots: true,
@@ -31,6 +32,7 @@ function JobElement() {
 
     const [jobList, setJobList] = useState([])
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getJobList = async (dispatch) => await getNewestJob(dispatch)
@@ -39,6 +41,10 @@ function JobElement() {
         // eslint-disable-next-line
         []
     )
+    const handleNavigateRecruitmentDetail = (e) => {
+        const id = e.target.ariaLabel
+        navigate('/recruitment-detail?id=' + id)
+    }
     return (
         <div style={{ margin: ' 0 5rem' }}>
             <h3
@@ -82,6 +88,8 @@ function JobElement() {
                                         />
                                     </Col>
                                     <Col
+                                        aria-label={job.id}
+                                        onClick={handleNavigateRecruitmentDetail}
                                         md="8"
                                         lg={true}
                                         style={{
@@ -90,7 +98,8 @@ function JobElement() {
                                             alignContent: 'center',
                                             alignItems: 'center',
                                         }}>
-                                        <h5>{job.jobTitle}</h5>
+                                        <h5 aria-label={job.id}
+                                        >{job.jobTitle}</h5>
                                     </Col>
                                 </Row>
                                 <hr />

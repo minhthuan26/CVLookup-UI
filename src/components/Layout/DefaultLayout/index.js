@@ -24,7 +24,7 @@ const DefaultLayout = ({ children }) => {
             ) : (
                 <Header />
             )}
-            {children}
+            <div className='p-3'>{children}</div>
             <div className='mt-auto'>{isMobile ? <></> : <Footer />}</div>
         </div>
     )

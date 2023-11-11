@@ -11,6 +11,10 @@ import { connection } from './utils/HubConnection'
 import { postRestoreRefreshToken } from './action/authApi'
 import { persistor } from './Redux/store'
 import { logout } from './Redux/Auth/authSlice'
+import { doGetAllJobField } from './action/JobFieldApi'
+import { doGetAllJobCareer } from './action/JobCareerApi'
+import { doGetAllProvince } from './action/JobAddressApi'
+import { doGetAllExperience } from './action/ExperienceApi'
 
 const connect = connection()
 
@@ -18,6 +22,19 @@ function App() {
     const isLoading = useSelector(state => state.loader.loading)
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.credentials.user)
+
+    useEffect(() => {
+        const getJobFields = async (dispatch) => await doGetAllJobField(dispatch)
+        const getCareers = async (dispatch) => await doGetAllJobCareer(dispatch)
+        const getProvinces = async (dispatch) => await doGetAllProvince(dispatch)
+        const getExperiences = async (dispatch) => await doGetAllExperience(dispatch)
+        getJobFields(dispatch)
+        getCareers(dispatch)
+        getProvinces(dispatch)
+        getExperiences(dispatch)
+    },
+        // eslint-disable-next-line
+        [])
 
     useEffect(() => {
         if (user) {
