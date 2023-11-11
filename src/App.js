@@ -15,6 +15,8 @@ import { doGetAllJobField } from './action/JobFieldApi'
 import { doGetAllJobCareer } from './action/JobCareerApi'
 import { doGetAllProvince } from './action/JobAddressApi'
 import { doGetAllExperience } from './action/ExperienceApi'
+import LoginModal from './components/LoginModal'
+import useLoginModal from './hooks/useLoginModal'
 
 const connect = connection()
 
@@ -58,6 +60,7 @@ function App() {
     },
         // eslint-disable-next-line
         [user])
+    const { loginModal, setLoginModal } = useLoginModal()
 
     return (
         <BrowserRouter>
@@ -97,6 +100,7 @@ function App() {
                 })}
             </Routes>
             {isLoading ? <Loader /> : null}
+            <LoginModal show={loginModal} />
             <ToastContainer
                 position="top-center"
                 autoClose={3000}
