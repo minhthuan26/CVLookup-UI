@@ -17,9 +17,11 @@ const ActiveAccountPage = () => {
 
 	useEffect(() => {
 		const activeAccount = async (token, dispatch) => await doActiveAccount(token, dispatch)
-		activeAccount(token, dispatch).then((data) => {
-			setMessage(data)
-		})
+		if (token) {
+			activeAccount(token, dispatch).then((data) => {
+				setMessage(data)
+			})
+		}
 	},
 		// eslint-disable-next-line
 		[token])

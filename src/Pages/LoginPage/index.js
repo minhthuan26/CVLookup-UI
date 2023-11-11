@@ -104,7 +104,7 @@ function LoginPage() {
             formData.append('Candidate.Avatar', avatar)
             formData.append('Candidate.Username', userName)
             formData.append('Candidate.DateOfBirth', birthDay)
-            registerCandidate(formData, dispatch, navigate, from)
+            registerCandidate(formData, dispatch, navigate)
         }
     }
 

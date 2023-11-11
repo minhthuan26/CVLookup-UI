@@ -9,7 +9,14 @@ const LoginModal = ({ show }) => {
     setLoginModal(false)
   }
   return (
-    <Modal size="lg" centered backdrop="static" show={show} onHide={handleClose} fullscreen={'fullscreen'}>
+    <Modal
+      animation={true}
+      centered
+      size='lg'
+      backdrop="static"
+      show={show}
+      onHide={handleClose}
+      fullscreen={false}>
       <Modal.Header closeButton>
         <Modal.Title className='fs-6' style={{ color: 'red' }}>* Vui lòng đăng nhập để thực hiện chức năng</Modal.Title>
       </Modal.Header>
