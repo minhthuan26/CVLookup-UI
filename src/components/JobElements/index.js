@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { LisJob } from '~/FakeData/FakeData'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -7,6 +6,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { getNewestJob } from '~/action/recruitmentApi'
 import { useNavigate } from 'react-router-dom'
+import defaultAvatar from '~/assets/default_avatar.jpg'
 function JobElement() {
     var settings = {
         dots: true,
@@ -41,9 +41,18 @@ function JobElement() {
         // eslint-disable-next-line
         []
     )
+    // console.log(jobList);
     const handleNavigateRecruitmentDetail = (e) => {
         const id = e.target.ariaLabel
         navigate('/recruitment-detail?id=' + id)
+    }
+
+    const handleAvatar = (user) => {
+        const avatarString = user.avatar
+        if (avatarString) {
+            return "data:image/png;base64," + avatarString
+        }
+        return defaultAvatar
     }
     return (
         <div style={{ margin: ' 0 5rem' }}>
@@ -64,7 +73,7 @@ function JobElement() {
                         backgroundColor: '#eee',
                     }}>
                     {jobList.map((job) => (
-                        <Container key={job.id}>
+                        <Container key={job.result.id}>
                             <div
                                 style={{
                                     backgroundColor: '#fff',
@@ -83,12 +92,12 @@ function JobElement() {
                                                 borderRadius: '10px',
                                                 border: 'solid 1px #5767aa',
                                             }}
-                                            src={job.user.avatar}
+                                            src={handleAvatar(job.result.user)}
                                             alt=""
                                         />
                                     </Col>
                                     <Col
-                                        aria-label={job.id}
+                                        aria-label={job.result.id}
                                         onClick={handleNavigateRecruitmentDetail}
                                         md="8"
                                         lg={true}
@@ -98,8 +107,8 @@ function JobElement() {
                                             alignContent: 'center',
                                             alignItems: 'center',
                                         }}>
-                                        <h5 aria-label={job.id}
-                                        >{job.jobTitle}</h5>
+                                        <h5 aria-label={job.result.id}
+                                        >{job.result.jobTitle}</h5>
                                     </Col>
                                 </Row>
                                 <hr />
@@ -111,14 +120,14 @@ function JobElement() {
                                                 color: '#5767aa',
                                                 paddingBottom: '0.2rem',
                                             }}>
-                                            {job.user.username}
+                                            {job.result.user.username}
                                         </span>
                                     </Col>
                                     <Col>
-                                        <span>{job.salary}</span>
+                                        <span>{job.result.salary}</span>
                                     </Col>
                                     <Col>
-                                        <span>{job.createdAt}</span>
+                                        <span>{job.result.createdAt}</span>
                                     </Col>
                                 </Row>
                             </div>

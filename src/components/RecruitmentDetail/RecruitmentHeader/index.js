@@ -46,7 +46,7 @@ const RecruitmentHeader = ({ recruitment }) => {
                     </div>
                     <div className='d-flex flex-column'>
                         <div>Địa điểm</div>
-                        <div><b>{recruitment.jobAddress.addressDetail}, {recruitment.jobAddress.province.name}, {recruitment.jobAddress.district}</b></div>
+                        <div><b>{recruitment.jobAddress.addressDetail}, {recruitment.jobAddress.province}, {recruitment.jobAddress.district}</b></div>
                     </div>
                 </div>
 
