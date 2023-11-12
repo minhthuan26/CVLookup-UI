@@ -1,17 +1,23 @@
 import React from 'react'
 import { Button, Container, Image } from 'react-bootstrap'
-import banner from '~/assets/banner.png'
+import defaultAvatar from '~/assets/default_avatar.jpg'
 import PlaceRoundedIcon from '@mui/icons-material/PlaceRounded'
-import { recruitmentUrl } from '~/utils/ApiUrl'
 
 const CompanyInfoHeader = ({ user }) => {
+    const handleAvatar = (user) => {
+        const avatarString = user.avatar
+        if (avatarString) {
+            return "data:image/png;base64," + avatarString
+        }
+        return defaultAvatar
+    }
     return (
         <Container style={{ width: '90%' }} className='d-flex flex-column gap-2 justify-content-center p-3 mb-2'>
             <div className='d-flex gap-2'>
                 <Image
                     style={{ height: '6rem' }}
                     className='w-25 rounded'
-                    src={banner} />
+                    src={handleAvatar(user)} />
                 <h5>{user.username}</h5>
             </div>
             <div>
