@@ -18,15 +18,15 @@ const DefaultLayout = ({ children }) => {
         }
     }, [])
     return (
-        <>
+        <div className='d-flex flex-column justify-content-end min-vh-100'>
             {isMobile ? (
-                <Sidebar>{children}</Sidebar>
+                <Sidebar />
             ) : (
-                <Header>{children}</Header>
+                <Header />
             )}
-
-            {isMobile ? <></> : <Footer />}
-        </>
+            <div className='p-3'>{children}</div>
+            <div className='mt-auto'>{isMobile ? <></> : <Footer />}</div>
+        </div>
     )
 }
 

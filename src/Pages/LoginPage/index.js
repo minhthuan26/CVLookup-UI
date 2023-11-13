@@ -36,11 +36,16 @@ function LoginPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
-    const from = location.state?.from?.pathname || '/'
+
+    const from = location.state?.from
+        ? location.state.from.pathname
+        : location.search
+            ? location.pathname + location.search
+            : '/'
     const handleNameFileChange = (event) => {
-        const fileName = event.target.files[0]?.name
-        setSelectedFileName(fileName)
-        setAvatar(event.target.value)
+        const file = event.target.files[0]
+        setSelectedFileName(file?.name)
+        setAvatar(file)
     }
 
     const handleLogin = (e) => {
@@ -99,7 +104,7 @@ function LoginPage() {
             formData.append('Candidate.Avatar', avatar)
             formData.append('Candidate.Username', userName)
             formData.append('Candidate.DateOfBirth', birthDay)
-            registerCandidate(formData, dispatch, navigate, from)
+            registerCandidate(formData, dispatch, navigate)
         }
     }
 

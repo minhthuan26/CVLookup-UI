@@ -1,38 +1,55 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { privateRoutes, publicRoutes } from './router'
 import SecureRoute from './components/SecureRoute'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Loader from './components/Loader/Loader'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { connection } from './utils/HubConnection'
 import { postRestoreRefreshToken } from './action/authApi'
-import Cookies from 'js-cookie'
+import { persistor } from './Redux/store'
+import { logout } from './Redux/Auth/authSlice'
+import { doGetAllJobField } from './action/JobFieldApi'
+import { doGetAllJobCareer } from './action/JobCareerApi'
+import { doGetAllProvince } from './action/JobAddressApi'
+import { doGetAllExperience } from './action/ExperienceApi'
+import LoginModal from './components/LoginModal'
+import useLoginModal from './hooks/useLoginModal'
 
 const connect = connection()
 
 function App() {
     const isLoading = useSelector(state => state.loader.loading)
+    const dispatch = useDispatch()
     const user = useSelector(state => state.auth.credentials.user)
 
     useEffect(() => {
-        const refreshTokenInCookie = Cookies.get('RefreshToken')
-        console.log(refreshTokenInCookie);
-        if (user && !refreshTokenInCookie) {
-            const restoreRefreshToken = async (userId) => await postRestoreRefreshToken(userId)
-            restoreRefreshToken(user.id)
-        }
+        const getJobFields = async (dispatch) => await doGetAllJobField(dispatch)
+        const getCareers = async (dispatch) => await doGetAllJobCareer(dispatch)
+        const getProvinces = async (dispatch) => await doGetAllProvince(dispatch)
+        const getExperiences = async (dispatch) => await doGetAllExperience(dispatch)
+        getJobFields(dispatch)
+        getCareers(dispatch)
+        getProvinces(dispatch)
+        getExperiences(dispatch)
     },
         // eslint-disable-next-line
-        []
-    )
+        [])
 
     useEffect(() => {
         if (user) {
             connect.start().then(() => {
-                connect.invoke("AddHubConnection", user.id)
+                connect.invoke("AddHubConnection", user.id).then((connectionId) => {
+                    const restoreRefreshToken = async (userId, connectionId) => await postRestoreRefreshToken(userId, connectionId)
+                    restoreRefreshToken(user.id, connectionId)
+                    connect.on("ForceLogout", async () => {
+                        dispatch(logout())
+                        connect.stop()
+                        persistor.purge()
+                    })
+                })
             })
         } else {
             // connect.invoke("DeleteHubConnectionByConnectionId").then(() => {
@@ -40,7 +57,11 @@ function App() {
             // })
             connect.stop()
         }
-    }, [user])
+    },
+        // eslint-disable-next-line
+        [user])
+    const { loginModal, setLoginModal } = useLoginModal()
+
     return (
         <BrowserRouter>
             <Routes>
@@ -79,6 +100,7 @@ function App() {
                 })}
             </Routes>
             {isLoading ? <Loader /> : null}
+            <LoginModal show={loginModal} />
             <ToastContainer
                 position="top-center"
                 autoClose={3000}
