@@ -21,7 +21,7 @@ const RecruitmentGeneralInfo = ({ recruitment }) => {
                 <div style={{ width: '90%' }} className='d-flex flex-column gap-3 ps-2'>
                     <div className='d-flex justify-content-start align-items-center gap-2 me-3'>
                         <div>
-                            <SchoolRoundedIcon style={{ color: 'black' }} fontSize='small' />
+                            <SchoolRoundedIcon style={{ color: '#5767aa' }} fontSize='small' />
                         </div>
                         <div className='d-flex flex-column'>
                             <div>Kinh nghiệm</div>
@@ -41,7 +41,7 @@ const RecruitmentGeneralInfo = ({ recruitment }) => {
 
                     <div className='d-flex justify-content-start align-items-center gap-2 me-3'>
                         <div>
-                            <DeskRoundedIcon style={{ color: 'black' }} fontSize='small' />
+                            <DeskRoundedIcon style={{ color: '#5767aa' }} fontSize='small' />
                         </div>
                         <div className='d-flex flex-column'>
                             <div>Cấp bậc</div>
@@ -51,7 +51,7 @@ const RecruitmentGeneralInfo = ({ recruitment }) => {
 
                     <div className='d-flex justify-content-start align-items-center gap-2 me-3'>
                         <div>
-                            <Brightness6RoundedIcon style={{ color: 'black' }} fontSize='small' />
+                            <Brightness6RoundedIcon style={{ color: '#5767aa' }} fontSize='small' />
                         </div>
                         <div className='d-flex flex-column'>
                             <div>Hình thức</div>
@@ -61,7 +61,7 @@ const RecruitmentGeneralInfo = ({ recruitment }) => {
 
                     <div className='d-flex justify-content-start align-items-center gap-2 me-3'>
                         <div>
-                            <GroupWorkRoundedIcon style={{ color: 'black' }} fontSize='small' />
+                            <GroupWorkRoundedIcon style={{ color: '#5767aa' }} fontSize='small' />
                         </div>
                         <div className='d-flex flex-column'>
                             <div>Ngành nghề</div>
@@ -71,7 +71,7 @@ const RecruitmentGeneralInfo = ({ recruitment }) => {
 
                     <div className='d-flex justify-content-start align-items-center gap-2 me-3'>
                         <div>
-                            <ScienceRoundedIcon style={{ color: 'black' }} fontSize='small' />
+                            <ScienceRoundedIcon style={{ color: '#5767aa' }} fontSize='small' />
                         </div>
                         <div className='d-flex flex-column'>
                             <div>Lĩnh vực</div>

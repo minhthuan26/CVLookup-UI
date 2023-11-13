@@ -36,3 +36,11 @@ export const jobAddressUrl = {
 export const experienceUrl = {
     getAllExperience: `${host}${prefix}/Experience/get-all-experience`
 }
+
+export const cvUrl = {
+    uploadCV: `${host}${prefix}/CurriculumVitae/upload-curriculum-vitae`
+}
+
+export const recruitmentCVUrl = {
+    applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`
+}
