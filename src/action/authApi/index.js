@@ -76,6 +76,7 @@ export const postRestoreRefreshToken = async (userId, connectionId) => {
 
 export const doRegisterCandidate = async (data, dispatch, navigate) => {
     dispatch(inLoading())
+    console.log(data);
     try {
         const res = await axios({
             url: `${authUrl.registerCandidate}`,

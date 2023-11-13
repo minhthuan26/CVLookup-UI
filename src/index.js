@@ -6,11 +6,16 @@ import { Provider } from 'react-redux'
 import store, { persistor } from './Redux/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { LoginModalProvider } from './context/loginModalContext'
+import { ApplyJobModalProvider } from './context/applyJobModalContext'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <LoginModalProvider><App /></LoginModalProvider>
+            <LoginModalProvider>
+                <ApplyJobModalProvider>
+                    <App />
+                </ApplyJobModalProvider>
+            </LoginModalProvider>
         </PersistGate>
     </Provider>
 )

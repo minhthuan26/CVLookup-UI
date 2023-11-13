@@ -70,7 +70,7 @@ const SearchBarAdvance = () => {
 
 					<Form.Check
 						type='radio'
-						id='radio-1'>
+						id='radio-related'>
 						<Form.Check.Input
 							style={{ borderColor: 'black' }}
 							type='radio'
@@ -80,7 +80,7 @@ const SearchBarAdvance = () => {
 					</Form.Check>
 					<Form.Check
 						type='radio'
-						id='radio-2'>
+						id='radio-newest'>
 						<Form.Check.Input
 							style={{ borderColor: 'black' }}
 							type='radio'
@@ -89,7 +89,7 @@ const SearchBarAdvance = () => {
 					</Form.Check>
 					<Form.Check
 						type='radio'
-						id='radio-3'>
+						id='radio-salary'>
 						<Form.Check.Input
 							style={{ borderColor: 'black' }}
 							type='radio'

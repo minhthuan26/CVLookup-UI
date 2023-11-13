@@ -57,7 +57,7 @@ const RecruitmentContent = ({ recruitment }) => {
                                 marginLeft: '3em'
                             }}
                             className='mb-2'>
-                            {recruitment.jobAddress.addressDetail}, {recruitment.jobAddress.province}, {recruitment.jobAddress.district}
+                            {recruitment.jobAddress?.addressDetail ? recruitment.jobAddress.addressDetail : ''}{recruitment.jobAddress?.province ? ', ' + recruitment.jobAddress?.province : ''}{recruitment.jobAddress?.district ? ', ' + recruitment.jobAddress.district : ''}
                         </Card.Text >
 
                         <Card.Title>Cách thức ứng tuyển</Card.Title>

@@ -6,14 +6,18 @@ import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded'
 import { useSelector } from 'react-redux';
 import useLoginModal from '~/hooks/useLoginModal';
+import useApplyJobModal from '~/hooks/useApplyJobModal';
 
 const RecruitmentHeader = ({ recruitment }) => {
     const user = useSelector(state => state.auth.credentials.user)
     const { loginModal, setLoginModal } = useLoginModal()
+    const { applyJobModal, setApplyJobModal } = useApplyJobModal()
 
     const handleApply = () => {
         if (!user) {
             setLoginModal(true)
+        } else {
+            setApplyJobModal(true)
         }
     }
 
@@ -46,7 +50,11 @@ const RecruitmentHeader = ({ recruitment }) => {
                     </div>
                     <div className='d-flex flex-column'>
                         <div>Địa điểm</div>
-                        <div><b>{recruitment.jobAddress.addressDetail}, {recruitment.jobAddress.province}, {recruitment.jobAddress.district}</b></div>
+                        <div>
+                            <b>
+                                {recruitment.jobAddress?.addressDetail ? recruitment.jobAddress.addressDetail : ''}{recruitment.jobAddress?.province ? ', ' + recruitment.jobAddress?.province : ''}{recruitment.jobAddress?.district ? ', ' + recruitment.jobAddress.district : ''}
+                            </b>
+                        </div>
                     </div>
                 </div>
 
@@ -65,7 +73,7 @@ const RecruitmentHeader = ({ recruitment }) => {
                     <AccessTimeFilledRoundedIcon style={{ color: 'rgb(127,135,143)' }} fontSize='small' />
                 </div>
                 <div>
-                    Hạn nộp hồ sơ: {recruitment.applicationDeadline}
+                    Hạn nộp hồ sơ: {new Date(recruitment.applicationDeadline).toLocaleDateString('nl')}
                 </div>
             </div>
             <div>
