@@ -9,7 +9,7 @@
     background: rgba(0, 0, 0, 0.6);
     padding: 10px;
     box-sizing: border-box;
-
+    z-index: 1031;
     opacity: 0;
     animation-name: confirm---open;
     animation-duration: 0.2s;

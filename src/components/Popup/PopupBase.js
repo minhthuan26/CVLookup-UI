@@ -58,7 +58,7 @@ const PopUp = styled.div`
     background: rgba(0, 0, 0, 0.6);
     padding: 10px;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 1031;
     opacity: 0;
     animation: ${fadeIn} 0.2s forwards;
 
