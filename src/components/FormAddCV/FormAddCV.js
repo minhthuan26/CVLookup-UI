@@ -34,8 +34,6 @@ function FormAddCV(props) {
             toast.error('Vui lòng điền đầy đủ thông tin.')
         } else if (!phoneRegex.test(phoneNumber)) {
             toast.error('Số điện thoại không đúng định dạng.')
-        } else if (props.CVlist.length >= 6) {
-            toast.error('Chỉ tạo tối đa 6 CV.')
         } else {
             try {
                 const uploadCurriculumViate = async (

@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components'
 
 function PopupBase(props) {
     return props.trigger ? (
-        <PopUp>
+        <PopUp className="modal">
             <WrapPopUp>
                 <TitleBar>
                     <Title>{props.title}</Title>
@@ -58,7 +58,6 @@ const PopUp = styled.div`
     background: rgba(0, 0, 0, 0.6);
     padding: 10px;
     box-sizing: border-box;
-    z-index: 1031;
     opacity: 0;
     animation: ${fadeIn} 0.2s forwards;
 

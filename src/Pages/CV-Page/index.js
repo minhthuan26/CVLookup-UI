@@ -10,6 +10,7 @@ import { Confirm } from '~/components/Popup/Confirm'
 import PopupBase from '~/components/Popup/PopupBase'
 import CVViewer from '~/components/CVViewer/CVViewer'
 import FormAddCV from '~/components/FormAddCV/FormAddCV'
+import { toast } from 'react-toastify'
 
 function CVPage() {
     const [CVlist, setCVlist] = useState([])
@@ -82,13 +83,17 @@ function CVPage() {
                     <Title>Danh sách CV:</Title>
                     <UploadLink
                         onClick={(e) => {
-                            setShowAddCV(true)
+                            if (CVlist.length >= 6) {
+                                toast.error('Chỉ tạo tối đa 6 hồ sơ.')
+                            } else {
+                                setShowAddCV(true)
+                            }
                         }}>
                         Thêm mới CV
                     </UploadLink>
                 </HeaderContent>
                 <hr />
-                <StyledContainer>
+                <div>
                     <Row className="m-2">
                         {CVlist.map((cv) => (
                             <CVCard key={cv.id} sm={6} md={4}>
@@ -158,7 +163,7 @@ function CVPage() {
                             CVlist={CVlist}
                         />
                     </PopupBase>
-                </StyledContainer>
+                </div>
             </HeaderWrapper>
         </PageWrapper>
     )
@@ -198,10 +203,6 @@ const UploadLink = styled.a`
     font-weight: bolder;
     border-radius: 10px;
     cursor: pointer;
-`
-
-const StyledContainer = styled(Container)`
-    margin: 2rem;
 `
 
 const CVCard = styled(Col)`
