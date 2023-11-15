@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { uploadCV } from '~/action/CVApi'
+import { doUploadNewCV } from '~/action/CVApi'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,15 +34,13 @@ function FormAddCV(props) {
             toast.error('Vui lòng điền đầy đủ thông tin.')
         } else if (!phoneRegex.test(phoneNumber)) {
             toast.error('Số điện thoại không đúng định dạng.')
-        } else if (props.CVlist.length >= 6) {
-            toast.error('Chỉ tạo tối đa 6 CV.')
         } else {
             try {
                 const uploadCurriculumViate = async (
-                    cvInfo,
                     axiosPrivate,
-                    dispatch
-                ) => await uploadCV(cvInfo, axiosPrivate, dispatch)
+                    dispatch,
+                    cvInfo
+                ) => await doUploadNewCV(axiosPrivate, dispatch, cvInfo)
                 var formdata = new FormData()
                 formdata.append('FullName', fullName)
                 formdata.append('PhoneNumber', phoneNumber)
@@ -50,9 +48,10 @@ function FormAddCV(props) {
                 formdata.append('Introdution', introdution)
                 formdata.append('CVFile', cvFile)
 
-                uploadCurriculumViate(formdata, axiosPrivate, dispatch)
+                uploadCurriculumViate(axiosPrivate, dispatch, formdata)
 
                 props.handleGetAllCV(dispatch, axiosPrivate)
+
                 props
                     .handleGetAllCV(dispatch, axiosPrivate)
                     .then((data) => props.setCVlist(data))

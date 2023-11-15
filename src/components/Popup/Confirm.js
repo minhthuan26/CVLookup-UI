@@ -16,7 +16,7 @@ export const Confirm = {
         )
 
         const html = `
-            <div class="confirm">
+            <div class="confirm modal">
                 <div class="confirm__window">
                     <div class="confirm__titlebar">
                         <span class="confirm__title">${options.title}</span>
