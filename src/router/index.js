@@ -5,6 +5,7 @@ import EmployerPage from '~/Pages/EmployerPage'
 import HomePage from '~/Pages/HomePage'
 import JobsPage from '~/Pages/JobsPage'
 import LoginPage from '~/Pages/LoginPage'
+import PostRecruitmentPage from '~/Pages/PostRecruitmentPage'
 import RecruitmentDetail from '~/Pages/RecruitmentDetail'
 import DefaultLayout from '~/components/Layout/DefaultLayout'
 import EmployerLayout from '~/components/Layout/EmployerLayout'
@@ -47,14 +48,20 @@ const privateRoutes = [
         path: '/curriculum-vitae',
         layout: DefaultLayout,
         page: CVPage,
-        allowedRoles: ['Admin', 'Candidate']
+        allowedRoles: ['Admin', 'Candidate'],
     },
     {
         path: '/employer',
         layout: EmployerLayout,
         page: EmployerPage,
-        allowedRoles: ['Admin', 'Employer']
-    }
+        allowedRoles: ['Admin', 'Employer'],
+    },
+    {
+        path: '/post-recruitment',
+        layout: DefaultLayout,
+        page: PostRecruitmentPage,
+        allowedRoles: ['Admin', 'Employer'],
+    },
 ]
 
 export { publicRoutes, privateRoutes }

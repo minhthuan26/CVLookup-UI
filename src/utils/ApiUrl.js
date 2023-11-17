@@ -19,6 +19,7 @@ export const recruitmentUrl = {
     getNewestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_desc`,
     getOldestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_asc`,
     getJobDetailById: `${host}${prefix}/Recruitment/get-recruitment-by-id`,
+    addRecruitment: `${host}${prefix}/Recruitment/add-recruitment`,
 }
 
 export const CVUrl = {
@@ -47,4 +48,10 @@ export const experienceUrl = {
 
 export const recruitmentCVUrl = {
     applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`,
+}
+export const jobFormUrl = {
+    getAll: `${host}${prefix}/JobForm/get-all-job-form`,
+}
+export const JobPositionUrl = {
+    getAll: `${host}${prefix}/JobPosition/get-all-job-position`,
 }

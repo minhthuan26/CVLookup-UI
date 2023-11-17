@@ -1,23 +1,17 @@
-import { toast } from 'react-toastify'
 import { inLoading, successLoading } from '~/Redux/Loader/loaderSlice'
-import { recruitmentCVUrl } from '~/utils/ApiUrl'
+import { JobPositionUrl } from '~/utils/ApiUrl'
+import axios from '../AxiosConfiguration'
+import { toast } from 'react-toastify'
+import { setJobPosition } from '~/Redux/JobPosition/JobPositionSlice'
 
-export const doApplyToRecruitment = async (axiosPrivate, dispatch, data) => {
+export const doGetAllJobPosition = async (dispatch) => {
     dispatch(inLoading())
     try {
-        const res = await axiosPrivate({
-            url: `${recruitmentCVUrl.applyCVToRecruitment}`,
-            method: 'post',
-            data: data,
-            withCredentials: true,
-        })
+        const res = await axios.get(JobPositionUrl.getAll)
 
         if (res.data.success) {
-            toast.success(res.data.message)
-            // dispatch(logout())
-            // navigate(from, { replace: true })
+            dispatch(setJobPosition(res.data))
         } else {
-            console.log(typeof res.data.message)
             if (typeof res.data.message !== 'string') {
                 res.data.message.forEach((messageList) => {
                     messageList.forEach((messages) => {

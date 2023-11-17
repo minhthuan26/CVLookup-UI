@@ -19,49 +19,74 @@ import LoginModal from './components/LoginModal'
 import useLoginModal from './hooks/useLoginModal'
 import ApplyJobModal from './components/ApplyJobModal'
 import useApplyJobModal from './hooks/useApplyJobModal'
+import { doGetAllJobForm } from './action/JobFormApi'
+import { doGetAllJobPosition } from './action/JobPosition'
 
 const connect = connection()
 
 function App() {
-    const isLoading = useSelector(state => state.loader.loading)
+    const isLoading = useSelector((state) => state.loader.loading)
     const dispatch = useDispatch()
-    const user = useSelector(state => state.auth.credentials.user)
+    const user = useSelector((state) => state.auth.credentials.user)
 
-    useEffect(() => {
-        const getJobFields = async (dispatch) => await doGetAllJobField(dispatch)
-        const getCareers = async (dispatch) => await doGetAllJobCareer(dispatch)
-        const getProvinces = async (dispatch) => await doGetAllProvince(dispatch)
-        const getExperiences = async (dispatch) => await doGetAllExperience(dispatch)
-        getJobFields(dispatch)
-        getCareers(dispatch)
-        getProvinces(dispatch)
-        getExperiences(dispatch)
-    },
+    useEffect(
+        () => {
+            const getJobFields = async (dispatch) =>
+                await doGetAllJobField(dispatch)
+            const getCareers = async (dispatch) =>
+                await doGetAllJobCareer(dispatch)
+            const getProvinces = async (dispatch) =>
+                await doGetAllProvince(dispatch)
+            const getExperiences = async (dispatch) =>
+                await doGetAllExperience(dispatch)
+            const getJobForms = async (dispatch) =>
+                await doGetAllJobForm(dispatch)
+            const getJobPositions = async (dispatch) =>
+                await doGetAllJobPosition(dispatch)
+            getJobFields(dispatch)
+            getCareers(dispatch)
+            getProvinces(dispatch)
+            getExperiences(dispatch)
+            getJobForms(dispatch)
+            getJobPositions(dispatch)
+        },
         // eslint-disable-next-line
-        [])
+        []
+    )
 
-    useEffect(() => {
-        if (user) {
-            connect.start().then(() => {
-                connect.invoke("AddHubConnection", user.id).then((connectionId) => {
-                    const restoreRefreshToken = async (userId, connectionId) => await postRestoreRefreshToken(userId, connectionId)
-                    restoreRefreshToken(user.id, connectionId)
-                    connect.on("ForceLogout", async () => {
-                        dispatch(logout())
-                        connect.stop()
-                        persistor.purge()
-                    })
+    useEffect(
+        () => {
+            if (user) {
+                connect.start().then(() => {
+                    connect
+                        .invoke('AddHubConnection', user.id)
+                        .then((connectionId) => {
+                            const restoreRefreshToken = async (
+                                userId,
+                                connectionId
+                            ) =>
+                                await postRestoreRefreshToken(
+                                    userId,
+                                    connectionId
+                                )
+                            restoreRefreshToken(user.id, connectionId)
+                            connect.on('ForceLogout', async () => {
+                                dispatch(logout())
+                                connect.stop()
+                                persistor.purge()
+                            })
+                        })
                 })
-            })
-        } else {
-            // connect.invoke("DeleteHubConnectionByConnectionId").then(() => {
-            //     connect.stop()
-            // })
-            connect.stop()
-        }
-    },
+            } else {
+                // connect.invoke("DeleteHubConnectionByConnectionId").then(() => {
+                //     connect.stop()
+                // })
+                connect.stop()
+            }
+        },
         // eslint-disable-next-line
-        [user])
+        [user]
+    )
     const { loginModal, setLoginModal } = useLoginModal()
     const { applyJobModal, setApplyJobModal } = useApplyJobModal()
 
@@ -84,12 +109,17 @@ function App() {
                     )
                 })}
 
-
                 {privateRoutes.map((route, index) => {
                     const Page = route.page
                     const Layout = route.layout
                     return (
-                        <Route key={index} element={<SecureRoute allowedRoles={route.allowedRoles} />} >
+                        <Route
+                            key={index}
+                            element={
+                                <SecureRoute
+                                    allowedRoles={route.allowedRoles}
+                                />
+                            }>
                             <Route
                                 path={route.path}
                                 element={
@@ -117,7 +147,8 @@ function App() {
                 pauseOnHover={false}
                 theme="light"
                 style={{ width: '40rem', textAlign: 'center' }}
-                transition={Slide} />
+                transition={Slide}
+            />
         </BrowserRouter>
     )
 }
