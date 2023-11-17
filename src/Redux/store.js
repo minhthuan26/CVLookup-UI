@@ -7,6 +7,8 @@ import JobFieldSlice from './JobField/JobFieldSlice'
 import JobCareerSlice from './JobCareer/JobCareerSlice'
 import ProvinceSlice from './Province/ProvinceSlice'
 import ExperienceSlice from './Experience/ExperienceSlice'
+import JobFormSlice from './JobForm/JobFormSlice'
+import JobPositionSlice from './JobPosition/JobPositionSlice'
 
 const persistConfig = {
     key: 'root',
@@ -19,7 +21,9 @@ const reducer = combineReducers({
     jobField: JobFieldSlice,
     jobCareer: JobCareerSlice,
     province: ProvinceSlice,
-    experience: ExperienceSlice
+    experience: ExperienceSlice,
+    jobForm: JobFormSlice,
+    jobPosition: JobPositionSlice,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)
@@ -29,7 +33,7 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false,
-            rehydrated: false
+            rehydrated: false,
         }),
 })
 

@@ -6,62 +6,10 @@ import { Container } from 'react-bootstrap'
 import imgWorking from '~/assets/imgWorking.svg'
 import imgWorking2 from '~/assets/imgWorking2.svg'
 import check from '~/assets/check.svg'
-
-const StyledBanner = styled.div`
-    background-image: url(${(props) => props.background});
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: ${(props) => props.gridTemplateColumns};
-`
-
-const StyledHeading = styled.h1`
-    color: ${(props) => props.color};
-    padding: 1rem 0 0.5rem 3rem;
-    font-weight: bold;
-    font-size: 5rem;
-`
-
-const StyledButton = styled.button`
-    margin: 0 3rem;
-    padding: 0.5rem 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-radius: 15px;
-    color: ${(props) => props.color};
-    background-color: ${(props) => props.backgroundColor};
-    border: none;
-`
-
-const StyledBenefitDiv = styled.div`
-    background-color: white;
-    border-radius: 1rem;
-    padding: 2rem;
-`
-
-const StyledBenefitImage = styled.img`
-    width: 100%;
-    height: auto;
-    padding: 1rem;
-    box-shadow: 1px 1px 1px 1px #d9d9d9;
-`
-
-const StyledBenefitHeading = styled.h2`
-    color: #383838;
-    border-left: 0.5rem solid #166795;
-    margin: 1rem 0;
-`
-
-const StyledBenefitList = styled.ul`
-    list-style-image: url(${check});
-    font-size: 1.4rem;
-    font-weight: 400;
-    color: #0d0053;
-`
+import { useNavigate } from 'react-router-dom'
 
 function EmployerPage() {
+    const navigate = useNavigate()
     return (
         <Container>
             <StyledBanner
@@ -71,7 +19,7 @@ function EmployerPage() {
                     <StyledHeading color="#fff">
                         Đăng tin tuyển dụng tìm kiếm ứng viên hiệu quả
                     </StyledHeading>
-                    <StyledButton color="#0D0053" backgroundColor="#eee">
+                    <StyledButton color="#0D0053" backgroundColor="#eee" onClick={(e)=>{navigate("/post-recruitment")}}>
                         Đăng tin miễn phí -&gt;
                     </StyledButton>
                 </div>
@@ -177,3 +125,57 @@ function EmployerPage() {
 }
 
 export default EmployerPage
+
+const StyledBanner = styled.div`
+    background-image: url(${(props) => props.background});
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: ${(props) => props.gridTemplateColumns};
+`
+
+const StyledHeading = styled.h1`
+    color: ${(props) => props.color};
+    padding: 1rem 0 0.5rem 3rem;
+    font-weight: bold;
+    font-size: 5rem;
+`
+
+const StyledButton = styled.button`
+    margin: 0 3rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 15px;
+    color: ${(props) => props.color};
+    background-color: ${(props) => props.backgroundColor};
+    border: none;
+`
+
+const StyledBenefitDiv = styled.div`
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+`
+
+const StyledBenefitImage = styled.img`
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    box-shadow: 1px 1px 1px 1px #d9d9d9;
+`
+
+const StyledBenefitHeading = styled.h2`
+    color: #383838;
+    border-left: 0.5rem solid #166795;
+    margin: 1rem 0;
+`
+
+const StyledBenefitList = styled.ul`
+    list-style-image: url(${check});
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #0d0053;
+`

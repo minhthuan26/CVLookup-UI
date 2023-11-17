@@ -1,7 +1,7 @@
-import { inLoading, successLoading } from "~/Redux/Loader/loaderSlice"
-import { recruitmentUrl } from "~/utils/ApiUrl"
+import { inLoading, successLoading } from '~/Redux/Loader/loaderSlice'
+import { recruitmentUrl } from '~/utils/ApiUrl'
 import axios from '~/action/AxiosConfiguration'
-import { toast } from "react-toastify"
+import { toast } from 'react-toastify'
 
 export const getNewestJob = async (dispatch) => {
     dispatch(inLoading())
@@ -10,7 +10,7 @@ export const getNewestJob = async (dispatch) => {
             url: `${recruitmentUrl.getNewestJob}`,
             method: 'get',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
         })
 
@@ -19,9 +19,9 @@ export const getNewestJob = async (dispatch) => {
             return res.data.data
         } else {
             if (typeof res.data.message !== 'string') {
-                res.data.message.forEach(messageList => {
-                    messageList.forEach(messages => {
-                        messages.forEach(message => {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
                             toast.error(message)
                         })
                     })
@@ -38,14 +38,18 @@ export const getNewestJob = async (dispatch) => {
     }
 }
 
-export const doGetRecruitmentDetail = async (recruitmentId, dispatch, navigate) => {
+export const doGetRecruitmentDetail = async (
+    recruitmentId,
+    dispatch,
+    navigate
+) => {
     dispatch(inLoading())
     try {
         const res = await axios({
             url: `${recruitmentUrl.getJobDetailById + '?id=' + recruitmentId}`,
             method: 'get',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
         })
 
@@ -55,9 +59,9 @@ export const doGetRecruitmentDetail = async (recruitmentId, dispatch, navigate) 
             return res.data.data
         } else {
             if (typeof res.data.message !== 'string') {
-                res.data.message.forEach(messageList => {
-                    messageList.forEach(messages => {
-                        messages.forEach(message => {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
                             toast.error(message)
                         })
                     })
@@ -71,5 +75,47 @@ export const doGetRecruitmentDetail = async (recruitmentId, dispatch, navigate) 
     } catch (error) {
         dispatch(successLoading())
         return
+    }
+}
+
+export const doAddRecruitment = async (
+    data,
+    dispatch,
+    navigate,
+    axiosPrivate
+) => {
+    dispatch(inLoading())
+    console.log(data)
+    try {
+        const res = await axiosPrivate({
+            url: `${recruitmentUrl.addRecruitment}`,
+            method: 'post',
+            data: data,
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (res.data.success) {
+            toast.success(res.data.message)
+            navigate('/')
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+    } catch (error) {
+        toast.error(error.message)
+        dispatch(successLoading())
     }
 }

@@ -1,8 +1,8 @@
-import { setJobCareers } from "~/Redux/JobCareer/JobCareerSlice"
-import { inLoading, successLoading } from "~/Redux/Loader/loaderSlice"
-import { jobCareerUrl } from "~/utils/ApiUrl"
-import axios from "../AxiosConfiguration"
-import { toast } from "react-toastify"
+import { setJobCareers } from '~/Redux/JobCareer/JobCareerSlice'
+import { inLoading, successLoading } from '~/Redux/Loader/loaderSlice'
+import { jobCareerUrl } from '~/utils/ApiUrl'
+import axios from '../AxiosConfiguration'
+import { toast } from 'react-toastify'
 
 export const doGetAllJobCareer = async (dispatch) => {
     dispatch(inLoading())
