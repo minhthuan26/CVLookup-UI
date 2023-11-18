@@ -149,7 +149,7 @@ function CVPage() {
                             <CVViewer
                                 base64StringFile={CVDetail.base64StringFile}
                                 check={true}
-                            />{' '}
+                            />
                         </div>
                     </PopupBase>
                     <PopupBase

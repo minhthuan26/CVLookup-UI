@@ -1,44 +1,153 @@
 import React from 'react'
-import bannerWelcome from '~/assets/BannerWelcomeEmployer.svg'
-import bannerBook from '~/assets/BannerBook.svg'
+import backgroundRecruit from '~/assets/background-recruit.png'
+import lookingResumeimg from '~/assets/Recruiting manager looking at resume.png'
+import magnifying from '~/assets/folder, magnifying glass and check mark.png'
 import styled from 'styled-components'
-import { Container } from 'react-bootstrap'
+import HrLooking from "~/assets/HR looking through candidates' CVs.png"
 import imgWorking from '~/assets/imgWorking.svg'
 import imgWorking2 from '~/assets/imgWorking2.svg'
-import check from '~/assets/check.svg'
 import { useNavigate } from 'react-router-dom'
 
 function EmployerPage() {
     const navigate = useNavigate()
     return (
-        <Container>
-            <StyledBanner
-                background={bannerWelcome}
-                gridTemplateColumns="30% 65%">
-                <div>
-                    <StyledHeading color="#fff">
-                        Đăng tin tuyển dụng tìm kiếm ứng viên hiệu quả
+        <>
+            <div
+                className="bg-center bg-no-repeat bg-cover"
+                style={{
+                    backgroundImage: `url(${backgroundRecruit})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                }}>
+                <div className="w-container flex flex-col justify-center text-center pt-2 md:pt-8 px-4 md:px-0 leading-tight">
+                    <StyledHeading>
+                        Đăng tin tuyển dụng <br /> Tìm kiếm ứng viên hiệu quả
                     </StyledHeading>
-                    <StyledButton color="#0D0053" backgroundColor="#eee" onClick={(e)=>{navigate("/post-recruitment")}}>
-                        Đăng tin miễn phí -&gt;
+                    <StyledButton onClick={() => navigate('/post-recruitment')}>
+                        Đăng tin tuyển dụng -&gt;
                     </StyledButton>
+                    <div class="d-flex justify-content-center">
+                        <img
+                            style={{ maxWidth: '100%', height: 'auto' }}
+                            src={lookingResumeimg}
+                            alt=""
+                        />
+                    </div>
                 </div>
-                <div></div>
-            </StyledBanner>
-
-            <StyledBanner background={bannerBook} gridTemplateColumns="60% 40%">
-                <div></div>
-                <div>
-                    <StyledHeading color="#0d0053">
-                        Các bài blog tuyển dụng
-                    </StyledHeading>
-                    <br />
-                    <StyledButton color="#eee" backgroundColor="#6877B2">
-                        Blog tuyển dụng -&gt;
-                    </StyledButton>
-                </div>
-            </StyledBanner>
+            </div>
             <hr />
+            <div class="row pt-3 pl-3 " style={{ marginLeft: '4rem' }}>
+                <div class="col-md-5">
+                    <img
+                        class=" w-50 "
+                        style={{ margin: '4rem' }}
+                        src={magnifying}
+                        title="Đăng tin tuyển dụng miễn phí"
+                        alt="Dang tin tuyen dung mien phi"
+                    />
+                </div>
+                <div class="col-md-7 pl-md-6">
+                    <div class="d-table h-100">
+                        <div class="d-table-cell align-middle">
+                            <div class="w-100">
+                                <h3 class="text-sm md:text-2xl mb-5 font-weight-bold">
+                                    Đăng tin tuyển dụng miễn phí
+                                </h3>
+                                <ul class="text-sm font-light text-muted">
+                                    <li class="mb-4 d-flex align-items-baseline">
+                                        <span>
+                                            Đăng tin tuyển dụng miễn phí và
+                                            không giới hạn số lượng.
+                                        </span>
+                                    </li>
+                                    <li class="mb-4 d-flex align-items-baseline">
+                                        <span>
+                                            Đăng tin tuyển dụng dễ dàng, không
+                                            quá 1 phút.
+                                        </span>
+                                    </li>
+                                    <li class="mb-4 d-flex align-items-baseline">
+                                        <span>
+                                            Tiếp cận nguồn CV ứng viên khổng lồ
+                                        </span>
+                                    </li>
+                                    <li class="mb-4 d-flex align-items-baseline">
+                                        <span>
+                                            Dễ dàng kiểm duyệt và đăng tin trong
+                                            24h.
+                                        </span>
+                                    </li>
+                                </ul>
+                                <div class="text-center text-md-left">
+                                    <StyledButton
+                                        onClick={() =>
+                                            navigate('/recruitment-dashboard')
+                                        }>
+                                        Quản lý tin tuyển dụng
+                                    </StyledButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+
+            <div
+                class="row flex-md-row flex-column-reverse pt-3 pl-3 ml-md-3 mt-md-6"
+                style={{ marginLeft: '4rem' }}>
+                <div class="col-md-7">
+                    <div class="d-table h-100">
+                        <div class="d-table-cell align-middle ml-md-10">
+                            <h3 class="text-sm md-text-2xl mb-5 font-weight-bold">
+                                Quảng cáo tuyển dụng
+                            </h3>
+                            <ul class="text-sm font-light text-muted">
+                                <li class="mb-4 d-flex align-items-baseline">
+                                    <span>
+                                        Tăng lượt tiếp cận người tìm việc
+                                    </span>
+                                </li>
+                                <li class="mb-4 d-flex align-items-baseline">
+                                    <span>
+                                        Tin tuyển dụng hiển thị ở những vị trí
+                                        nổi bật.
+                                    </span>
+                                </li>
+                                <li class="mb-4 d-flex align-items-baseline">
+                                    <span>
+                                        Đẩy tin tuyển dụng lên vị trí đầu trong
+                                        kết quả tìm kiếm việc làm trên trang web
+                                        đăng tin tuyển dụng.
+                                    </span>
+                                </li>
+                                <li class="mb-4 d-flex align-items-baseline">
+                                    <span>
+                                        Tự động gợi ý tin tuyển dụng với ứng
+                                        viên phù hợp, giúp tuyển dụng hiệu quả
+                                        hơn.
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class="text-center text-md-left">
+                                <StyledButton>
+                                    Các bài blog tuyển dụng
+                                </StyledButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <img
+                        class="w-50"
+                        style={{ margin: '4rem' }}
+                        src={HrLooking}
+                        title="Quảng cáo tin tuyển dụng hiệu quả"
+                        alt="Quang cao tin tuyen dung hieu qua"
+                    />
+                </div>
+            </div>
+
             <div
                 style={{
                     display: 'grid',
@@ -120,7 +229,7 @@ function EmployerPage() {
                     </StyledBenefitDiv>
                 </div>
             </div>
-        </Container>
+        </>
     )
 }
 
@@ -137,20 +246,20 @@ const StyledBanner = styled.div`
 `
 
 const StyledHeading = styled.h1`
-    color: ${(props) => props.color};
+    color: #0d0053;
     padding: 1rem 0 0.5rem 3rem;
     font-weight: bold;
-    font-size: 5rem;
+    font-size: 3rem;
 `
 
 const StyledButton = styled.button`
-    margin: 0 3rem;
+    margin: 3rem;
     padding: 0.5rem 1rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     border-radius: 15px;
-    color: ${(props) => props.color};
-    background-color: ${(props) => props.backgroundColor};
+    color: #eee;
+    background-color: #6877b2;
     border: none;
 `
 
@@ -174,8 +283,8 @@ const StyledBenefitHeading = styled.h2`
 `
 
 const StyledBenefitList = styled.ul`
-    list-style-image: url(${check});
-    font-size: 1.4rem;
+    font-size: 1rem;
+    line-height: 2rem;
     font-weight: 400;
     color: #0d0053;
 `

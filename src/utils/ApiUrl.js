@@ -19,7 +19,10 @@ export const recruitmentUrl = {
     getNewestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_desc`,
     getOldestJob: `${host}${prefix}/Recruitment/get-recruitment?SortBy=date_asc`,
     getJobDetailById: `${host}${prefix}/Recruitment/get-recruitment-by-id`,
+    getAllRecruitment: `${host}${prefix}/Recruitment/get-all-recruitment`,
     addRecruitment: `${host}${prefix}/Recruitment/add-recruitment`,
+    deleteRecruitment: `${host}${prefix}/Recruitment/delete`,
+    updateRecruitment: `${host}${prefix}/Recruitment/update`,
 }
 
 export const CVUrl = {
