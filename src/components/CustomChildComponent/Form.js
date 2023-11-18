@@ -44,6 +44,7 @@ export const ButtonForm = styled.button`
     padding: 12px 45px;
     letter-spacing: 1px;
     text-transform: uppercase;
+    transition: 0.3s;
     &:focus {
         outline: none;
     }

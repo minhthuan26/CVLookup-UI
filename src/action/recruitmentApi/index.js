@@ -38,6 +38,40 @@ export const getNewestJob = async (dispatch) => {
     }
 }
 
+export const doGetAllRecruitment = async (dispatch) => {
+    dispatch(inLoading())
+    try {
+        const res = await axios({
+            url: `${recruitmentUrl.getAllRecruitment}`,
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (res.data.success) {
+            dispatch(successLoading())
+            return res.data.data
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return []
+    } catch (error) {
+        dispatch(successLoading())
+        return []
+    }
+}
+
 export const doGetRecruitmentDetail = async (
     recruitmentId,
     dispatch,
@@ -85,7 +119,6 @@ export const doAddRecruitment = async (
     axiosPrivate
 ) => {
     dispatch(inLoading())
-    console.log(data)
     try {
         const res = await axiosPrivate({
             url: `${recruitmentUrl.addRecruitment}`,
@@ -105,6 +138,76 @@ export const doAddRecruitment = async (
                 res.data.message.forEach((messageList) => {
                     messageList.forEach((messages) => {
                         messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+    } catch (error) {
+        toast.error(error.message)
+        dispatch(successLoading())
+    }
+}
+
+export const doDeleteRecruitment = async (id, dispatch, axiosPrivate) => {
+    dispatch(inLoading())
+    try {
+        const res = await axiosPrivate.delete(
+            `${recruitmentUrl.deleteRecruitment}?id=${id}`
+        )
+        if (res.data.success) {
+            toast.success(res.data.message)
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+    } catch (error) {
+        toast.error(error.message)
+        dispatch(successLoading())
+    }
+}
+export const doUpdateRecruitment = async (
+    data,
+    dispatch,
+    navigate,
+    axiosPrivate,
+    id
+) => {
+    dispatch(inLoading())
+    try {
+        const res = await axiosPrivate({
+            url: `${recruitmentUrl.updateRecruitment}?id=${id}`,
+            method: 'patch',
+            data: data,
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (res.data.success) {
+            toast.success(res.data.message)
+            navigate(0)
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            console.log('message ' + message)
+
                             toast.error(message)
                         })
                     })

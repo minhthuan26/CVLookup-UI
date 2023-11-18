@@ -6,6 +6,7 @@ import HomePage from '~/Pages/HomePage'
 import JobsPage from '~/Pages/JobsPage'
 import LoginPage from '~/Pages/LoginPage'
 import PostRecruitmentPage from '~/Pages/PostRecruitmentPage'
+import RecruitmentDashBoardPage from '~/Pages/RecruitmentDashBoardPage'
 import RecruitmentDetail from '~/Pages/RecruitmentDetail'
 import DefaultLayout from '~/components/Layout/DefaultLayout'
 import EmployerLayout from '~/components/Layout/EmployerLayout'
@@ -60,6 +61,12 @@ const privateRoutes = [
         path: '/post-recruitment',
         layout: DefaultLayout,
         page: PostRecruitmentPage,
+        allowedRoles: ['Admin', 'Employer'],
+    },
+    {
+        path: '/recruitment-dashboard',
+        layout: DefaultLayout,
+        page: RecruitmentDashBoardPage,
         allowedRoles: ['Admin', 'Employer'],
     },
 ]
