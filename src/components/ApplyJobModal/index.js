@@ -9,7 +9,7 @@ import { doApplyToRecruitment, doReApplyToRecruitment } from '~/action/recruitme
 import useApplyJobModal from '~/hooks/useApplyJobModal'
 import UploadedCVCard from '../UploadedCVCard'
 
-const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
+const ApplyJobModal = ({ show, appliedCv, user }) => {
     const { setApplyJobModal } = useApplyJobModal()
     const [isChooseOldCV, setIsChooseOldCV] = useState(true)
     const dispatch = useDispatch()
@@ -30,6 +30,7 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
     const handleClose = () => {
         setApplyJobModal(false)
         setIsChooseOldCV(true)
+        setCvSelected('')
     }
 
     const handleIsChooseOldCV = (e) => {
@@ -61,25 +62,44 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
             formData.append("PhoneNumber", phoneNumber)
             formData.append("CVFile", cv)
             formData.append("Introdution", introduction)
-        }
-        const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadNewCV(axiosPrivate, dispatch, data)
-        uploadCV(axiosPrivate, dispatch, formData).then((data) => {
-            const applyData = {
-                recruitmentId: searchParams.get('id'),
-                curriculumVitaeId: data.id
-            }
-            const applyToRecruitment = async (axiosPrivate, dispatch, data) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
-            applyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
-                setFullname('')
-                setEmail('')
-                setPhoneNumber('')
-                setCV()
-                setIntroduction('')
-                setIsChooseOldCV(true)
-                setApplyJobModal(false)
-                navigate(0)
+            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadNewCV(axiosPrivate, dispatch, data)
+            uploadCV(axiosPrivate, dispatch, formData).then((data) => {
+                const applyData = {
+                    recruitmentId: searchParams.get('id'),
+                    curriculumVitaeId: data.id
+                }
+                const applyToRecruitment = async (axiosPrivate, dispatch, data) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
+                applyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
+                    setFullname('')
+                    setEmail('')
+                    setPhoneNumber('')
+                    setCV()
+                    setIntroduction('')
+                    setIsChooseOldCV(true)
+                    setApplyJobModal(false)
+                    navigate(0)
+                })
             })
-        })
+        } else {
+            if (cvSelected) {
+                const applyData = {
+                    recruitmentId: searchParams.get('id'),
+                    curriculumVitaeId: cvSelected
+                }
+                const applyToRecruitment = async (axiosPrivate, dispatch, data) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
+                applyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
+                    setFullname('')
+                    setEmail('')
+                    setPhoneNumber('')
+                    setCV()
+                    setIntroduction('')
+                    setIsChooseOldCV(true)
+                    setApplyJobModal(false)
+                })
+            } else {
+                toast.error("Vui lòng chọn cv để ứng tuyển")
+            }
+        }
     }
 
     const handleReApply = (e) => {
@@ -108,10 +128,10 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
             formData.append("Introdution", introduction)
             const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadNewCV(axiosPrivate, dispatch, data)
             uploadCV(axiosPrivate, dispatch, formData).then((data) => {
-                console.log(data);
                 const applyData = {
                     recruitmentId: searchParams.get('id'),
-                    curriculumVitaeId: data.id
+                    cvId: data.id,
+                    userId: user.id
                 }
                 const reApplyToRecruitment = async (axiosPrivate, dispatch, data) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
                 reApplyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
@@ -122,9 +142,30 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
                     setIntroduction('')
                     setIsChooseOldCV(true)
                     setApplyJobModal(false)
-
+                    navigate(0)
                 })
             })
+        } else {
+            if (cvSelected) {
+                const applyData = {
+                    recruitmentId: searchParams.get('id'),
+                    cvId: cvSelected,
+                    userId: user.id
+                }
+                const reApplyToRecruitment = async (axiosPrivate, dispatch, data) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
+                reApplyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
+                    setFullname('')
+                    setEmail('')
+                    setPhoneNumber('')
+                    setCV()
+                    setIntroduction('')
+                    setIsChooseOldCV(true)
+                    setApplyJobModal(false)
+                    setCvSelected('')
+                })
+            } else {
+                toast.error("Vui lòng chọn cv để ứng tuyển")
+            }
         }
 
     }
@@ -135,7 +176,6 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
             getAllCVUploaded(axiosPrivate, dispatch).then(data => {
                 if (data) {
                     setCurrentUserCVUploaded(data)
-                    console.log(data);
                 }
             })
         }
@@ -143,6 +183,7 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
     },
         //eslint-disable-next-line
         [user])
+
     return (
         <Modal
             animation={true}
@@ -191,15 +232,18 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
                                                     <Form.Group>
                                                         <Form.Check
                                                             type='radio'
-                                                            id='radio-cv-1'>
+                                                            id={cv.id}>
                                                             <Form.Check.Input
                                                                 style={{ borderColor: 'black' }}
                                                                 type='radio'
-                                                                defaultChecked='true'
-                                                                name="group3" />
+                                                                name="group3"
+                                                                onChange={(e) => {
+                                                                    setCvSelected(e.target.id)
+                                                                    e.target.defaultChecked = true
+                                                                }} />
                                                             <Form.Check.Label className='d-flex align-items-center gap-2'>
                                                                 <div className='d-flex w-100 justify-content-between align-items-center'>
-                                                                    <div>CV 1</div>
+                                                                    <div>{cv.uploadedAt}</div>
                                                                     <a href='/test'>
                                                                         Xem
                                                                     </a>
@@ -273,7 +317,7 @@ const ApplyJobModal = ({ show, isAlreadyApply, user }) => {
                         <li>
                             <div className='rounded mt-2 d-flex gap-2 justify-content-center'>
                                 <div style={{ width: '90%' }} className='py-2'>
-                                    <Button className='w-100' onClick={isAlreadyApply ? handleReApply : handleApply}>Nộp đơn ứng tuyển</Button>
+                                    <Button className='w-100' onClick={appliedCv ? handleReApply : handleApply}>Nộp đơn ứng tuyển</Button>
                                 </div>
                                 <div className='py-2'>
                                     <Button onClick={handleClose} variant='danger'>Huỷ</Button>

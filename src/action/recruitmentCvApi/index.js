@@ -43,8 +43,8 @@ export const doReApplyToRecruitment = async (axiosPrivate, dispatch, data) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
-            url: `${recruitmentCVUrl.applyCVToRecruitment}`,
-            method: 'post',
+            url: `${recruitmentCVUrl.reApplyCVToRecruitment}?recruitmentId=${data.recruitmentId}&userId=${data.userId}&cvId=${data.cvId}`,
+            method: 'patch',
             data: data,
             withCredentials: true,
             headers: {

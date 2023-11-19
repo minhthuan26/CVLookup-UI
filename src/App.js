@@ -106,7 +106,6 @@ function App() {
             <LoginModal show={loginModal} />
             <ApplyJobModal
                 show={applyJobModal}
-                isAlreadyApply={isAlreadyApply}
                 appliedCv={appliedCv}
                 user={user} />
             <ToastContainer

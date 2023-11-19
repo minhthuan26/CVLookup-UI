@@ -44,5 +44,6 @@ export const cvUrl = {
 
 export const recruitmentCVUrl = {
     applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`,
+    reApplyCVToRecruitment: `${host}${prefix}/RecruitmentCV/update-applied-cv`,
     getAppliedCV: `${host}${prefix}/RecruitmentCV/get-by-user-and-recruitment-id`
 }

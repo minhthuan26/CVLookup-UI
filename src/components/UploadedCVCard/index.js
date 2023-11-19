@@ -1,9 +1,11 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-const UploadedCVCard = ({ data }) => {
+const UploadedCVCard = ({ data, show }) => {
     return (
-        <div className='border border-1 d-flex justify-content-around mt-2'>
+        <div style={{
+            display: show === data.id ? 'flex' : 'none'
+        }} className='border border-1 justify-content-around mt-2'>
             <Form className='w-100'>
                 <Form.Group className='p-2 my-2 me-2 rounded'>
                     <Form.Label>Họ và tên: </Form.Label>
