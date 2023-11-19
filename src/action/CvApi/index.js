@@ -115,21 +115,21 @@ export const downloadCV = async (axiosPrivate, id, dispatch) => {
         return []
     }
 }
-export const doUploadNewCV = async (axiosPrivate, dispatch, data) => {
+
+export const doUploadCV = async (axiosPrivate, dispatch, data) => {
     dispatch(inLoading())
-    console.log(data)
     try {
         const res = await axiosPrivate({
-            url: `${CVUrl.uploadCV}`,
             method: 'post',
+            url: `${CVUrl.uploadCV}`,
             data: data,
-            withCredentials: true,
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         })
         if (res.data.success) {
-            toast.success(res.data.message)
+            dispatch(successLoading())
+            return res.data.data
         } else {
             if (typeof res.data.message !== 'string') {
                 res.data.message.forEach((messageList) => {
@@ -144,9 +144,10 @@ export const doUploadNewCV = async (axiosPrivate, dispatch, data) => {
             }
         }
         dispatch(successLoading())
+        return []
     } catch (error) {
-        toast.error(error.message)
         dispatch(successLoading())
+        return []
     }
 }
 
@@ -154,7 +155,7 @@ export const doGetCurrentUserCVUploaded = async (axiosPrivate, dispatch) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
-            url: `${cvUrl.getAllCVUploaded}`,
+            url: `${CVUrl.getAllCVUploaded}`,
             method: 'get',
             withCredentials: true,
             headers: {

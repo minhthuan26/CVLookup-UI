@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { doUploadNewCV } from '~/action/CvApi'
+import { doUploadCV } from '~/action/CvApi'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
@@ -48,7 +48,7 @@ function FormAddCV(props) {
                     axiosPrivate,
                     dispatch,
                     cvInfo
-                ) => await doUploadNewCV(axiosPrivate, dispatch, cvInfo)
+                ) => await doUploadCV(axiosPrivate, dispatch, cvInfo)
                 var formdata = new FormData()
                 formdata.append('FullName', fullName)
                 formdata.append('PhoneNumber', phoneNumber)

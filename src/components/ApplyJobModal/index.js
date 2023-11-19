@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
-import { doGetCurrentUserCVUploaded, doUploadNewCV } from '~/action/CvApi'
+import { doGetCurrentUserCVUploaded, doUploadCV } from '~/action/CvApi'
 import { doApplyToRecruitment, doReApplyToRecruitment } from '~/action/recruitmentCvApi'
 import useApplyJobModal from '~/hooks/useApplyJobModal'
 import UploadedCVCard from '../UploadedCVCard'
@@ -75,7 +75,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
             formData.append("PhoneNumber", phoneNumber)
             formData.append("CVFile", cv)
             formData.append("Introdution", introduction)
-            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadNewCV(axiosPrivate, dispatch, data)
+            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadCV(axiosPrivate, dispatch, data)
             uploadCV(axiosPrivate, dispatch, formData).then((data) => {
                 const applyData = {
                     recruitmentId: searchParams.get('id'),
@@ -139,7 +139,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
             formData.append("PhoneNumber", phoneNumber)
             formData.append("CVFile", cv)
             formData.append("Introdution", introduction)
-            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadNewCV(axiosPrivate, dispatch, data)
+            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadCV(axiosPrivate, dispatch, data)
             uploadCV(axiosPrivate, dispatch, formData).then((data) => {
                 const applyData = {
                     recruitmentId: searchParams.get('id'),

@@ -31,6 +31,7 @@ export const CVUrl = {
     downloadCV: `${host}${prefix}/CurriculumVitae/download-curriculum-vitae`,
     getCVbyId: `${host}${prefix}/CurriculumVitae/get-curriculum-vitae-by-id`,
     uploadCV: `${host}${prefix}/CurriculumVitae/upload-curriculum-vitae`,
+    getAllCVUploaded: `${host}${prefix}/CurriculumVitae/get-current-user-cv-uploaded`
 }
 
 export const jobFieldUrl = {
@@ -49,16 +50,18 @@ export const experienceUrl = {
     getAllExperience: `${host}${prefix}/Experience/get-all-experience`
 }
 
-export const cvUrl = {
-    uploadCV: `${host}${prefix}/CurriculumVitae/upload-curriculum-vitae`,
-    getAllCVUploaded: `${host}${prefix}/CurriculumVitae/get-current-user-cv-uploaded`
-
-}
-
 export const recruitmentCVUrl = {
     applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`,
     reApplyCVToRecruitment: `${host}${prefix}/RecruitmentCV/update-applied-cv`,
     getAppliedCV: `${host}${prefix}/RecruitmentCV/get-by-user-and-recruitment-id`
 
+}
+
+export const jobFormUrl = {
+    getAll: `${host}${prefix}/JobForm/get-all-job-form`,
+}
+
+export const JobPositionUrl = {
+    getAll: `${host}${prefix}/JobPosition/get-all-job-position`,
 }
 
