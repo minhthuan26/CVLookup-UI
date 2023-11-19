@@ -1,105 +1,234 @@
-import React, { useState, useRef } from 'react'
-import { Worker, Viewer } from '@react-pdf-viewer/core'
-import '@react-pdf-viewer/core/lib/styles/index.css'
-import '@react-pdf-viewer/default-layout/lib/styles/index.css'
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
-import { Container } from 'react-bootstrap'
-import { Companies } from '~/FakeData/FakeData'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllCV, deleteCV, downloadCV, getCVbyId } from '~/action/CVApi'
+import { Row, Col, Container } from 'react-bootstrap'
 import styled from 'styled-components'
-import test from '~/assets/logo.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faEye, faDownload } from '@fortawesome/free-solid-svg-icons'
+import usePrivateAxios from '~/action/AxiosCredentials'
+import { Confirm } from '~/components/Popup/Confirm'
+import PopupBase from '~/components/Popup/PopupBase'
+import CVViewer from '~/components/CVViewer/CVViewer'
+import FormAddCV from '~/components/FormAddCV/FormAddCV'
+
 function CVPage() {
-    const Slider = styled.div`
-        gap: 1rem;
-        transform: translateX(0px);
-        transition: 0.3s ease-in-out;
-    `
-    const [pdfFile, setPDFFile] = useState(null)
-    const [viewPdf, setViewPdf] = useState(null)
-    const fileType = ['application/pdf']
+    const [CVlist, setCVlist] = useState([])
+    const [showCV, setShowCV] = useState(false)
+    const [showAddCV, setShowAddCV] = useState(false)
 
-    const handleChange = (e) => {
-        let selectedFile = e.target.files[0]
-        if (selectedFile) {
-            if (selectedFile && fileType.includes(selectedFile.type)) {
-                let reader = new FileReader()
-                reader.readAsDataURL(selectedFile)
-                reader.onload = (e) => {
-                    setPDFFile(e.target.result)
+    const [CVDetail, setCVDetail] = useState([])
+    const dispatch = useDispatch()
+    const accessToken = useSelector(
+        (state) => state.auth.credentials.accessToken
+    )
+    const axiosPrivate = usePrivateAxios(accessToken)
+
+    const handleGetAllCV = async (dispatch, axiosPrivate) =>
+        await getAllCV(dispatch, axiosPrivate)
+
+    const handleDelete = (id) => {
+        Confirm.open({
+            title: 'Xoá CV',
+            message: 'Bạn có muốn xoá CV?',
+            onok: () => {
+                try {
+                    const deleteCurriculumViate = async (
+                        axiosPrivate,
+                        id,
+                        dispatch
+                    ) => await deleteCV(axiosPrivate, id, dispatch)
+                    deleteCurriculumViate(axiosPrivate, id, dispatch)
+                    setCVlist(CVlist.filter((cv) => cv.id !== id))
+                } catch (error) {
+                    console.log(error)
                 }
-            } else {
-                setPDFFile(null)
-            }
-        } else {
-            console.log('Please select a file.')
+            },
+        })
+    }
+    useEffect(
+        () => {
+            handleGetAllCV(dispatch, axiosPrivate).then((data) =>
+                setCVlist(data)
+            )
+        },
+        // eslint-disable-next-line
+        []
+    )
+
+    const handleDownload = (id) => {
+        try {
+            const downloadCurriculumViate = async (
+                axiosPrivate,
+                id,
+                dispatch
+            ) => await downloadCV(axiosPrivate, id, dispatch)
+            downloadCurriculumViate(axiosPrivate, id, dispatch)
+        } catch (error) {
+            console.log(error)
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (pdfFile !== null) {
-            setViewPdf(pdfFile)
-        } else {
-            setViewPdf(null)
-        }
+    const handleViewDetail = (id) => {
+        setShowCV(true)
+        const getDetail = async (axiosPrivate, id, dispatch) =>
+            await getCVbyId(axiosPrivate, id, dispatch)
+
+        getDetail(axiosPrivate, id, dispatch).then((data) => setCVDetail(data))
     }
-
-    const newPlugin = defaultLayoutPlugin()
-
-    const listRef = useRef()
-    const [sliderPosition, setSliderPosition] = useState(0)
-    const [showControls, setShowControls] = useState(false)
-    const handleDirection = (direction) => {
-        let distance = listRef.current.getBoundingClientRect().x - 70
-        if (direction === 'left' && sliderPosition > 0) {
-            listRef.current.style.transform = `translateX(${230 + distance}px)`
-            setSliderPosition(sliderPosition - 1)
-        }
-        if (direction === 'right' && sliderPosition < 4) {
-            listRef.current.style.transform = `translateX(${-230 + distance}px)`
-            setSliderPosition(sliderPosition + 1)
-        }
-    }
-
     return (
-        <Container>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="file"
-                    className="form-control"
-                    onChange={handleChange}
-                />
-                <button type="submit" className="btn btn-success">
-                    View PDF
-                </button>
-            </form>
-
-            <div style={{ marginTop: '20px' }}>
-                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                    {viewPdf ? (
-                        <Viewer fileUrl={viewPdf} plugins={[newPlugin]} />
-                    ) : (
-                        <p>No PDF</p>
-                    )}
-                </Worker>
-            </div>
-            <div>
-                <div
-                    style={{
-                        backgroundImage: `url(${test})`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: 'contain',
-                        width: '200px',
-                        height: '500px',
-                        display: 'flex',
-                        textAlign: 'center',
-                        alignItems: 'center',
-                    }}>
-                    test
-                </div>
-                <div></div>
-            </div>
-        </Container>
+        <PageWrapper>
+            <HeaderWrapper>
+                <HeaderContent>
+                    <Title>Danh sách CV:</Title>
+                    <UploadLink
+                        onClick={(e) => {
+                            setShowAddCV(true)
+                        }}>
+                        Thêm mới CV
+                    </UploadLink>
+                </HeaderContent>
+                <hr />
+                <StyledContainer>
+                    <Row className="m-2">
+                        {CVlist.map((cv) => (
+                            <CVCard key={cv.id} sm={6} md={4}>
+                                <ContentRow>
+                                    <CVViewer
+                                        base64StringFile={cv.base64StringFile}
+                                        check={false}
+                                    />
+                                </ContentRow>
+                                <ContentRow>
+                                    <InfoRow>
+                                        <h4>{cv.introdution}</h4>
+                                    </InfoRow>
+                                    <hr />
+                                    <ActionContainer>
+                                        <ActionLink
+                                            onClick={() =>
+                                                handleViewDetail(cv.id)
+                                            }>
+                                            <FontAwesomeIcon icon={faEye} />
+                                            &nbsp;&nbsp;Xem chi tiết
+                                        </ActionLink>
+                                        <div>
+                                            <ActionLink
+                                                onClick={() =>
+                                                    handleDownload(cv.id)
+                                                }>
+                                                <FontAwesomeIcon
+                                                    icon={faDownload}
+                                                />
+                                            </ActionLink>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <ActionLink
+                                                onClick={() =>
+                                                    handleDelete(cv.id)
+                                                }>
+                                                <FontAwesomeIcon
+                                                    icon={faTrash}
+                                                />
+                                            </ActionLink>
+                                        </div>
+                                    </ActionContainer>
+                                </ContentRow>
+                            </CVCard>
+                        ))}
+                    </Row>
+                    {/* Popup */}
+                    <PopupBase
+                        trigger={showCV}
+                        setTriger={setShowCV}
+                        title={`${CVDetail.introdution} - ${CVDetail.fullName}`}>
+                        <div style={{ height: '100vh' }}>
+                            <CVViewer
+                                base64StringFile={CVDetail.base64StringFile}
+                                check={true}
+                            />{' '}
+                        </div>
+                    </PopupBase>
+                    <PopupBase
+                        trigger={showAddCV}
+                        setTriger={setShowAddCV}
+                        title={'Thêm mới CV'}>
+                        <FormAddCV
+                            setShowAddCV={setShowAddCV}
+                            handleGetAllCV={handleGetAllCV}
+                            setCVlist={setCVlist}
+                            CVlist={CVlist}
+                        />
+                    </PopupBase>
+                </StyledContainer>
+            </HeaderWrapper>
+        </PageWrapper>
     )
 }
 
 export default CVPage
+
+const PageWrapper = styled.div`
+    margin: 0 5rem;
+`
+
+const HeaderWrapper = styled.div`
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+`
+
+const HeaderContent = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const Title = styled.h3`
+    padding: 2rem 0 0 3rem;
+    color: #0d0053;
+    font-weight: revert;
+`
+
+const UploadLink = styled.a`
+    padding: 0.5rem 1rem;
+    margin: 0 2rem;
+    background-color: #5767aa;
+    color: white;
+    font-weight: bolder;
+    border-radius: 10px;
+    cursor: pointer;
+`
+
+const StyledContainer = styled(Container)`
+    margin: 2rem;
+`
+
+const CVCard = styled(Col)`
+    padding: 2rem;
+    box-sizing: border-box;
+`
+
+const ContentRow = styled(Row)`
+    background-color: #166795;
+`
+
+const InfoRow = styled(Row)`
+    text-align: center;
+    color: white;
+`
+
+const ActionContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem 1rem 0.5rem;
+`
+
+const ActionLink = styled.a`
+    color: white;
+    cursor: pointer;
+    &:hover {
+        color: #73d6da;
+        transform: scale(1.05);
+    }
+`
