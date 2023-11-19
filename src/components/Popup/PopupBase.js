@@ -70,12 +70,10 @@ const WrapPopUp = styled.div`
     max-width: 55vw;
     height: auto;
     max-height: 100vh;
-    overflow: auto;
     background: white;
     font-size: 14px;
     font-family: 'Noto Sans', sans-serif;
     border-radius: 5px;
-    overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
     opacity: 0;

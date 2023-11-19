@@ -69,12 +69,9 @@ function CVPage() {
         }
     }
 
-    const handleViewDetail = (id) => {
+    const handleViewDetail = (cv) => {
         setShowCV(true)
-        const getDetail = async (axiosPrivate, id, dispatch) =>
-            await getCVbyId(axiosPrivate, id, dispatch)
-
-        getDetail(axiosPrivate, id, dispatch).then((data) => setCVDetail(data))
+        setCVDetail(cv)
     }
     return (
         <PageWrapper>
@@ -98,10 +95,7 @@ function CVPage() {
                         {CVlist.map((cv) => (
                             <CVCard key={cv.id} sm={6} md={4}>
                                 <ContentRow>
-                                    <CVViewer
-                                        base64StringFile={cv.base64StringFile}
-                                        check={false}
-                                    />
+                                    <CVViewer Cvid={cv.id} check={false} />
                                 </ContentRow>
                                 <ContentRow>
                                     <InfoRow>
@@ -111,7 +105,7 @@ function CVPage() {
                                     <ActionContainer>
                                         <ActionLink
                                             onClick={() =>
-                                                handleViewDetail(cv.id)
+                                                handleViewDetail(cv)
                                             }>
                                             <FontAwesomeIcon icon={faEye} />
                                             &nbsp;&nbsp;Xem chi tiết
@@ -145,11 +139,8 @@ function CVPage() {
                         trigger={showCV}
                         setTriger={setShowCV}
                         title={`${CVDetail.introdution} - ${CVDetail.fullName}`}>
-                        <div style={{ height: '100vh' }}>
-                            <CVViewer
-                                base64StringFile={CVDetail.base64StringFile}
-                                check={true}
-                            />
+                        <div style={{ height: '90vh' }}>
+                            <CVViewer Cvid={CVDetail.id} check={true} />
                         </div>
                     </PopupBase>
                     <PopupBase
