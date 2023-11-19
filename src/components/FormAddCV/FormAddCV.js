@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import { uploadCV } from '~/action/CVApi'
+import { doUploadNewCV } from '~/action/CVApi'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
+import {
+    ButtonForm,
+    Form,
+    GhostButton,
+    InputForm,
+    LabelForm,
+    TitleForm,
+} from '../CustomChildComponent/Form'
 
 function FormAddCV(props) {
     const [email, setEmail] = useState('')
@@ -34,15 +42,13 @@ function FormAddCV(props) {
             toast.error('Vui lòng điền đầy đủ thông tin.')
         } else if (!phoneRegex.test(phoneNumber)) {
             toast.error('Số điện thoại không đúng định dạng.')
-        } else if (props.CVlist.length >= 6) {
-            toast.error('Chỉ tạo tối đa 6 CV.')
         } else {
             try {
                 const uploadCurriculumViate = async (
-                    cvInfo,
                     axiosPrivate,
-                    dispatch
-                ) => await uploadCV(cvInfo, axiosPrivate, dispatch)
+                    dispatch,
+                    cvInfo
+                ) => await doUploadNewCV(axiosPrivate, dispatch, cvInfo)
                 var formdata = new FormData()
                 formdata.append('FullName', fullName)
                 formdata.append('PhoneNumber', phoneNumber)
@@ -50,9 +56,10 @@ function FormAddCV(props) {
                 formdata.append('Introdution', introdution)
                 formdata.append('CVFile', cvFile)
 
-                uploadCurriculumViate(formdata, axiosPrivate, dispatch)
+                uploadCurriculumViate(axiosPrivate, dispatch, formdata)
 
                 props.handleGetAllCV(dispatch, axiosPrivate)
+
                 props
                     .handleGetAllCV(dispatch, axiosPrivate)
                     .then((data) => props.setCVlist(data))
@@ -171,72 +178,7 @@ function FormAddCV(props) {
 }
 
 export default FormAddCV
-const Form = styled.form`
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 50px;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-`
-const TitleForm = styled.h1`
-    font-weight: bold;
-    color: #2a1892;
-    margin: 0;
-`
-
-const InputForm = styled.input`
-    background-color: #eee;
-    border: none;
-    padding: 12px 15px;
-    margin: 8px 0;
-    width: 100%;
-`
-const ButtonForm = styled.button`
-    border-radius: 10px;
-    border: 1px solid #0d0053;
-    background-color: #5767aa;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 1rem;
-    padding: 12px 45px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    &:focus {
-        outline: none;
-    }
-    &:hover {
-        background-color: #84adea;
-    }
-`
-const GhostButton = styled(ButtonForm)`
-    background-color: transparent;
-    border-color: #5767aa;
-    color: #5767aa;
-
-    &:hover {
-        background-color: #eee;
-        color: #5767aa;
-    }
-`
-const LabelForm = styled.label`
-    cursor: pointer;
-    display: flex;
-    background-color: #eee;
-    text-align: center;
-    align-items: center;
-    padding: 12px 15px;
-    margin: 8px 0;
-    font-size: 13px;
-    font-family: 'Roboto', sans-serif;
-    letter-spacing: 1px;
-    width: 100%;
-`
-const ChoosenAddCVBtn = styled.button`
+export const ChoosenAddCVBtn = styled.button`
     padding: 0.75rem;
     border: none;
     background-color: #5767aa;

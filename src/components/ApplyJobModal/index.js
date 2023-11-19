@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { doGetCurrentUserCVUploaded, doUploadNewCV } from '~/action/CvApi'
 import { doApplyToRecruitment, doReApplyToRecruitment } from '~/action/recruitmentCvApi'
+import { doUploadNewCV } from '~/action/CVApi'
 import useApplyJobModal from '~/hooks/useApplyJobModal'
 import UploadedCVCard from '../UploadedCVCard'
 
@@ -33,12 +34,25 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
         setCvSelected('')
     }
 
+
     const handleIsChooseOldCV = (e) => {
         e.target.id === 'radio-uploaded-cv' ? setIsChooseOldCV(true) : setIsChooseOldCV(false)
     }
 
     const handleApply = (e) => {
         e.preventDefault()
+
+        const phoneRegex = /^\d{10}$/
+        if (
+            !fullname.trim() ||
+            !email.trim() ||
+            !phoneNumber.trim() ||
+            !cv ||
+            !introduction.trim()
+        ) {
+            toast.error('Vui lòng điền đầy đủ thông tin')
+            return
+        }
 
         var formData = new FormData()
         if (!isChooseOldCV) {
@@ -167,7 +181,6 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                 toast.error("Vui lòng chọn cv để ứng tuyển")
             }
         }
-
     }
 
     useEffect(() => {
@@ -188,41 +201,51 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
         <Modal
             animation={true}
             centered
-            size='lg'
+            size="lg"
             backdrop="static"
             show={show}
             onHide={handleClose}
             fullscreen={false}>
             <Modal.Header closeButton>
-                <Modal.Title className=''>Đơn ứng tuyển</Modal.Title>
+                <Modal.Title className="">Đơn ứng tuyển</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className='d-flex flex-column gap-3'>
-                    <div className='d-flex align-items-center gap-2'>
-                        <i style={{ color: '#5767aa' }} className="fa fa-folder" aria-hidden="true"></i>
-                        <div className='text-center'><b>Chọn CV ứng tuyển: </b></div>
+                <div className="d-flex flex-column gap-3">
+                    <div className="d-flex align-items-center gap-2">
+                        <i
+                            style={{ color: '#5767aa' }}
+                            className="fa fa-folder"
+                            aria-hidden="true"></i>
+                        <div className="text-center">
+                            <b>Chọn CV ứng tuyển: </b>
+                        </div>
                     </div>
                     <ul>
                         <li>
-                            <div className='d-flex align-items-center gap-2'>
+                            <div className="d-flex align-items-center gap-2">
                                 <Form.Group>
                                     <Form.Check
-                                        type='radio'
-                                        id='radio-uploaded-cv'>
+                                        type="radio"
+                                        id="radio-uploaded-cv">
                                         <Form.Check.Input
                                             onClick={handleIsChooseOldCV}
                                             style={{ borderColor: 'black' }}
-                                            type='radio'
-                                            defaultChecked='true'
-                                            name="group2" />
-                                        <Form.Check.Label className='d-flex align-items-center gap-2'>
-                                            <i style={{ color: '#5767aa' }} className="fa fa-bookmark" aria-hidden="true"></i>
-                                            <div><b>CV đã tải lên: </b></div>
+                                            type="radio"
+                                            defaultChecked="true"
+                                            name="group2"
+                                        />
+                                        <Form.Check.Label className="d-flex align-items-center gap-2">
+                                            <i
+                                                style={{ color: '#5767aa' }}
+                                                className="fa fa-bookmark"
+                                                aria-hidden="true"></i>
+                                            <div>
+                                                <b>CV đã tải lên: </b>
+                                            </div>
                                         </Form.Check.Label>
                                     </Form.Check>
                                 </Form.Group>
                             </div>
-
                             <div className='border border-1 rounded mt-2' style={{ display: isChooseOldCV ? 'block' : 'none' }}>
                                 <ul>
                                     {
@@ -257,47 +280,93 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                                                 <p><b>Chưa upload cv</b></p>
                                             </div>
                                     }
-
                                 </ul>
                             </div>
                         </li>
 
                         <li>
-                            <div className='d-flex align-items-center gap-2'>
+                            <div className="d-flex align-items-center gap-2">
                                 <Form.Group>
-                                    <Form.Check
-                                        type='radio'
-                                        id='radio-new-cv'>
+                                    <Form.Check type="radio" id="radio-new-cv">
                                         <Form.Check.Input
                                             onClick={handleIsChooseOldCV}
                                             style={{ borderColor: 'black' }}
-                                            type='radio'
-                                            name="group2" />
-                                        <Form.Check.Label className='d-flex align-items-center gap-2'>
-                                            <i style={{ color: '#5767aa' }} className="fa fa-upload" aria-hidden="true"></i>
-                                            <div><b>Tải lên CV mới: </b></div>
+                                            type="radio"
+                                            name="group2"
+                                        />
+                                        <Form.Check.Label className="d-flex align-items-center gap-2">
+                                            <i
+                                                style={{ color: '#5767aa' }}
+                                                className="fa fa-upload"
+                                                aria-hidden="true"></i>
+                                            <div>
+                                                <b>Tải lên CV mới: </b>
+                                            </div>
                                         </Form.Check.Label>
                                     </Form.Check>
                                 </Form.Group>
                             </div>
                             <div className='border border-1 rounded mt-2' style={{ display: isChooseOldCV ? 'none' : 'block' }}>
                                 <Form>
-                                    <Form.Group className='p-2 my-2 me-2 rounded'>
-                                        <Form.Label>Họ và tên <span style={{ color: 'red' }}>*</span></Form.Label>
-                                        <Form.Control value={fullname} onChange={(e) => setFullname(e.target.value)} type="text" placeholder='Họ và tên hiển thị với nhà tuyển dụng' />
+                                    <Form.Group className="p-2 my-2 me-2 rounded">
+                                        <Form.Label>
+                                            Họ và tên{' '}
+                                            <span style={{ color: 'red' }}>
+                                                *
+                                            </span>
+                                        </Form.Label>
+                                        <Form.Control
+                                            value={fullname}
+                                            onChange={(e) =>
+                                                setFullname(e.target.value)
+                                            }
+                                            type="text"
+                                            placeholder="Họ và tên hiển thị với nhà tuyển dụng"
+                                        />
                                     </Form.Group>
-                                    <div className='d-flex'>
-                                        <Form.Group className='w-50 p-2 my-2 me-2 rounded'>
-                                            <Form.Label>Email <span style={{ color: 'red' }}>*</span></Form.Label>
-                                            <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder='Email hiển thị với nhà tuyển dụng' />
+                                    <div className="d-flex">
+                                        <Form.Group className="w-50 p-2 my-2 me-2 rounded">
+                                            <Form.Label>
+                                                Email{' '}
+                                                <span style={{ color: 'red' }}>
+                                                    *
+                                                </span>
+                                            </Form.Label>
+                                            <Form.Control
+                                                value={email}
+                                                onChange={(e) =>
+                                                    setEmail(e.target.value)
+                                                }
+                                                type="email"
+                                                placeholder="Email hiển thị với nhà tuyển dụng"
+                                            />
                                         </Form.Group>
-                                        <Form.Group className='w-50 p-2 my-2 me-2 rounded'>
-                                            <Form.Label>Số điện thoại <span style={{ color: 'red' }}>*</span></Form.Label>
-                                            <Form.Control value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type="text" placeholder='Số điện thoại hiển thị với nhà tuyển dụng' />
+                                        <Form.Group className="w-50 p-2 my-2 me-2 rounded">
+                                            <Form.Label>
+                                                Số điện thoại{' '}
+                                                <span style={{ color: 'red' }}>
+                                                    *
+                                                </span>
+                                            </Form.Label>
+                                            <Form.Control
+                                                value={phoneNumber}
+                                                onChange={(e) =>
+                                                    setPhoneNumber(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                type="text"
+                                                placeholder="Số điện thoại hiển thị với nhà tuyển dụng"
+                                            />
                                         </Form.Group>
                                     </div>
-                                    <Form.Group className='p-2 my-2 me-2 rounded'>
-                                        <Form.Label>Chọn CV từ thiết bị của bạn <span style={{ color: 'red' }}>*</span></Form.Label>
+                                    <Form.Group className="p-2 my-2 me-2 rounded">
+                                        <Form.Label>
+                                            Chọn CV từ thiết bị của bạn{' '}
+                                            <span style={{ color: 'red' }}>
+                                                *
+                                            </span>
+                                        </Form.Label>
                                         <Form.Control
                                             onChange={(e) => {
                                                 const file = e.target.files[0]
@@ -305,11 +374,24 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                                             }}
                                             accept=".pdf"
                                             type="file"
-                                            placeholder='CV' />
+                                            placeholder="CV"
+                                        />
                                     </Form.Group>
-                                    <Form.Group className='p-2 my-2 me-2 rounded'>
-                                        <Form.Label>Thư giới thiệu <span style={{ color: 'red' }}>*</span></Form.Label>
-                                        <Form.Control value={introduction} onChange={(e) => setIntroduction(e.target.value)} as="textarea" style={{ height: '100px' }} />
+                                    <Form.Group className="p-2 my-2 me-2 rounded">
+                                        <Form.Label>
+                                            Thư giới thiệu{' '}
+                                            <span style={{ color: 'red' }}>
+                                                *
+                                            </span>
+                                        </Form.Label>
+                                        <Form.Control
+                                            value={introduction}
+                                            onChange={(e) =>
+                                                setIntroduction(e.target.value)
+                                            }
+                                            as="textarea"
+                                            style={{ height: '100px' }}
+                                        />
                                     </Form.Group>
                                 </Form>
                             </div>
@@ -319,13 +401,16 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                                 <div style={{ width: '90%' }} className='py-2'>
                                     <Button className='w-100' onClick={appliedCv ? handleReApply : handleApply}>Nộp đơn ứng tuyển</Button>
                                 </div>
-                                <div className='py-2'>
-                                    <Button onClick={handleClose} variant='danger'>Huỷ</Button>
+                                <div className="py-2">
+                                    <Button
+                                        onClick={handleClose}
+                                        variant="danger">
+                                        Huỷ
+                                    </Button>
                                 </div>
                             </div>
                         </li>
                     </ul>
-
                 </div>
             </Modal.Body>
         </Modal>

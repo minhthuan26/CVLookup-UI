@@ -1,6 +1,6 @@
-import { toast } from "react-toastify"
-import { inLoading, successLoading } from "~/Redux/Loader/loaderSlice"
-import { recruitmentCVUrl } from "~/utils/ApiUrl"
+import { toast } from 'react-toastify'
+import { inLoading, successLoading } from '~/Redux/Loader/loaderSlice'
+import { recruitmentCVUrl } from '~/utils/ApiUrl'
 
 export const doApplyToRecruitment = async (axiosPrivate, dispatch, data) => {
     dispatch(inLoading())
