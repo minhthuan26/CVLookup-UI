@@ -8,8 +8,6 @@ const usePrivateAxios = (accessToken) => {
         () => {
             const requestIntercept = axiosPrivate.interceptors.request.use(
                 (config) => {
-                    // config.headers['Content-Type'] = 'application/json; '
-                    // config.headers['Content-Type'] = 'multipart/form-data'
                     if (!config.headers['Authorization']) {
                         config.headers[
                             'Authorization'

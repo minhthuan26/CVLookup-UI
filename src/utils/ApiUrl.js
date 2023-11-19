@@ -38,9 +38,11 @@ export const experienceUrl = {
 }
 
 export const cvUrl = {
-    uploadCV: `${host}${prefix}/CurriculumVitae/upload-curriculum-vitae`
+    uploadCV: `${host}${prefix}/CurriculumVitae/upload-curriculum-vitae`,
+    getAllCVUploaded: `${host}${prefix}/CurriculumVitae/get-current-user-cv-uploaded`
 }
 
 export const recruitmentCVUrl = {
-    applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`
+    applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`,
+    getAppliedCV: `${host}${prefix}/RecruitmentCV/get-by-user-and-recruitment-id`
 }

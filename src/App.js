@@ -63,7 +63,7 @@ function App() {
         // eslint-disable-next-line
         [user])
     const { loginModal, setLoginModal } = useLoginModal()
-    const { applyJobModal, setApplyJobModal } = useApplyJobModal()
+    const { applyJobModal, isAlreadyApply, appliedCv } = useApplyJobModal()
 
     return (
         <BrowserRouter>
@@ -104,7 +104,11 @@ function App() {
             </Routes>
             {isLoading ? <Loader /> : null}
             <LoginModal show={loginModal} />
-            <ApplyJobModal show={applyJobModal} />
+            <ApplyJobModal
+                show={applyJobModal}
+                isAlreadyApply={isAlreadyApply}
+                appliedCv={appliedCv}
+                user={user} />
             <ToastContainer
                 position="top-center"
                 autoClose={3000}
