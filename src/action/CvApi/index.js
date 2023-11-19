@@ -130,7 +130,6 @@ export const doUploadNewCV = async (axiosPrivate, dispatch, data) => {
         })
         if (res.data.success) {
             toast.success(res.data.message)
-
         } else {
             if (typeof res.data.message !== 'string') {
                 res.data.message.forEach((messageList) => {
@@ -145,7 +144,6 @@ export const doUploadNewCV = async (axiosPrivate, dispatch, data) => {
             }
         }
         dispatch(successLoading())
-        return res.data.data
     } catch (error) {
         toast.error(error.message)
         dispatch(successLoading())
