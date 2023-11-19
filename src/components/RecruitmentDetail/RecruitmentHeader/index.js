@@ -7,11 +7,12 @@ import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRou
 import { useSelector } from 'react-redux';
 import useLoginModal from '~/hooks/useLoginModal';
 import useApplyJobModal from '~/hooks/useApplyJobModal';
+import ArticleIcon from '@mui/icons-material/Article'
 
-const RecruitmentHeader = ({ recruitment }) => {
+const RecruitmentHeader = ({ recruitment, cvApplied }) => {
     const user = useSelector(state => state.auth.credentials.user)
-    const { loginModal, setLoginModal } = useLoginModal()
-    const { applyJobModal, setApplyJobModal } = useApplyJobModal()
+    const { setLoginModal } = useLoginModal()
+    const { setApplyJobModal } = useApplyJobModal()
 
     const handleApply = () => {
         if (!user) {
@@ -68,21 +69,46 @@ const RecruitmentHeader = ({ recruitment }) => {
                     </div>
                 </div>
             </div>
-            <div className='d-flex gap-1 align-items-center ps-1 py-2'>
-                <div>
-                    <AccessTimeFilledRoundedIcon style={{ color: 'rgb(127,135,143)' }} fontSize='small' />
+            <div className='d-flex gap-5 align-items-center ps-1 py-2'>
+                <div className='d-flex'>
+                    <div>
+                        <AccessTimeFilledRoundedIcon style={{ color: 'rgb(127,135,143)' }} fontSize='small' />
+                    </div>
+                    <div>
+                        Hạn nộp hồ sơ: {new Date(recruitment.applicationDeadline).toLocaleDateString('nl')}
+                    </div>
                 </div>
-                <div>
-                    Hạn nộp hồ sơ: {new Date(recruitment.applicationDeadline).toLocaleDateString('nl')}
-                </div>
+                {
+                    cvApplied
+                        ? (
+                            <div className='d-flex'>
+                                <div>
+                                    <ArticleIcon style={{ color: 'rgb(127,135,143)' }} fontSize='small' />
+                                </div>
+                                <div>
+                                    Đã ứng tuyển vào: {new Date(cvApplied.appliedAt).toLocaleDateString('nl')}
+                                </div>
+                            </div>
+                        )
+                        : <></>
+                }
             </div>
             <div>
-                <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
-                    <b>
-                        <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
-                        Ứng tuyển ngay
-                    </b>
-                </Button>
+                {!cvApplied
+                    ? <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
+                        <b>
+                            <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
+                            Ứng tuyển ngay
+                        </b>
+                    </Button>
+                    : <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
+                        <b>
+                            <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
+                            Ứng tuyển lại
+                        </b>
+                    </Button>
+                }
+
             </div>
         </Container>
     )

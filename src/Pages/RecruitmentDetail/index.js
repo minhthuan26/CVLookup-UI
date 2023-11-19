@@ -7,15 +7,23 @@ import RecruitmentContent from '~/components/RecruitmentDetail/RecruitmentConten
 import RecruitmentHeader from '~/components/RecruitmentDetail/RecruitmentHeader'
 import SearchBarAdvance from '~/components/SearchBarAdvance'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { doGetRecruitmentDetail } from '~/action/recruitmentApi'
 import LoginModal from '~/components/LoginModal'
+import usePrivateAxios from '~/action/AxiosCredentials'
+import { doGetAppliedCV } from '~/action/recruitmentCvApi'
+import useApplyJobModal from '~/hooks/useApplyJobModal'
 
 const RecruitmentDetail = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [recruitment, setRecruitment] = useState()
+    const { appliedCv, setAppliedCv } = useApplyJobModal()
+    const user = useSelector(state => state.auth.credentials.user)
+    const accessToken = useSelector(state => state.auth.credentials.accessToken)
+    const axiosPrivate = usePrivateAxios(accessToken)
+
     useEffect(() => {
         const getRecruitmentDetail = async (id, dispatch, navigate) => await doGetRecruitmentDetail(id, dispatch, navigate)
         getRecruitmentDetail(searchParams.get('id'), dispatch, navigate).then(data => {
@@ -24,6 +32,23 @@ const RecruitmentDetail = () => {
     },
         //eslint-disable-next-line
         [])
+
+    useEffect(() => {
+        if (user && recruitment) {
+            const data = {
+                userId: user.id,
+                recruitmentId: recruitment.id
+            }
+            const getAppliedCV = async (axiosPrivate, dispatch, data) => await doGetAppliedCV(axiosPrivate, dispatch, data)
+            getAppliedCV(axiosPrivate, dispatch, data).then(data => {
+                if (data) {
+                    setAppliedCv(data)
+                }
+            })
+        }
+    },
+        // eslint-disable-next-line
+        [user, recruitment])
     return (
         <>
             <SearchBarAdvance />
@@ -32,7 +57,7 @@ const RecruitmentDetail = () => {
                     ? <div className='d-flex'>
                         <div style={{ width: '70%' }} className='d-flex justify-content-center'>
                             <div className='d-flex w-100 flex-column gap-2'>
-                                <RecruitmentHeader recruitment={recruitment} />
+                                <RecruitmentHeader recruitment={recruitment} cvApplied={appliedCv} />
                                 <RecruitmentContent recruitment={recruitment} />
                             </div>
                         </div>

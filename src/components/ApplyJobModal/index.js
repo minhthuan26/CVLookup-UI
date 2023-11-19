@@ -1,21 +1,28 @@
-import { South } from '@mui/icons-material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
+import { doGetCurrentUserCVUploaded, doUploadNewCV } from '~/action/CvApi'
+import { doApplyToRecruitment, doReApplyToRecruitment } from '~/action/recruitmentCvApi'
 import { doUploadNewCV } from '~/action/CVApi'
 import useApplyJobModal from '~/hooks/useApplyJobModal'
+import UploadedCVCard from '../UploadedCVCard'
 
-const ApplyJobModal = ({ show, user }) => {
+const ApplyJobModal = ({ show, appliedCv, user }) => {
     const { setApplyJobModal } = useApplyJobModal()
-    const [isUpLoadCV, setIsUpLoadCV] = useState(true)
+    const [isChooseOldCV, setIsChooseOldCV] = useState(true)
     const dispatch = useDispatch()
     const [fullname, setFullname] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [cv, setCV] = useState()
     const [introduction, setIntroduction] = useState('')
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [currentUserCVUploaded, setCurrentUserCVUploaded] = useState([])
+    const navigate = useNavigate()
+    const [cvSelected, setCvSelected] = useState()
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
@@ -23,17 +30,18 @@ const ApplyJobModal = ({ show, user }) => {
 
     const handleClose = () => {
         setApplyJobModal(false)
-        setIsUpLoadCV(true)
+        setIsChooseOldCV(true)
+        setCvSelected('')
     }
 
-    const handleUploadedCV = (e) => {
-        e.target.id === 'radio-uploaded-cv'
-            ? setIsUpLoadCV(true)
-            : setIsUpLoadCV(false)
+
+    const handleIsChooseOldCV = (e) => {
+        e.target.id === 'radio-uploaded-cv' ? setIsChooseOldCV(true) : setIsChooseOldCV(false)
     }
 
     const handleApply = (e) => {
         e.preventDefault()
+
         const phoneRegex = /^\d{10}$/
         if (
             !fullname.trim() ||
@@ -46,20 +54,149 @@ const ApplyJobModal = ({ show, user }) => {
             return
         }
 
-        if (!phoneRegex.test(phoneNumber)) {
-            toast.error('Số điện thoại không đúng định dạng.')
-            return
-        }
         var formData = new FormData()
-        formData.append('FullName', fullname)
-        formData.append('Email', email)
-        formData.append('PhoneNumber', phoneNumber)
-        formData.append('CVFile', cv)
-        formData.append('Introdution', introduction)
-        const uploadCV = async (axiosPrivate, dispatch, data) =>
-            await doUploadNewCV(axiosPrivate, dispatch, data)
-        uploadCV(axiosPrivate, dispatch, formData)
+        if (!isChooseOldCV) {
+            const phoneRegex = /^\d{10}$/
+            if (
+                !fullname.trim() ||
+                !email.trim() ||
+                !phoneNumber.trim() ||
+                !cv ||
+                !introduction.trim()) {
+                toast.error("Vui lòng điền đầy đủ thông tin")
+                return
+            }
+
+            if (!phoneRegex.test(phoneNumber)) {
+                toast.error('Số điện thoại không đúng định dạng.')
+                return
+            }
+            formData.append("FullName", fullname)
+            formData.append("Email", email)
+            formData.append("PhoneNumber", phoneNumber)
+            formData.append("CVFile", cv)
+            formData.append("Introdution", introduction)
+            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadNewCV(axiosPrivate, dispatch, data)
+            uploadCV(axiosPrivate, dispatch, formData).then((data) => {
+                const applyData = {
+                    recruitmentId: searchParams.get('id'),
+                    curriculumVitaeId: data.id
+                }
+                const applyToRecruitment = async (axiosPrivate, dispatch, data) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
+                applyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
+                    setFullname('')
+                    setEmail('')
+                    setPhoneNumber('')
+                    setCV()
+                    setIntroduction('')
+                    setIsChooseOldCV(true)
+                    setApplyJobModal(false)
+                    navigate(0)
+                })
+            })
+        } else {
+            if (cvSelected) {
+                const applyData = {
+                    recruitmentId: searchParams.get('id'),
+                    curriculumVitaeId: cvSelected
+                }
+                const applyToRecruitment = async (axiosPrivate, dispatch, data) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
+                applyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
+                    setFullname('')
+                    setEmail('')
+                    setPhoneNumber('')
+                    setCV()
+                    setIntroduction('')
+                    setIsChooseOldCV(true)
+                    setApplyJobModal(false)
+                })
+            } else {
+                toast.error("Vui lòng chọn cv để ứng tuyển")
+            }
+        }
     }
+
+    const handleReApply = (e) => {
+        e.preventDefault()
+        var formData = new FormData()
+        if (!isChooseOldCV) {
+            const phoneRegex = /^\d{10}$/
+            if (
+                !fullname.trim() ||
+                !email.trim() ||
+                !phoneNumber.trim() ||
+                !cv ||
+                !introduction.trim()) {
+                toast.error("Vui lòng điền đầy đủ thông tin")
+                return
+            }
+
+            if (!phoneRegex.test(phoneNumber)) {
+                toast.error('Số điện thoại không đúng định dạng.')
+                return
+            }
+            formData.append("FullName", fullname)
+            formData.append("Email", email)
+            formData.append("PhoneNumber", phoneNumber)
+            formData.append("CVFile", cv)
+            formData.append("Introdution", introduction)
+            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadNewCV(axiosPrivate, dispatch, data)
+            uploadCV(axiosPrivate, dispatch, formData).then((data) => {
+                const applyData = {
+                    recruitmentId: searchParams.get('id'),
+                    cvId: data.id,
+                    userId: user.id
+                }
+                const reApplyToRecruitment = async (axiosPrivate, dispatch, data) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
+                reApplyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
+                    setFullname('')
+                    setEmail('')
+                    setPhoneNumber('')
+                    setCV()
+                    setIntroduction('')
+                    setIsChooseOldCV(true)
+                    setApplyJobModal(false)
+                    navigate(0)
+                })
+            })
+        } else {
+            if (cvSelected) {
+                const applyData = {
+                    recruitmentId: searchParams.get('id'),
+                    cvId: cvSelected,
+                    userId: user.id
+                }
+                const reApplyToRecruitment = async (axiosPrivate, dispatch, data) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
+                reApplyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
+                    setFullname('')
+                    setEmail('')
+                    setPhoneNumber('')
+                    setCV()
+                    setIntroduction('')
+                    setIsChooseOldCV(true)
+                    setApplyJobModal(false)
+                    setCvSelected('')
+                })
+            } else {
+                toast.error("Vui lòng chọn cv để ứng tuyển")
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (user) {
+            const getAllCVUploaded = async (axiosPrivate, dispatch) => await doGetCurrentUserCVUploaded(axiosPrivate, dispatch)
+            getAllCVUploaded(axiosPrivate, dispatch).then(data => {
+                if (data) {
+                    setCurrentUserCVUploaded(data)
+                }
+            })
+        }
+
+    },
+        //eslint-disable-next-line
+        [user])
+
     return (
         <Modal
             animation={true}
@@ -91,7 +228,7 @@ const ApplyJobModal = ({ show, user }) => {
                                         type="radio"
                                         id="radio-uploaded-cv">
                                         <Form.Check.Input
-                                            onClick={handleUploadedCV}
+                                            onClick={handleIsChooseOldCV}
                                             style={{ borderColor: 'black' }}
                                             type="radio"
                                             defaultChecked="true"
@@ -109,140 +246,40 @@ const ApplyJobModal = ({ show, user }) => {
                                     </Form.Check>
                                 </Form.Group>
                             </div>
-
-                            <div
-                                className="border border-1 rounded mt-2"
-                                style={{
-                                    display: isUpLoadCV ? 'block' : 'none',
-                                }}>
+                            <div className='border border-1 rounded mt-2' style={{ display: isChooseOldCV ? 'block' : 'none' }}>
                                 <ul>
-                                    <li className="p-2 border border-1 my-2 me-2 rounded">
-                                        <Form.Group>
-                                            <Form.Check
-                                                type="radio"
-                                                id="radio-cv-1">
-                                                <Form.Check.Input
-                                                    style={{
-                                                        borderColor: 'black',
-                                                    }}
-                                                    type="radio"
-                                                    defaultChecked="true"
-                                                    name="group3"
-                                                />
-                                                <Form.Check.Label className="d-flex align-items-center gap-2">
-                                                    <div className="d-flex w-100 justify-content-between align-items-center">
-                                                        <div>CV 1</div>
-                                                        <a href="/test">Xem</a>
-                                                    </div>
-                                                </Form.Check.Label>
-                                            </Form.Check>
-                                        </Form.Group>
-                                    </li>
-                                    <li className="p-2 border border-1 my-2 me-2 rounded">
-                                        <Form.Group>
-                                            <Form.Check
-                                                type="radio"
-                                                id="radio-cv-2">
-                                                <Form.Check.Input
-                                                    style={{
-                                                        borderColor: 'black',
-                                                    }}
-                                                    type="radio"
-                                                    name="group3"
-                                                />
-                                                <Form.Check.Label className="d-flex align-items-center gap-2">
-                                                    <div className="d-flex w-100 justify-content-between align-items-center">
-                                                        <div>CV 2</div>
-                                                        <a href="/test">Xem</a>
-                                                    </div>
-                                                </Form.Check.Label>
-                                            </Form.Check>
-                                        </Form.Group>
-                                    </li>
-                                    <li className="p-2 border border-1 my-2 me-2 rounded">
-                                        <Form.Group>
-                                            <Form.Check
-                                                type="radio"
-                                                id="radio-cv-3">
-                                                <Form.Check.Input
-                                                    style={{
-                                                        borderColor: 'black',
-                                                    }}
-                                                    type="radio"
-                                                    name="group3"
-                                                />
-                                                <Form.Check.Label className="d-flex align-items-center gap-2">
-                                                    <div className="d-flex w-100 justify-content-between align-items-center">
-                                                        <div>CV 3</div>
-                                                        <a href="/test">Xem</a>
-                                                    </div>
-                                                </Form.Check.Label>
-                                            </Form.Check>
-                                        </Form.Group>
-                                    </li>
-                                    <li className="p-2 border border-1 my-2 me-2 rounded">
-                                        <Form.Group>
-                                            <Form.Check
-                                                type="radio"
-                                                id="radio-cv-4">
-                                                <Form.Check.Input
-                                                    style={{
-                                                        borderColor: 'black',
-                                                    }}
-                                                    type="radio"
-                                                    name="group3"
-                                                />
-                                                <Form.Check.Label className="d-flex align-items-center gap-2">
-                                                    <div className="d-flex w-100 justify-content-between align-items-center">
-                                                        <div>CV 4</div>
-                                                        <a href="/test">Xem</a>
-                                                    </div>
-                                                </Form.Check.Label>
-                                            </Form.Check>
-                                        </Form.Group>
-                                    </li>
-                                    <li className="p-2 border border-1 my-2 me-2 rounded">
-                                        <Form.Group>
-                                            <Form.Check
-                                                type="radio"
-                                                id="radio-cv-5">
-                                                <Form.Check.Input
-                                                    style={{
-                                                        borderColor: 'black',
-                                                    }}
-                                                    type="radio"
-                                                    name="group3"
-                                                />
-                                                <Form.Check.Label className="d-flex align-items-center gap-2">
-                                                    <div className="d-flex w-100 justify-content-between align-items-center">
-                                                        <div>CV 5</div>
-                                                        <a href="/test">Xem</a>
-                                                    </div>
-                                                </Form.Check.Label>
-                                            </Form.Check>
-                                        </Form.Group>
-                                    </li>
-                                    <li className="p-2 border border-1 my-2 me-2 rounded">
-                                        <Form.Group>
-                                            <Form.Check
-                                                type="radio"
-                                                id="radio-cv-6">
-                                                <Form.Check.Input
-                                                    style={{
-                                                        borderColor: 'black',
-                                                    }}
-                                                    type="radio"
-                                                    name="group3"
-                                                />
-                                                <Form.Check.Label className="d-flex align-items-center gap-2">
-                                                    <div className="d-flex w-100 justify-content-between align-items-center">
-                                                        <div>CV 6</div>
-                                                        <a href="/test">Xem</a>
-                                                    </div>
-                                                </Form.Check.Label>
-                                            </Form.Check>
-                                        </Form.Group>
-                                    </li>
+                                    {
+                                        currentUserCVUploaded.length > 0
+                                            ? currentUserCVUploaded.map(cv => (
+                                                <li key={cv.id} className='p-2 border border-1 my-2 me-2 rounded'>
+                                                    <Form.Group>
+                                                        <Form.Check
+                                                            type='radio'
+                                                            id={cv.id}>
+                                                            <Form.Check.Input
+                                                                style={{ borderColor: 'black' }}
+                                                                type='radio'
+                                                                name="group3"
+                                                                onChange={(e) => {
+                                                                    setCvSelected(e.target.id)
+                                                                    e.target.defaultChecked = true
+                                                                }} />
+                                                            <Form.Check.Label className='d-flex align-items-center gap-2'>
+                                                                <div className='d-flex w-100 justify-content-between align-items-center'>
+                                                                    <div>{cv.uploadedAt}</div>
+                                                                    <a href='/test'>
+                                                                        Xem
+                                                                    </a>
+                                                                </div>
+                                                            </Form.Check.Label>
+                                                        </Form.Check>
+                                                    </Form.Group>
+                                                    <UploadedCVCard show={cvSelected} data={cv} />
+                                                </li>))
+                                            : <div className='text-center'>
+                                                <p><b>Chưa upload cv</b></p>
+                                            </div>
+                                    }
                                 </ul>
                             </div>
                         </li>
@@ -252,7 +289,7 @@ const ApplyJobModal = ({ show, user }) => {
                                 <Form.Group>
                                     <Form.Check type="radio" id="radio-new-cv">
                                         <Form.Check.Input
-                                            onClick={handleUploadedCV}
+                                            onClick={handleIsChooseOldCV}
                                             style={{ borderColor: 'black' }}
                                             type="radio"
                                             name="group2"
@@ -269,11 +306,7 @@ const ApplyJobModal = ({ show, user }) => {
                                     </Form.Check>
                                 </Form.Group>
                             </div>
-                            <div
-                                className="border border-1 rounded mt-2"
-                                style={{
-                                    display: isUpLoadCV ? 'none' : 'block',
-                                }}>
+                            <div className='border border-1 rounded mt-2' style={{ display: isChooseOldCV ? 'none' : 'block' }}>
                                 <Form>
                                     <Form.Group className="p-2 my-2 me-2 rounded">
                                         <Form.Label>
@@ -364,13 +397,9 @@ const ApplyJobModal = ({ show, user }) => {
                             </div>
                         </li>
                         <li>
-                            <div className="rounded mt-2 d-flex gap-2 justify-content-center">
-                                <div style={{ width: '90%' }} className="py-2">
-                                    <Button
-                                        className="w-100"
-                                        onClick={handleApply}>
-                                        Nộp đơn ứng tuyển
-                                    </Button>
+                            <div className='rounded mt-2 d-flex gap-2 justify-content-center'>
+                                <div style={{ width: '90%' }} className='py-2'>
+                                    <Button className='w-100' onClick={appliedCv ? handleReApply : handleApply}>Nộp đơn ứng tuyển</Button>
                                 </div>
                                 <div className="py-2">
                                     <Button
