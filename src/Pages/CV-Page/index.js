@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllCV, deleteCV, downloadCV, getCVbyId } from '~/action/CVApi'
+import { getAllCV, deleteCV, downloadCV, getCVbyId } from '~/action/CvApi'
 import { Row, Col } from 'react-bootstrap'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
