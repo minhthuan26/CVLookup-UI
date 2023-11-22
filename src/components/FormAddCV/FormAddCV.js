@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { doUploadCV } from '~/action/CvApi'
+import { doUploadCV } from '~/action/CVApi'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'

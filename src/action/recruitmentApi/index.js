@@ -72,11 +72,7 @@ export const doGetAllRecruitment = async (dispatch) => {
     }
 }
 
-export const doGetRecruitmentDetail = async (
-    recruitmentId,
-    dispatch,
-    navigate
-) => {
+export const doGetRecruitmentDetail = async (recruitmentId, dispatch) => {
     dispatch(inLoading())
     try {
         const res = await axios({
@@ -190,7 +186,8 @@ export const doUpdateRecruitment = async (
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
-            url: `${recruitmentUrl.updateRecruitment}?id=${id}`,
+            // eslint-disable-next-line
+            url: `${recruitmentUrl.updateRecruitment}` + `?id=${id}`,
             method: 'patch',
             data: data,
             withCredentials: true,

@@ -21,7 +21,7 @@ function PostRecruitmentPage() {
                     Đăng tin tuyển dụng mới
                 </TitleForm>
                 <FormRecruitment
-                    handleAcction={addRecruitment}></FormRecruitment>
+                    handleAction={addRecruitment}></FormRecruitment>
             </div>
         </StyledContainer>
     )

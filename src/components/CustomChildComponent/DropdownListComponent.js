@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Dropdown } from 'react-bootstrap'
 
-function DropdownListCoponent(props) {
-    const [selectedItem, setSelectedItem] = useState(null)
-
+function DropdownListComponent(props) {
+    const [selectedItem, setSelectedItem] = useState(
+        props.value ? props.value : null
+    )
+    useEffect(() => {
+        setSelectedItem(props.value ?? null)
+    }, [props.value])
     const handleItemClick = (selected) => {
         setSelectedItem(selected)
         if (props.onSelect) {
@@ -38,7 +42,7 @@ function DropdownListCoponent(props) {
     )
 }
 
-export default DropdownListCoponent
+export default DropdownListComponent
 
 const Dropdowns = styled(Dropdown)`
     display: flex;

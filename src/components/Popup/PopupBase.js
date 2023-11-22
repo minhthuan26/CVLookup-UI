@@ -49,7 +49,6 @@ const scaleIn = keyframes`
 `
 
 const PopUp = styled.div`
-    overflow: auto;
     position: fixed;
     top: 0;
     left: 0;
