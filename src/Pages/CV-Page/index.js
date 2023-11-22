@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllCV, deleteCV, downloadCV, getCVbyId } from '~/action/CvApi'
+import { getAllCV, deleteCV, downloadCV, getCVbyId } from '~/action/CVApi'
 import { Row, Col } from 'react-bootstrap'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -99,7 +99,15 @@ function CVPage() {
                                 </ContentRow>
                                 <ContentRow>
                                     <InfoRow>
-                                        <h4>{cv.introdution}</h4>
+                                        <h4>
+                                            {cv.introdution &&
+                                            cv.introdution.length > 25
+                                                ? `${cv.introdution.slice(
+                                                      0,
+                                                      20
+                                                  )}...`
+                                                : cv.introdution}
+                                        </h4>
                                     </InfoRow>
                                     <hr />
                                     <ActionContainer>
@@ -138,7 +146,7 @@ function CVPage() {
                     <PopupBase
                         trigger={showCV}
                         setTriger={setShowCV}
-                        title={`${CVDetail.introdution} - ${CVDetail.fullName}`}>
+                        title={`${CVDetail.fullName} - ${CVDetail.email}`}>
                         <div style={{ height: '90vh' }}>
                             <CVViewer Cvid={CVDetail.id} check={true} />
                         </div>

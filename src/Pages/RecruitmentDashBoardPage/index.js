@@ -19,19 +19,20 @@ import usePrivateAxios from '~/action/AxiosCredentials'
 import { Confirm } from '~/components/Popup/Confirm'
 import PopupBase from '~/components/Popup/PopupBase'
 import FormRecruitment from '~/components/FormRecruitment/FormRecruitment'
+import CVListApply from '~/components/CVListApply/CVListApply'
 function RecruitmentDashBoardPage() {
     const columns = [
         {
             name: 'ID tuyển dụng',
-            selector: (row) => <span>{row.result.id}</span>,
+            selector: (row) => <span>{row.id}</span>,
         },
         {
             name: 'Tiêu đề',
-            selector: (row) => row.result.jobTitle,
+            selector: (row) => row.jobTitle,
         },
         {
             name: 'Mức lương',
-            selector: (row) => row.result.salary,
+            selector: (row) => row.salary,
         },
         {
             name: '',
@@ -40,27 +41,38 @@ function RecruitmentDashBoardPage() {
                     <button
                         className="btn btn-danger"
                         style={{ marginRight: '2rem' }}
-                        onClick={() => handleDelete(row.result.id)}>
+                        onClick={() => handleDelete(row.id)}>
                         Xoá tin
                     </button>
                     <button
                         className="btn btn-warning"
                         style={{ marginRight: '2rem' }}
                         onClick={() => {
-                            setShowForm(true)
-                            setIdRecruitment(row.result.id)
+                            setShowFormEdit(true)
+                            setIdRecruitment(row.id)
                         }}>
                         Sửa tin
                     </button>
-                    <a href={`/recruitment-detail?id=${row.result.id}`}>
+                    <button
+                        style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'blue',
+                        }}
+                        onClick={() => {
+                            setShowFormDetail(true)
+                            setIdRecruitment(row.id)
+                        }}>
                         Xem chi tiết
-                    </a>
+                    </button>
                 </>
             ),
         },
     ]
     const [idRecruitment, setIdRecruitment] = useState('')
-    const [showForm, setShowForm] = useState(false)
+    const [showFormEdit, setShowFormEdit] = useState(false)
+    const [showFormDetail, setShowFormDetail] = useState(false)
+
     const [recruitment, setRecruitment] = useState([])
     const [search, SetSearch] = useState('')
     const [filter, setFilter] = useState([])
@@ -71,8 +83,7 @@ function RecruitmentDashBoardPage() {
     )
     const axiosPrivate = usePrivateAxios(accessToken)
 
-    const getJobList = async (dispatch) => await getNewestJob(dispatch)
-    // const getJobList = async (dispatch) => await doGetAllRecruitment(dispatch)
+    const getJobList = async (dispatch) => await doGetAllRecruitment(dispatch)
     useEffect(
         () => {
             getJobList(dispatch).then((data) => {
@@ -87,8 +98,8 @@ function RecruitmentDashBoardPage() {
     useEffect(() => {
         const result = recruitment.filter((item) => {
             return (
-                item.result.jobTitle &&
-                item.result.jobTitle.toLowerCase().match(search.toLowerCase())
+                item.jobTitle &&
+                item.jobTitle.toLowerCase().match(search.toLowerCase())
             )
         })
         setFilter(result)
@@ -162,13 +173,21 @@ function RecruitmentDashBoardPage() {
             />
 
             <PopupBase
-                trigger={showForm}
-                setTriger={setShowForm}
+                trigger={showFormEdit}
+                setTriger={setShowFormEdit}
                 title="Sửa thông tin tuyển dụng">
                 <div style={{ height: '80vh', overflow: 'auto' }}>
                     <FormRecruitment
-                        handleAcction={updateRecruitment}
+                        handleAction={updateRecruitment}
                         id={idRecruitment}></FormRecruitment>
+                </div>
+            </PopupBase>
+            <PopupBase
+                trigger={showFormDetail}
+                setTriger={setShowFormDetail}
+                title="Danh sách CV đã ứng tuyển">
+                <div style={{ height: '80vh', overflow: 'auto' }}>
+                    <CVListApply id={idRecruitment}></CVListApply>
                 </div>
             </PopupBase>
         </Container>

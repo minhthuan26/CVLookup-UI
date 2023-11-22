@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Container, Dropdown, Row } from 'react-bootstrap'
 import styled from 'styled-components'
 import {
@@ -10,17 +10,30 @@ import {
     ButtonForm,
 } from '~/components/CustomChildComponent/Form'
 import { useDispatch, useSelector } from 'react-redux'
-import DropdownListCoponent from '~/components/CustomChildComponent/DropdownListCoponent'
+import DropdownListComponent from '~/components/CustomChildComponent/DropdownListComponent'
 import { TextArea } from '~/components/CustomChildComponent/Form'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import vn from 'date-fns/locale/vi'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
-import { doAddRecruitment } from '~/action/recruitmentApi'
+import { doGetRecruitmentDetail } from '~/action/recruitmentApi'
 import { useNavigate } from 'react-router-dom'
 
 function FormRecruitment(props) {
+    const getRecruitmentDetail = async (id, dispatch) =>
+        await doGetRecruitmentDetail(id, dispatch)
+    const [recruitmentDetail, setRecruitmentDetail] = useState([])
+
+    useEffect(
+        () => {
+            getRecruitmentDetail(props.id, dispatch).then((data) =>
+                setRecruitmentDetail(data)
+            )
+        },
+        // eslint-disable-next-line
+        [props.id]
+    )
     //redux
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -29,6 +42,7 @@ function FormRecruitment(props) {
     )
     const axiosPrivate = usePrivateAxios(accessToken)
     //init state
+
     const [jobTitle, setJobTitle] = useState('')
     const [career, setCareer] = useState('')
     const [jobField, setJobField] = useState('')
@@ -42,11 +56,11 @@ function FormRecruitment(props) {
     const [districtList, setDistrictList] = useState([])
     const [district, setDistrict] = useState('')
     const [address, setAddress] = useState('')
-    const [quantity, setQuantity] = useState(1)
-    const [applicationDeadline, setApplicationDeadline] = useState()
-    const [salary, setSalary] = useState('')
-
+    const [quantity, setQuantity] = useState(0)
     const [startDate, setStartDate] = useState(new Date())
+
+    const [applicationDeadline, setApplicationDeadline] = useState(startDate)
+    const [salary, setSalary] = useState('')
 
     //get data
     const getCareer = useSelector((state) => state.jobCareer.jobCareerList)
@@ -57,6 +71,25 @@ function FormRecruitment(props) {
         (state) => state.jobPosition.jobPositionList
     )
     const getProvince = useSelector((state) => state.province.provinceList)
+
+    //Fetch dữ liệu đồng bộ
+    useEffect(() => {
+        setJobTitle(props.id ? recruitmentDetail.jobTitle : '')
+        setJobDescription(props.id ? recruitmentDetail.jobDescription : '')
+        setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
+        setBenefit(props.id ? recruitmentDetail.benefit : '')
+        // setProvince(props.id ? recruitmentDetail.jobAddress.province : '')
+        // setDistrictList(props.id ? recruitmentDetail.jobAddress.districts : [])
+        // setDistrict(props.id ? recruitmentDetail.jobAddress.district : '')
+        setAddress(props.id ? recruitmentDetail?.jobAddress?.addressDetail : '')
+        setQuantity(props.id ? recruitmentDetail.quantity : 0)
+        setApplicationDeadline(
+            props.id
+                ? new Date(recruitmentDetail.applicationDeadline)
+                : new Date()
+        )
+        setSalary(props.id ? recruitmentDetail.salary : '')
+    }, [props.id, recruitmentDetail])
 
     //handle
     const validationForm = () => {
@@ -125,11 +158,6 @@ function FormRecruitment(props) {
             return false
         }
 
-        if (!district.trim()) {
-            toast.error('Vui lòng chọn quận huyện.')
-            return false
-        }
-
         if (!address.trim()) {
             toast.error('Vui lòng điền địa chỉ cụ thể.')
             return false
@@ -138,9 +166,9 @@ function FormRecruitment(props) {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (!validationForm()) {
-            return
-        }
+        // if (!validationForm()) {
+        //     return
+        // }
 
         const newRecruitment = {
             jobTitle: jobTitle,
@@ -161,7 +189,7 @@ function FormRecruitment(props) {
             benefit: benefit,
             quantity: quantity,
         }
-        props.handleAcction(
+        props.handleAction(
             newRecruitment,
             dispatch,
             navigate,
@@ -178,15 +206,17 @@ function FormRecruitment(props) {
                         <TitleInput>Tiêu đề</TitleInput>
                         <InputForm2
                             placeholder="Ví dụ: Thực tập sinh ReactJS"
+                            value={jobTitle}
                             type="text"
                             onChange={(e) => setJobTitle(e.target.value)}
                         />
                     </StyledCol>
                     <StyledCol>
                         <TitleInput>Kinh nghiệm</TitleInput>
-                        <DropdownListCoponent
+                        <DropdownListComponent
                             data={getExp}
                             item="exp"
+                            value={props.id ? recruitmentDetail.experience : ''}
                             title={'kinh nghiệm'}
                             onSelect={(selected) => {
                                 setExp(selected.exp)
@@ -204,8 +234,9 @@ function FormRecruitment(props) {
                             dateFormat="dd/MM/yyyy"
                             onChange={(date) => {
                                 setStartDate(date)
-                                setApplicationDeadline(startDate)
+                                setApplicationDeadline(date)
                             }}
+                            value={applicationDeadline}
                             minDate={new Date()}
                             locale={vn}
                             icon={
@@ -241,6 +272,7 @@ function FormRecruitment(props) {
                         <TitleInput>Số lượng</TitleInput>
                         <InputForm2
                             placeholder={quantity}
+                            value={quantity}
                             type="number"
                             onChange={(e) => setQuantity(e.target.value)}
                         />
@@ -249,6 +281,7 @@ function FormRecruitment(props) {
                         <TitleInput>Mức lương</TitleInput>
                         <InputForm2
                             type="text"
+                            value={salary}
                             onChange={(e) => setSalary(e.target.value)}
                         />
                     </StyledCol>
@@ -256,9 +289,10 @@ function FormRecruitment(props) {
                 <Row>
                     <StyledCol>
                         <TitleInput>Ngành nghề</TitleInput>
-                        <DropdownListCoponent
+                        <DropdownListComponent
                             data={getCareer}
                             title={'ngành nghề'}
+                            value={props.id ? recruitmentDetail.jobCareer : ''}
                             item="career"
                             onSelect={(selected) => {
                                 setCareer(selected.career)
@@ -267,10 +301,11 @@ function FormRecruitment(props) {
                     </StyledCol>
                     <StyledCol>
                         <TitleInput>Lĩnh vực</TitleInput>
-                        <DropdownListCoponent
+                        <DropdownListComponent
                             data={getJobField}
                             item="field"
                             title={'lĩnh vực'}
+                            value={props.id ? recruitmentDetail.jobField : ''}
                             onSelect={(selected) => {
                                 setJobField(selected.field)
                             }}
@@ -278,10 +313,11 @@ function FormRecruitment(props) {
                     </StyledCol>
                     <StyledCol>
                         <TitleInput>Hình thức </TitleInput>
-                        <DropdownListCoponent
+                        <DropdownListComponent
                             data={getJobForm}
                             item="form"
                             title={'hình thức'}
+                            value={props.id ? recruitmentDetail.jobForm : ''}
                             onSelect={(selected) => {
                                 setJobForm(selected.form)
                             }}
@@ -289,10 +325,13 @@ function FormRecruitment(props) {
                     </StyledCol>
                     <StyledCol>
                         <TitleInput>Chức vụ</TitleInput>
-                        <DropdownListCoponent
+                        <DropdownListComponent
                             data={getJobPositon}
                             item="position"
                             title={'chức vụ'}
+                            value={
+                                props.id ? recruitmentDetail.jobPosition : ''
+                            }
                             onSelect={(selected) => {
                                 setJobPosition(selected.position)
                             }}
@@ -305,6 +344,7 @@ function FormRecruitment(props) {
                         <TitleInput>Mô tả công việc</TitleInput>
                         <TextArea
                             placeholder="Viết mô tả ngắn về công việc"
+                            value={jobDescription}
                             onChange={(e) => {
                                 setJobDescription(e.target.value)
                             }}
@@ -316,6 +356,7 @@ function FormRecruitment(props) {
                         <TitleInput>Yêu cầu ứng viên</TitleInput>
                         <TextArea
                             placeholder="Viết yêu cầu ứng viên"
+                            value={jobRequirement}
                             onChange={(e) => {
                                 setJobRequirement(e.target.value)
                             }}
@@ -327,6 +368,7 @@ function FormRecruitment(props) {
                         <TitleInput>Quyền lợi</TitleInput>
                         <TextArea
                             placeholder="Quyền lợi của ứng viên"
+                            value={benefit}
                             onChange={(e) => {
                                 setBenefit(e.target.value)
                             }}
@@ -343,7 +385,7 @@ function FormRecruitment(props) {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                 }}>
-                                <DropdownListCoponent
+                                <DropdownListComponent
                                     data={getProvince}
                                     item="name"
                                     title={'tỉnh thành'}
@@ -359,7 +401,7 @@ function FormRecruitment(props) {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                 }}>
-                                <DropdownListCoponent
+                                <DropdownListComponent
                                     data={districtList}
                                     item="name"
                                     title={'quận huyện'}
@@ -372,13 +414,13 @@ function FormRecruitment(props) {
                                 <InputForm2
                                     placeholder="Địa chỉ cụ thể"
                                     type="text"
+                                    value={address}
                                     onChange={(e) => setAddress(e.target.value)}
                                 />
                             </Col>
                         </Row>
                     </StyledCol>
                 </Row>
-
                 <ButtonForm type="submit" style={{ width: '50%' }}>
                     Đăng tin tuyển dụng
                 </ButtonForm>

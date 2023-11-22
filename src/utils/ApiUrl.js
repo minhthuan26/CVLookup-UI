@@ -31,7 +31,7 @@ export const CVUrl = {
     downloadCV: `${host}${prefix}/CurriculumVitae/download-curriculum-vitae`,
     getCVbyId: `${host}${prefix}/CurriculumVitae/get-curriculum-vitae-by-id`,
     uploadCV: `${host}${prefix}/CurriculumVitae/upload-curriculum-vitae`,
-    getAllCVUploaded: `${host}${prefix}/CurriculumVitae/get-current-user-cv-uploaded`
+    getAllCVUploaded: `${host}${prefix}/CurriculumVitae/get-current-user-cv-uploaded`,
 }
 
 export const jobFieldUrl = {
@@ -47,14 +47,16 @@ export const jobAddressUrl = {
 }
 
 export const experienceUrl = {
-    getAllExperience: `${host}${prefix}/Experience/get-all-experience`
+    getAllExperience: `${host}${prefix}/Experience/get-all-experience`,
 }
 
 export const recruitmentCVUrl = {
     applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`,
     reApplyCVToRecruitment: `${host}${prefix}/RecruitmentCV/update-applied-cv`,
-    getAppliedCV: `${host}${prefix}/RecruitmentCV/get-by-user-and-recruitment-id`
-
+    getAppliedCV: `${host}${prefix}/RecruitmentCV/get-by-user-and-recruitment-id`,
+    getCvByRecruitmentId: `${host}${prefix}/RecruitmentCV/get-by-recruitment-id`,
+    updateIsView: `${host}${prefix}/RecruitmentCV/update-isView`,
+    toggleIsPass: `${host}${prefix}/RecruitmentCV/toggle-isPass`,
 }
 
 export const jobFormUrl = {
@@ -64,4 +66,3 @@ export const jobFormUrl = {
 export const JobPositionUrl = {
     getAll: `${host}${prefix}/JobPosition/get-all-job-position`,
 }
-

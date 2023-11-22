@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
-import { doGetCurrentUserCVUploaded, doUploadCV } from '~/action/CvApi'
-import { doApplyToRecruitment, doReApplyToRecruitment } from '~/action/recruitmentCvApi'
+import { doGetCurrentUserCVUploaded, doUploadCV } from '~/action/CVApi'
+import {
+    doApplyToRecruitment,
+    doReApplyToRecruitment,
+} from '~/action/recruitmentCvApi'
 import useApplyJobModal from '~/hooks/useApplyJobModal'
 import UploadedCVCard from '../UploadedCVCard'
 
@@ -33,9 +36,10 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
         setCvSelected('')
     }
 
-
     const handleIsChooseOldCV = (e) => {
-        e.target.id === 'radio-uploaded-cv' ? setIsChooseOldCV(true) : setIsChooseOldCV(false)
+        e.target.id === 'radio-uploaded-cv'
+            ? setIsChooseOldCV(true)
+            : setIsChooseOldCV(false)
     }
 
     const handleApply = (e) => {
@@ -61,8 +65,9 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                 !email.trim() ||
                 !phoneNumber.trim() ||
                 !cv ||
-                !introduction.trim()) {
-                toast.error("Vui lòng điền đầy đủ thông tin")
+                !introduction.trim()
+            ) {
+                toast.error('Vui lòng điền đầy đủ thông tin')
                 return
             }
 
@@ -70,47 +75,60 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                 toast.error('Số điện thoại không đúng định dạng.')
                 return
             }
-            formData.append("FullName", fullname)
-            formData.append("Email", email)
-            formData.append("PhoneNumber", phoneNumber)
-            formData.append("CVFile", cv)
-            formData.append("Introdution", introduction)
-            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadCV(axiosPrivate, dispatch, data)
+            formData.append('FullName', fullname)
+            formData.append('Email', email)
+            formData.append('PhoneNumber', phoneNumber)
+            formData.append('CVFile', cv)
+            formData.append('Introdution', introduction)
+            const uploadCV = async (axiosPrivate, dispatch, data) =>
+                await doUploadCV(axiosPrivate, dispatch, data)
             uploadCV(axiosPrivate, dispatch, formData).then((data) => {
                 const applyData = {
                     recruitmentId: searchParams.get('id'),
-                    curriculumVitaeId: data.id
+                    curriculumVitaeId: data.id,
                 }
-                const applyToRecruitment = async (axiosPrivate, dispatch, data) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
-                applyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
-                    setFullname('')
-                    setEmail('')
-                    setPhoneNumber('')
-                    setCV()
-                    setIntroduction('')
-                    setIsChooseOldCV(true)
-                    setApplyJobModal(false)
-                    navigate(0)
-                })
+                const applyToRecruitment = async (
+                    axiosPrivate,
+                    dispatch,
+                    data
+                ) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
+                applyToRecruitment(axiosPrivate, dispatch, applyData).then(
+                    (data) => {
+                        setFullname('')
+                        setEmail('')
+                        setPhoneNumber('')
+                        setCV()
+                        setIntroduction('')
+                        setIsChooseOldCV(true)
+                        setApplyJobModal(false)
+                        navigate(0)
+                    }
+                )
             })
         } else {
             if (cvSelected) {
                 const applyData = {
                     recruitmentId: searchParams.get('id'),
-                    curriculumVitaeId: cvSelected
+                    curriculumVitaeId: cvSelected,
                 }
-                const applyToRecruitment = async (axiosPrivate, dispatch, data) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
-                applyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
-                    setFullname('')
-                    setEmail('')
-                    setPhoneNumber('')
-                    setCV()
-                    setIntroduction('')
-                    setIsChooseOldCV(true)
-                    setApplyJobModal(false)
-                })
+                const applyToRecruitment = async (
+                    axiosPrivate,
+                    dispatch,
+                    data
+                ) => await doApplyToRecruitment(axiosPrivate, dispatch, data)
+                applyToRecruitment(axiosPrivate, dispatch, applyData).then(
+                    (data) => {
+                        setFullname('')
+                        setEmail('')
+                        setPhoneNumber('')
+                        setCV()
+                        setIntroduction('')
+                        setIsChooseOldCV(true)
+                        setApplyJobModal(false)
+                    }
+                )
             } else {
-                toast.error("Vui lòng chọn cv để ứng tuyển")
+                toast.error('Vui lòng chọn cv để ứng tuyển')
             }
         }
     }
@@ -125,8 +143,9 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                 !email.trim() ||
                 !phoneNumber.trim() ||
                 !cv ||
-                !introduction.trim()) {
-                toast.error("Vui lòng điền đầy đủ thông tin")
+                !introduction.trim()
+            ) {
+                toast.error('Vui lòng điền đầy đủ thông tin')
                 return
             }
 
@@ -134,67 +153,82 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                 toast.error('Số điện thoại không đúng định dạng.')
                 return
             }
-            formData.append("FullName", fullname)
-            formData.append("Email", email)
-            formData.append("PhoneNumber", phoneNumber)
-            formData.append("CVFile", cv)
-            formData.append("Introdution", introduction)
-            const uploadCV = async (axiosPrivate, dispatch, data) => await doUploadCV(axiosPrivate, dispatch, data)
+            formData.append('FullName', fullname)
+            formData.append('Email', email)
+            formData.append('PhoneNumber', phoneNumber)
+            formData.append('CVFile', cv)
+            formData.append('Introdution', introduction)
+            const uploadCV = async (axiosPrivate, dispatch, data) =>
+                await doUploadCV(axiosPrivate, dispatch, data)
             uploadCV(axiosPrivate, dispatch, formData).then((data) => {
                 const applyData = {
                     recruitmentId: searchParams.get('id'),
                     cvId: data.id,
-                    userId: user.id
+                    userId: user.id,
                 }
-                const reApplyToRecruitment = async (axiosPrivate, dispatch, data) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
-                reApplyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
-                    setFullname('')
-                    setEmail('')
-                    setPhoneNumber('')
-                    setCV()
-                    setIntroduction('')
-                    setIsChooseOldCV(true)
-                    setApplyJobModal(false)
-                    navigate(0)
-                })
+                const reApplyToRecruitment = async (
+                    axiosPrivate,
+                    dispatch,
+                    data
+                ) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
+                reApplyToRecruitment(axiosPrivate, dispatch, applyData).then(
+                    (data) => {
+                        setFullname('')
+                        setEmail('')
+                        setPhoneNumber('')
+                        setCV()
+                        setIntroduction('')
+                        setIsChooseOldCV(true)
+                        setApplyJobModal(false)
+                        navigate(0)
+                    }
+                )
             })
         } else {
             if (cvSelected) {
                 const applyData = {
                     recruitmentId: searchParams.get('id'),
                     cvId: cvSelected,
-                    userId: user.id
+                    userId: user.id,
                 }
-                const reApplyToRecruitment = async (axiosPrivate, dispatch, data) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
-                reApplyToRecruitment(axiosPrivate, dispatch, applyData).then((data) => {
-                    setFullname('')
-                    setEmail('')
-                    setPhoneNumber('')
-                    setCV()
-                    setIntroduction('')
-                    setIsChooseOldCV(true)
-                    setApplyJobModal(false)
-                    setCvSelected('')
-                })
+                const reApplyToRecruitment = async (
+                    axiosPrivate,
+                    dispatch,
+                    data
+                ) => await doReApplyToRecruitment(axiosPrivate, dispatch, data)
+                reApplyToRecruitment(axiosPrivate, dispatch, applyData).then(
+                    (data) => {
+                        setFullname('')
+                        setEmail('')
+                        setPhoneNumber('')
+                        setCV()
+                        setIntroduction('')
+                        setIsChooseOldCV(true)
+                        setApplyJobModal(false)
+                        setCvSelected('')
+                    }
+                )
             } else {
-                toast.error("Vui lòng chọn cv để ứng tuyển")
+                toast.error('Vui lòng chọn cv để ứng tuyển')
             }
         }
     }
 
-    useEffect(() => {
-        if (user) {
-            const getAllCVUploaded = async (axiosPrivate, dispatch) => await doGetCurrentUserCVUploaded(axiosPrivate, dispatch)
-            getAllCVUploaded(axiosPrivate, dispatch).then(data => {
-                if (data) {
-                    setCurrentUserCVUploaded(data)
-                }
-            })
-        }
-
-    },
+    useEffect(
+        () => {
+            if (user) {
+                const getAllCVUploaded = async (axiosPrivate, dispatch) =>
+                    await doGetCurrentUserCVUploaded(axiosPrivate, dispatch)
+                getAllCVUploaded(axiosPrivate, dispatch).then((data) => {
+                    if (data) {
+                        setCurrentUserCVUploaded(data)
+                    }
+                })
+            }
+        },
         //eslint-disable-next-line
-        [user])
+        [user]
+    )
 
     return (
         <Modal
@@ -245,40 +279,62 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                                     </Form.Check>
                                 </Form.Group>
                             </div>
-                            <div className='border border-1 rounded mt-2' style={{ display: isChooseOldCV ? 'block' : 'none' }}>
+                            <div
+                                className="border border-1 rounded mt-2"
+                                style={{
+                                    display: isChooseOldCV ? 'block' : 'none',
+                                }}>
                                 <ul>
-                                    {
-                                        currentUserCVUploaded.length > 0
-                                            ? currentUserCVUploaded.map(cv => (
-                                                <li key={cv.id} className='p-2 border border-1 my-2 me-2 rounded'>
-                                                    <Form.Group>
-                                                        <Form.Check
-                                                            type='radio'
-                                                            id={cv.id}>
-                                                            <Form.Check.Input
-                                                                style={{ borderColor: 'black' }}
-                                                                type='radio'
-                                                                name="group3"
-                                                                onChange={(e) => {
-                                                                    setCvSelected(e.target.id)
-                                                                    e.target.defaultChecked = true
-                                                                }} />
-                                                            <Form.Check.Label className='d-flex align-items-center gap-2'>
-                                                                <div className='d-flex w-100 justify-content-between align-items-center'>
-                                                                    <div>{cv.uploadedAt}</div>
-                                                                    <a href='/test'>
-                                                                        Xem
-                                                                    </a>
+                                    {currentUserCVUploaded.length > 0 ? (
+                                        currentUserCVUploaded.map((cv) => (
+                                            <li
+                                                key={cv.id}
+                                                className="p-2 border border-1 my-2 me-2 rounded">
+                                                <Form.Group>
+                                                    <Form.Check
+                                                        type="radio"
+                                                        id={cv.id}>
+                                                        <Form.Check.Input
+                                                            style={{
+                                                                borderColor:
+                                                                    'black',
+                                                            }}
+                                                            type="radio"
+                                                            name="group3"
+                                                            onChange={(e) => {
+                                                                setCvSelected(
+                                                                    e.target.id
+                                                                )
+                                                                e.target.defaultChecked = true
+                                                            }}
+                                                        />
+                                                        <Form.Check.Label className="d-flex align-items-center gap-2">
+                                                            <div className="d-flex w-100 justify-content-between align-items-center">
+                                                                <div>
+                                                                    {
+                                                                        cv.uploadedAt
+                                                                    }
                                                                 </div>
-                                                            </Form.Check.Label>
-                                                        </Form.Check>
-                                                    </Form.Group>
-                                                    <UploadedCVCard show={cvSelected} data={cv} />
-                                                </li>))
-                                            : <div className='text-center'>
-                                                <p><b>Chưa upload cv</b></p>
-                                            </div>
-                                    }
+                                                                <a href="/test">
+                                                                    Xem
+                                                                </a>
+                                                            </div>
+                                                        </Form.Check.Label>
+                                                    </Form.Check>
+                                                </Form.Group>
+                                                <UploadedCVCard
+                                                    show={cvSelected}
+                                                    data={cv}
+                                                />
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <div className="text-center">
+                                            <p>
+                                                <b>Chưa upload cv</b>
+                                            </p>
+                                        </div>
+                                    )}
                                 </ul>
                             </div>
                         </li>
@@ -305,7 +361,11 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                                     </Form.Check>
                                 </Form.Group>
                             </div>
-                            <div className='border border-1 rounded mt-2' style={{ display: isChooseOldCV ? 'none' : 'block' }}>
+                            <div
+                                className="border border-1 rounded mt-2"
+                                style={{
+                                    display: isChooseOldCV ? 'none' : 'block',
+                                }}>
                                 <Form>
                                     <Form.Group className="p-2 my-2 me-2 rounded">
                                         <Form.Label>
@@ -396,9 +456,17 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                             </div>
                         </li>
                         <li>
-                            <div className='rounded mt-2 d-flex gap-2 justify-content-center'>
-                                <div style={{ width: '90%' }} className='py-2'>
-                                    <Button className='w-100' onClick={appliedCv ? handleReApply : handleApply}>Nộp đơn ứng tuyển</Button>
+                            <div className="rounded mt-2 d-flex gap-2 justify-content-center">
+                                <div style={{ width: '90%' }} className="py-2">
+                                    <Button
+                                        className="w-100"
+                                        onClick={
+                                            appliedCv
+                                                ? handleReApply
+                                                : handleApply
+                                        }>
+                                        Nộp đơn ứng tuyển
+                                    </Button>
                                 </div>
                                 <div className="py-2">
                                     <Button
