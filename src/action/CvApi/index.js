@@ -34,6 +34,39 @@ export const getAllCV = async (dispatch, axiosPrivate) => {
         return []
     }
 }
+export const doGetAllCVByCandidateId = async (dispatch, axiosPrivate, id) => {
+    dispatch(inLoading())
+    try {
+        const res = await axiosPrivate({
+            url: `${CVUrl.getAllCVbyCandidateId}?id=${id}`,
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (res.data.success) {
+            dispatch(successLoading())
+            return res.data.data
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return []
+    } catch (error) {
+        dispatch(successLoading())
+        return []
+    }
+}
 export const getCVbyId = async (axiosPrivate, id, dispatch) => {
     dispatch(inLoading())
     try {
@@ -159,8 +192,8 @@ export const doGetCurrentUserCVUploaded = async (axiosPrivate, dispatch) => {
             method: 'get',
             withCredentials: true,
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         })
 
         if (!res.data.success) {

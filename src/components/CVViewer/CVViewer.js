@@ -33,9 +33,9 @@ function CVViewer(props) {
     const newPlugin = defaultLayoutPlugin()
     return props.check ? (
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-            {CVDetail.base64StringFile ? (
+            {CVDetail.cvPath ? (
                 <Viewer
-                    fileUrl={`data:application/pdf;base64,${CVDetail.base64StringFile}`}
+                    fileUrl={`data:application/pdf;base64,${CVDetail.cvPath}`}
                     plugins={[newPlugin]}
                     defaultScale={SpecialZoomLevel.ActualSize}
                 />
@@ -54,7 +54,7 @@ function CVViewer(props) {
             <div style={{ flex: 1, height: '25vw' }}>
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                     <Viewer
-                        fileUrl={`data:application/pdf;base64,${CVDetail.base64StringFile}`}
+                        fileUrl={`data:application/pdf;base64,${CVDetail.cvPath}`}
                         plugins={[thumbnailPluginInstance]}
                     />
                 </Worker>

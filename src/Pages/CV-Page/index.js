@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllCV, deleteCV, downloadCV, getCVbyId } from '~/action/CVApi'
+import { deleteCV, downloadCV, doGetAllCVByCandidateId } from '~/action/CVApi'
 import { Row, Col } from 'react-bootstrap'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -22,10 +22,11 @@ function CVPage() {
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
+    const candidateId = useSelector((state) => state.auth.credentials.user.id)
     const axiosPrivate = usePrivateAxios(accessToken)
 
-    const handleGetAllCV = async (dispatch, axiosPrivate) =>
-        await getAllCV(dispatch, axiosPrivate)
+    const handleGetAllCV = async (dispatch, axiosPrivate, id) =>
+        await doGetAllCVByCandidateId(dispatch, axiosPrivate, id)
 
     const handleDelete = (id) => {
         Confirm.open({
@@ -48,7 +49,7 @@ function CVPage() {
     }
     useEffect(
         () => {
-            handleGetAllCV(dispatch, axiosPrivate).then((data) =>
+            handleGetAllCV(dispatch, axiosPrivate, candidateId).then((data) =>
                 setCVlist(data)
             )
         },

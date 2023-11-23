@@ -23,13 +23,19 @@ function FormAddCV(props) {
 
     const [showFormAdd, setShowFormAdd] = useState(false)
     const [toggleIsCreate, setToggleIsCreate] = useState(false)
-
+    const [newDataCV, setNewDataCV] = useState([])
     const dispatch = useDispatch()
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
     const axiosPrivate = usePrivateAxios(accessToken)
-
+    const candidateId = useSelector((state) => state.auth.credentials.user.id)
+    const uploadCurriculumViate = async (axiosPrivate, dispatch, cvInfo) => {
+        await doUploadCV(axiosPrivate, dispatch, cvInfo).then((data) => {
+            console.log(data)
+            props.setCVlist((prev) => [...prev, data])
+        })
+    }
     const handleUpload = (e) => {
         e.preventDefault()
         const phoneRegex = /^\d{10}$/
@@ -44,11 +50,6 @@ function FormAddCV(props) {
             toast.error('Số điện thoại không đúng định dạng.')
         } else {
             try {
-                const uploadCurriculumViate = async (
-                    axiosPrivate,
-                    dispatch,
-                    cvInfo
-                ) => await doUploadCV(axiosPrivate, dispatch, cvInfo)
                 var formdata = new FormData()
                 formdata.append('FullName', fullName)
                 formdata.append('PhoneNumber', phoneNumber)
@@ -57,12 +58,6 @@ function FormAddCV(props) {
                 formdata.append('CVFile', cvFile)
 
                 uploadCurriculumViate(axiosPrivate, dispatch, formdata)
-
-                props.handleGetAllCV(dispatch, axiosPrivate)
-
-                props
-                    .handleGetAllCV(dispatch, axiosPrivate)
-                    .then((data) => props.setCVlist(data))
 
                 setFullName('')
                 setEmail('')
