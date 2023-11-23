@@ -27,6 +27,7 @@ export const recruitmentUrl = {
 
 export const CVUrl = {
     getAllCV: `${host}${prefix}/CurriculumVitae/get-all-curriculum-vitae`,
+    getAllCVbyCandidateId: `${host}${prefix}/CurriculumVitae/get-curriculum-vitae-by-candidateId`,
     deleteCV: `${host}${prefix}/CurriculumVitae/delete-curriculum-vitae`,
     downloadCV: `${host}${prefix}/CurriculumVitae/download-curriculum-vitae`,
     getCVbyId: `${host}${prefix}/CurriculumVitae/get-curriculum-vitae-by-id`,
