@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
-import { doGetCurrentUserCVUploaded, doUploadCV } from '~/action/CVApi'
+import { doGetCurrentUserCVUploaded, doUploadCV } from '~/action/CvApi'
 import {
     doApplyToRecruitment,
     doReApplyToRecruitment,
