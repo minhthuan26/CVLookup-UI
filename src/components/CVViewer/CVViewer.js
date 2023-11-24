@@ -5,7 +5,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
 import '@react-pdf-viewer/thumbnail/lib/styles/index.css'
 import { thumbnailPlugin } from '@react-pdf-viewer/thumbnail'
-import { getCVbyId } from '~/action/CVApi'
+import { getCVbyId } from '~/action/CvApi'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
 
