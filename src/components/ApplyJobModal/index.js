@@ -45,18 +45,6 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
     const handleApply = (e) => {
         e.preventDefault()
 
-        const phoneRegex = /^\d{10}$/
-        if (
-            !fullname.trim() ||
-            !email.trim() ||
-            !phoneNumber.trim() ||
-            !cv ||
-            !introduction.trim()
-        ) {
-            toast.error('Vui lòng điền đầy đủ thông tin')
-            return
-        }
-
         var formData = new FormData()
         if (!isChooseOldCV) {
             const phoneRegex = /^\d{10}$/

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteCV, downloadCV, doGetAllCVByCandidateId } from '~/action/CvApi'
+import { deleteCV, downloadCV, doGetCurrentUserCVUploaded } from '~/action/CvApi'
 import { Row, Col } from 'react-bootstrap'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -22,11 +22,11 @@ function CVPage() {
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
-    const candidateId = useSelector((state) => state.auth.credentials.user.id)
+
     const axiosPrivate = usePrivateAxios(accessToken)
 
-    const handleGetAllCV = async (dispatch, axiosPrivate, id) =>
-        await doGetAllCVByCandidateId(dispatch, axiosPrivate, id)
+    const handleGetAllCV = async (axiosPrivate, dispatch) =>
+        await doGetCurrentUserCVUploaded(axiosPrivate, dispatch)
 
     const handleDelete = (id) => {
         Confirm.open({
@@ -49,7 +49,7 @@ function CVPage() {
     }
     useEffect(
         () => {
-            handleGetAllCV(dispatch, axiosPrivate, candidateId).then((data) =>
+            handleGetAllCV(axiosPrivate, dispatch).then((data) =>
                 setCVlist(data)
             )
         },
@@ -93,7 +93,7 @@ function CVPage() {
                 <hr />
                 <div>
                     <Row className="m-2">
-                        {CVlist.map((cv) => (
+                        {CVlist?.map((cv) => (
                             <CVCard key={cv.id} sm={6} md={4}>
                                 <ContentRow>
                                     <CVViewer Cvid={cv.id} check={false} />

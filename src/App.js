@@ -21,6 +21,8 @@ import ApplyJobModal from './components/ApplyJobModal'
 import useApplyJobModal from './hooks/useApplyJobModal'
 import { doGetAllJobForm } from './action/JobFormApi'
 import { doGetAllJobPosition } from './action/JobPosition'
+import Notification from './components/Notification'
+import useNotificationBox from './hooks/useNotificationBox'
 
 const connect = connection()
 
@@ -89,6 +91,7 @@ function App() {
     )
     const { loginModal, setLoginModal } = useLoginModal()
     const { applyJobModal, isAlreadyApply, appliedCv } = useApplyJobModal()
+    const { isDisplay, setIsDisplay } = useNotificationBox()
 
     return (
         <BrowserRouter>
@@ -138,6 +141,8 @@ function App() {
                 show={applyJobModal}
                 appliedCv={appliedCv}
                 user={user} />
+
+            <Notification isDisplay={isDisplay} />
             <ToastContainer
                 position="top-center"
                 autoClose={3000}
