@@ -10,6 +10,7 @@ import {
     GhostButton,
     InputForm,
     LabelForm,
+    TextArea,
     TitleForm,
 } from '../CustomChildComponent/Form'
 
@@ -121,9 +122,9 @@ function FormAddCV(props) {
                             setEmail(e.target.value)
                         }}
                     />
-                    <InputForm
+                    <TextArea
                         type="text"
-                        placeholder="Tiêu đề"
+                        placeholder="Thư giới thiệu"
                         onChange={(e) => {
                             setIntrodution(e.target.value)
                         }}

@@ -48,8 +48,10 @@ const Dropdowns = styled(Dropdown)`
     display: flex;
     justify-content: flex-start;
     margin-left: 0.75rem;
+    width: 300px;
+
     .dropdown-menu {
-        max-height: 20vh;
+        max-height: 30vh;
         overflow-y: auto;
     }
 `
