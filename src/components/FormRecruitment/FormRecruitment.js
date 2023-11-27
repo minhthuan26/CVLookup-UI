@@ -27,12 +27,14 @@ function FormRecruitment(props) {
 
     useEffect(
         () => {
-            getRecruitmentDetail(props.id, dispatch).then((data) =>
-                setRecruitmentDetail(data)
-            )
+            if (props.id) {
+                getRecruitmentDetail(props.id, dispatch).then((data) =>
+                    setRecruitmentDetail(data)
+                )
+            }
         },
         // eslint-disable-next-line
-        [props.id]
+        []
     )
     //redux
     const dispatch = useDispatch()

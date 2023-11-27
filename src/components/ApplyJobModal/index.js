@@ -28,6 +28,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
+    const role = useSelector(state => state.auth.credentials.role)
     const axiosPrivate = usePrivateAxios(accessToken)
 
     const handleClose = () => {
@@ -204,7 +205,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
 
     useEffect(
         () => {
-            if (user) {
+            if (user && role !== 'Employer') {
                 const getAllCVUploaded = async (axiosPrivate, dispatch) =>
                     await doGetCurrentUserCVUploaded(axiosPrivate, dispatch)
                 getAllCVUploaded(axiosPrivate, dispatch).then((data) => {
@@ -215,7 +216,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
             }
         },
         //eslint-disable-next-line
-        [user]
+        [user, role]
     )
 
     return (
