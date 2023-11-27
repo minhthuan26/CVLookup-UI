@@ -23,6 +23,9 @@ import { doGetAllJobForm } from './action/JobFormApi'
 import { doGetAllJobPosition } from './action/JobPosition'
 import Notification from './components/Notification'
 import useNotificationBox from './hooks/useNotificationBox'
+import usePrivateAxios from '~/action/AxiosCredentials'
+import { doGetNotificationByUserId } from '~/action/notification'
+import { setNotifications } from '~/Redux/Notification/NotificationSlice'
 
 const connect = connection()
 
@@ -30,6 +33,8 @@ function App() {
     const isLoading = useSelector((state) => state.loader.loading)
     const dispatch = useDispatch()
     const user = useSelector((state) => state.auth.credentials.user)
+    const accessToken = useSelector(state => state.auth.credentials.accessToken)
+    const axiosPrivate = usePrivateAxios(accessToken)
 
     useEffect(
         () => {
@@ -80,17 +85,26 @@ function App() {
                         })
                 })
             } else {
-                // connect.invoke("DeleteHubConnectionByConnectionId").then(() => {
-                //     connect.stop()
-                // })
                 connect.stop()
             }
         },
         // eslint-disable-next-line
         [user]
     )
+
+    useEffect(() => {
+        if (user) {
+            const getNotificationByUserId = async (axiosPrivate, dispatch, userId) => await doGetNotificationByUserId(axiosPrivate, dispatch, userId)
+            getNotificationByUserId(axiosPrivate, dispatch, user.id).then(data => {
+                console.log(data)
+                dispatch(setNotifications(data))
+            })
+        }
+    },
+        // eslint-disable-next-line
+        [user])
     const { loginModal, setLoginModal } = useLoginModal()
-    const { applyJobModal, isAlreadyApply, appliedCv } = useApplyJobModal()
+    const { applyJobModal, appliedCv } = useApplyJobModal()
     const { isDisplay, setIsDisplay } = useNotificationBox()
 
     return (

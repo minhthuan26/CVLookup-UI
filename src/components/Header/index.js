@@ -25,6 +25,8 @@ function Header() {
         e.preventDefault()
         setIsDisplay(preState => !preState)
     }
+
+
     return (
         <>
             <HeaderComponent.HeaderContainer>
