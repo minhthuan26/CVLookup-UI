@@ -92,11 +92,10 @@ function App() {
         [user]
     )
 
+    const getNotificationByUserId = async (axiosPrivate, userId) => await doGetNotificationByUserId(axiosPrivate, userId)
     useEffect(() => {
         if (user) {
-            const getNotificationByUserId = async (axiosPrivate, dispatch, userId) => await doGetNotificationByUserId(axiosPrivate, dispatch, userId)
-            getNotificationByUserId(axiosPrivate, dispatch, user.id).then(data => {
-                console.log(data)
+            getNotificationByUserId(axiosPrivate, user.id).then(data => {
                 dispatch(setNotifications(data))
             })
         }
@@ -106,7 +105,11 @@ function App() {
     const { loginModal, setLoginModal } = useLoginModal()
     const { applyJobModal, appliedCv } = useApplyJobModal()
     const { isDisplay, setIsDisplay } = useNotificationBox()
-
+    connect.on("ClientNotify", () => {
+        getNotificationByUserId(axiosPrivate, user.id).then(data => {
+            dispatch(setNotifications(data))
+        })
+    })
     return (
         <BrowserRouter>
             <Routes>

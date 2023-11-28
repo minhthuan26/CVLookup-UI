@@ -13,7 +13,7 @@ import useApplyJobModal from '~/hooks/useApplyJobModal'
 import UploadedCVCard from '../UploadedCVCard'
 
 const ApplyJobModal = ({ show, appliedCv, user }) => {
-    const { setApplyJobModal } = useApplyJobModal()
+    const { setApplyJobModal, setAppliedCv } = useApplyJobModal()
     const [isChooseOldCV, setIsChooseOldCV] = useState(true)
     const dispatch = useDispatch()
     const [fullname, setFullname] = useState('')
@@ -90,7 +90,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
-                        navigate(0)
+                        setAppliedCv(data)
                     }
                 )
             })
@@ -114,6 +114,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
+                        setAppliedCv(data)
                     }
                 )
             } else {
@@ -169,7 +170,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
-                        navigate(0)
+                        setAppliedCv(data)
                     }
                 )
             })
@@ -195,6 +196,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
                         setCvSelected('')
+                        setAppliedCv(data)
                     }
                 )
             } else {

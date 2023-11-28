@@ -70,4 +70,5 @@ export const JobPositionUrl = {
 
 export const notificationUrl = {
     getNotificationByUserId: `${host}${prefix}/notification/get-notification-by-user-id`,
+    updateViewStatus: `${host}${prefix}/notification/update-view-status`,
 }

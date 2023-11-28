@@ -1,87 +1,68 @@
 import { Pagination } from '@mui/material'
 import React, { useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
-
-const notificationList = [
-	{
-		id: '1',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '20 phút trước'
-	},
-	{
-		id: '2',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '10 phút trước'
-	},
-	{
-		id: '3',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '1 ngày trước'
-	},
-	{
-		id: '4',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '2 ngày trước'
-	},
-	{
-		id: '5',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '2 ngày trước'
-	},
-	{
-		id: '6',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '2 ngày trước'
-	},
-	{
-		id: '7',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '2 ngày trước'
-	},
-	{
-		id: '8',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '2 ngày trước'
-	},
-	{
-		id: '9',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '2 ngày trước'
-	},
-	{
-		id: '10',
-		message: 'Nhà tuyển dụng X đã xem cv của bạn',
-		notifiedAt: '2 ngày trước'
-	},
-]
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { setNotifications } from '~/Redux/Notification/NotificationSlice'
+import usePrivateAxios from '~/action/AxiosCredentials'
+import { doUpdateViewStatus } from '~/action/notification'
 
 const Notification = ({ isDisplay }) => {
 	const [page, setPage] = useState(1)
+	const navigate = useNavigate()
+	const notifications = useSelector(state => state.notifications.notifications)
+	const accessToken = useSelector(state => state.auth.credentials.accessToken)
+	const axiosPrivate = usePrivateAxios(accessToken)
+	const dispatch = useDispatch()
+	const handleNotificationClick = (id) => {
+		const notify = notifications.find(notify => notify.id === id)
+		if (notify.isView) {
+			navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
+		} else {
+			const updateViewStatus = async (axiosPrivate, dispatch, id) => doUpdateViewStatus(axiosPrivate, dispatch, id)
+			updateViewStatus(axiosPrivate, dispatch, notify.id).then(data => {
+				var tmp = [...notifications]
+				tmp[tmp.indexOf(notify)] = data
+				dispatch(setNotifications(tmp))
+				navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
+			})
+		}
+	}
 	return (
 		<Card className='position-absolute top-0 end-0' style={{
 			display: `${isDisplay ? 'block' : 'none'}`,
 			maxHeight: '40rem',
 			minHeight: '23rem',
 			width: '25rem',
-			backgroundColor: 'rgb(85, 102, 170, 0.9)',
+			backgroundColor: 'rgb(43,130,175, 0.5)',
 			marginTop: '80px'
 		}}>
 			<Card.Header className='d-flex'>
-				<Card.Text className='w-100 text-center text-white'><b>Thông báo</b></Card.Text>
+				<Card.Text style={{ color: '#eee', fontSize: '1.25rem' }} className='w-100 text-center'><b>Thông báo</b></Card.Text>
 			</Card.Header>
 			<Card.Body className='d-flex flex-column gap-2 position-relative'>
 				{
-					notificationList.length > 0
-						? notificationList.slice((page * 4 - 4), (page * 4)).map(notify => <Card key={notify.id} className='onHover'>
-							<Card.Body>
-								<Card.Text>
-									{notify.message}
-								</Card.Text>
-							</Card.Body>
-							<Card.Footer>
-								<Card.Text className='w-100 text-end'>{notify.notifiedAt}</Card.Text>
-							</Card.Footer>
-						</Card>)
+					notifications.length > 0
+						? notifications.slice((page * 4 - 4), (page * 4)).map(notify =>
+							<Card
+								style={{
+									boxShadow: 'rgb(13,0,83) 0px 2px 6px',
+									backgroundColor: `${notify.isView ? 'rgba(240, 240, 240,0.7)' : 'white'}`
+								}}
+								key={notify.id}
+								onClick={() => handleNotificationClick(notify.id)}
+								className='onHover'>
+
+								<Card.Body
+									id={notify.id}>
+									<Card.Text>
+										{notify.message}
+									</Card.Text>
+								</Card.Body>
+								<Card.Footer>
+									<Card.Text className='w-100 text-end'>{notify.notifiedAt}</Card.Text>
+								</Card.Footer>
+							</Card>)
 						: <Card className='h-100 d-flex align-items-center justify-content-center'>
 							<Card.Body>
 								<Card.Text className='text-center'>Chưa có thông báo</Card.Text>
@@ -89,11 +70,11 @@ const Notification = ({ isDisplay }) => {
 						</Card>
 				}
 			</Card.Body>
-			{notificationList.length > 0 ? <Card.Footer className='d-flex justify-content-center'>
+			{notifications.length > 0 ? <Card.Footer className='d-flex justify-content-center'>
 				<Pagination
 					onChange={(e, value) => setPage(value)}
 					defaultPage={page}
-					count={Math.ceil(notificationList.length * 1.0 / 4)}
+					count={Math.ceil(notifications.length * 1.0 / 4)}
 					color='secondary'
 					shape="rounded" />
 			</Card.Footer> : <></>}

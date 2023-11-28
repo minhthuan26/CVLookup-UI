@@ -25,8 +25,16 @@ function Header() {
         e.preventDefault()
         setIsDisplay(preState => !preState)
     }
-
-
+    const [isNewNotification, setIsNewNotification] = useState(false)
+    const notifications = useSelector(state => state.notifications.notifications)
+    useEffect(() => {
+        if (notifications.length > 0) {
+            const isNew = notifications.some(noti => noti.isView === false)
+            setIsNewNotification(isNew)
+        }
+    },
+        //eslint-disable-next-line
+        [notifications])
     return (
         <>
             <HeaderComponent.HeaderContainer>
@@ -63,7 +71,12 @@ function Header() {
                                 onClick={handleOpenNotificationBox}
                                 className="link-name position-relative">
                                 <NotificationsIcon />
-                                <Badge bg="danger" className='position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle'> </Badge>
+                                <Badge
+                                    style={{
+                                        visibility: `${isNewNotification ? 'visible' : 'hidden'}`
+                                    }}
+                                    bg="danger"
+                                    className='position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle'> </Badge>
                             </HeaderComponent.LinkName>
                             <HeaderComponent.LinkName onClick={handleLogout}
                                 className="link-name">
