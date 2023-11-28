@@ -61,7 +61,7 @@ function FormRecruitment(props) {
     const [quantity, setQuantity] = useState(0)
     const [startDate, setStartDate] = useState(new Date())
 
-    const [applicationDeadline, setApplicationDeadline] = useState(startDate)
+    const [applicationDeadline, setApplicationDeadline] = useState(new Date())
     const [salary, setSalary] = useState('')
 
     //get data
@@ -80,9 +80,17 @@ function FormRecruitment(props) {
         setJobDescription(props.id ? recruitmentDetail.jobDescription : '')
         setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
         setBenefit(props.id ? recruitmentDetail.benefit : '')
-        // setProvince(props.id ? recruitmentDetail.jobAddress.province : '')
-        // setDistrictList(props.id ? recruitmentDetail.jobAddress.districts : [])
-        // setDistrict(props.id ? recruitmentDetail.jobAddress.district : '')
+        setExp(props.id ? recruitmentDetail.experience : '')
+        setJobForm(props.id ? recruitmentDetail.jobForm : '')
+        setJobPosition(props.id ? recruitmentDetail.jobPosition : '')
+        setJobDescription(props.id ? recruitmentDetail.jobDescription : '')
+        setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
+        setBenefit(props.id ? recruitmentDetail.benefit : '')
+        setProvince(props.id ? recruitmentDetail?.jobAddress?.province : '')
+        setDistrictList(
+            props.id ? recruitmentDetail?.jobAddress?.districts : []
+        )
+        setDistrict(props.id ? recruitmentDetail?.jobAddress?.district : '')
         setAddress(props.id ? recruitmentDetail?.jobAddress?.addressDetail : '')
         setQuantity(props.id ? recruitmentDetail.quantity : 0)
         setApplicationDeadline(
@@ -92,7 +100,6 @@ function FormRecruitment(props) {
         )
         setSalary(props.id ? recruitmentDetail.salary : '')
     }, [props.id, recruitmentDetail])
-
     //handle
     const validationForm = () => {
         if (!jobTitle.trim()) {
@@ -204,7 +211,7 @@ function FormRecruitment(props) {
         <Form onSubmit={handleSubmit} style={{ paddingBottom: '3rem' }}>
             <Container>
                 <Row>
-                    <StyledCol className="col-8">
+                    <StyledCol className="col-md-8">
                         <TitleInput>Tiêu đề</TitleInput>
                         <InputForm2
                             placeholder="Ví dụ: Thực tập sinh ReactJS"
@@ -226,19 +233,23 @@ function FormRecruitment(props) {
                         />
                     </StyledCol>
                 </Row>
-
                 <Row>
-                    <StyledCol>
+                    <StyledCol className="col-lg-4">
                         <TitleInput>Ngày hết hạn nộp hồ sơ</TitleInput>
                         <DatePickerCustom
                             showIcon
-                            selected={startDate}
+                            selected={Date.parse(applicationDeadline)}
                             dateFormat="dd/MM/yyyy"
                             onChange={(date) => {
-                                setStartDate(date)
                                 setApplicationDeadline(date)
                             }}
-                            value={applicationDeadline}
+                            value={
+                                props
+                                    ? Date.parse(
+                                          recruitmentDetail.applicationDeadline
+                                      )
+                                    : applicationDeadline
+                            }
                             minDate={new Date()}
                             locale={vn}
                             icon={
@@ -279,7 +290,7 @@ function FormRecruitment(props) {
                             onChange={(e) => setQuantity(e.target.value)}
                         />
                     </StyledCol>
-                    <StyledCol>
+                    <StyledCol className="col-lg-4">
                         <TitleInput>Mức lương</TitleInput>
                         <InputForm2
                             type="text"
@@ -289,7 +300,7 @@ function FormRecruitment(props) {
                     </StyledCol>
                 </Row>
                 <Row>
-                    <StyledCol>
+                    <StyledCol className="col-xs-3">
                         <TitleInput>Ngành nghề</TitleInput>
                         <DropdownListComponent
                             data={getCareer}
@@ -301,7 +312,7 @@ function FormRecruitment(props) {
                             }}
                         />
                     </StyledCol>
-                    <StyledCol>
+                    <StyledCol className="col-xs-3">
                         <TitleInput>Lĩnh vực</TitleInput>
                         <DropdownListComponent
                             data={getJobField}
@@ -313,7 +324,9 @@ function FormRecruitment(props) {
                             }}
                         />
                     </StyledCol>
-                    <StyledCol>
+                </Row>
+                <Row>
+                    <StyledCol className="col-xs-3 ">
                         <TitleInput>Hình thức </TitleInput>
                         <DropdownListComponent
                             data={getJobForm}
@@ -382,6 +395,7 @@ function FormRecruitment(props) {
                         <TitleInput>Địa điểm làm việc</TitleInput>
                         <Row>
                             <Col
+                                className="col-md-4"
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -412,7 +426,7 @@ function FormRecruitment(props) {
                                     }}
                                 />
                             </Col>
-                            <Col className="col-6">
+                            <Col className="col-md-4">
                                 <InputForm2
                                     placeholder="Địa chỉ cụ thể"
                                     type="text"
