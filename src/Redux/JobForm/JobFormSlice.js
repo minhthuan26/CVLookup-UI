@@ -3,7 +3,7 @@ const { createSlice } = require('@reduxjs/toolkit')
 const JobFormSlice = createSlice({
     name: 'jobForm',
     initialState: {
-        jobForm: [],
+        jobFormList: [],
     },
     reducers: {
         setJobForms: (state, action) => {

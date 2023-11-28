@@ -21,6 +21,11 @@ import ApplyJobModal from './components/ApplyJobModal'
 import useApplyJobModal from './hooks/useApplyJobModal'
 import { doGetAllJobForm } from './action/JobFormApi'
 import { doGetAllJobPosition } from './action/JobPosition'
+import Notification from './components/Notification'
+import useNotificationBox from './hooks/useNotificationBox'
+import usePrivateAxios from '~/action/AxiosCredentials'
+import { doGetNotificationByUserId } from '~/action/notification'
+import { setNotifications } from '~/Redux/Notification/NotificationSlice'
 
 const connect = connection()
 
@@ -28,6 +33,8 @@ function App() {
     const isLoading = useSelector((state) => state.loader.loading)
     const dispatch = useDispatch()
     const user = useSelector((state) => state.auth.credentials.user)
+    const accessToken = useSelector(state => state.auth.credentials.accessToken)
+    const axiosPrivate = usePrivateAxios(accessToken)
 
     useEffect(
         () => {
@@ -78,18 +85,31 @@ function App() {
                         })
                 })
             } else {
-                // connect.invoke("DeleteHubConnectionByConnectionId").then(() => {
-                //     connect.stop()
-                // })
                 connect.stop()
             }
         },
         // eslint-disable-next-line
         [user]
     )
-    const { loginModal, setLoginModal } = useLoginModal()
-    const { applyJobModal, isAlreadyApply, appliedCv } = useApplyJobModal()
 
+    const getNotificationByUserId = async (axiosPrivate, userId) => await doGetNotificationByUserId(axiosPrivate, userId)
+    useEffect(() => {
+        if (user) {
+            getNotificationByUserId(axiosPrivate, user.id).then(data => {
+                dispatch(setNotifications(data))
+            })
+        }
+    },
+        // eslint-disable-next-line
+        [user])
+    const { loginModal, setLoginModal } = useLoginModal()
+    const { applyJobModal, appliedCv } = useApplyJobModal()
+    const { isDisplay, setIsDisplay } = useNotificationBox()
+    connect.on("ClientNotify", () => {
+        getNotificationByUserId(axiosPrivate, user.id).then(data => {
+            dispatch(setNotifications(data))
+        })
+    })
     return (
         <BrowserRouter>
             <Routes>
@@ -138,6 +158,8 @@ function App() {
                 show={applyJobModal}
                 appliedCv={appliedCv}
                 user={user} />
+
+            <Notification isDisplay={isDisplay} />
             <ToastContainer
                 position="top-center"
                 autoClose={3000}

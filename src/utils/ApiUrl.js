@@ -67,3 +67,8 @@ export const jobFormUrl = {
 export const JobPositionUrl = {
     getAll: `${host}${prefix}/JobPosition/get-all-job-position`,
 }
+
+export const notificationUrl = {
+    getNotificationByUserId: `${host}${prefix}/notification/get-notification-by-user-id`,
+    updateViewStatus: `${host}${prefix}/notification/update-view-status`,
+}

@@ -9,6 +9,7 @@ import ProvinceSlice from './Province/ProvinceSlice'
 import ExperienceSlice from './Experience/ExperienceSlice'
 import JobFormSlice from './JobForm/JobFormSlice'
 import JobPositionSlice from './JobPosition/JobPositionSlice'
+import NotificationSlice from './Notification/NotificationSlice'
 
 const persistConfig = {
     key: 'root',
@@ -24,6 +25,7 @@ const reducer = combineReducers({
     experience: ExperienceSlice,
     jobForm: JobFormSlice,
     jobPosition: JobPositionSlice,
+    notifications: NotificationSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

@@ -45,7 +45,10 @@ function CVListApply(props) {
     const handleViewCV = (cv) => {
         setShowCV(true)
         setCVDetail(cv)
-        updateIsView(axiosPrivate, dispatch, cv.id)
+        if (!cv.isView) {
+            updateIsView(axiosPrivate, dispatch, cv.id)
+        }
+
     }
     return (
         <>
@@ -133,11 +136,10 @@ function CVListApply(props) {
                                                     />
                                                     <label
                                                         htmlFor="duyetCheckbox"
-                                                        className={`form-check-label text ${
-                                                            isDuyet
+                                                        className={`form-check-label text ${isDuyet
                                                                 ? 'text-success'
                                                                 : 'text-danger'
-                                                        }`}>
+                                                            }`}>
                                                         {isDuyet
                                                             ? 'Đã Duyệt'
                                                             : 'Chưa Duyệt'}

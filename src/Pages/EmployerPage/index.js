@@ -26,7 +26,7 @@ function EmployerPage() {
                     <StyledButton onClick={() => navigate('/post-recruitment')}>
                         Đăng tin tuyển dụng -&gt;
                     </StyledButton>
-                    <div class="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center">
                         <img
                             style={{ maxWidth: '100%', height: 'auto' }}
                             src={lookingResumeimg}
@@ -36,49 +36,49 @@ function EmployerPage() {
                 </div>
             </div>
             <hr />
-            <div class="row pt-3 pl-3 " style={{ marginLeft: '4rem' }}>
-                <div class="col-md-5">
+            <div className="row pt-3 pl-3 " style={{ marginLeft: '4rem' }}>
+                <div className="col-md-5">
                     <img
-                        class=" w-50 "
+                        className=" w-50 "
                         style={{ margin: '4rem' }}
                         src={magnifying}
                         title="Đăng tin tuyển dụng miễn phí"
                         alt="Dang tin tuyen dung mien phi"
                     />
                 </div>
-                <div class="col-md-7 pl-md-6">
-                    <div class="d-table h-100">
-                        <div class="d-table-cell align-middle">
-                            <div class="w-100">
-                                <h3 class="text-sm md:text-2xl mb-5 font-weight-bold">
+                <div className="col-md-7 pl-md-6">
+                    <div className="d-table h-100">
+                        <div className="d-table-cell align-middle">
+                            <div className="w-100">
+                                <h3 className="text-sm md:text-2xl mb-5 font-weight-bold">
                                     Đăng tin tuyển dụng miễn phí
                                 </h3>
-                                <ul class="text-sm font-light text-muted">
-                                    <li class="mb-4 d-flex align-items-baseline">
+                                <ul className="text-sm font-light text-muted">
+                                    <li className="mb-4 d-flex align-items-baseline">
                                         <span>
                                             Đăng tin tuyển dụng miễn phí và
                                             không giới hạn số lượng.
                                         </span>
                                     </li>
-                                    <li class="mb-4 d-flex align-items-baseline">
+                                    <li className="mb-4 d-flex align-items-baseline">
                                         <span>
                                             Đăng tin tuyển dụng dễ dàng, không
                                             quá 1 phút.
                                         </span>
                                     </li>
-                                    <li class="mb-4 d-flex align-items-baseline">
+                                    <li className="mb-4 d-flex align-items-baseline">
                                         <span>
                                             Tiếp cận nguồn CV ứng viên khổng lồ
                                         </span>
                                     </li>
-                                    <li class="mb-4 d-flex align-items-baseline">
+                                    <li className="mb-4 d-flex align-items-baseline">
                                         <span>
                                             Dễ dàng kiểm duyệt và đăng tin trong
                                             24h.
                                         </span>
                                     </li>
                                 </ul>
-                                <div class="text-center text-md-left">
+                                <div className="text-center text-md-left">
                                     <StyledButton
                                         onClick={() =>
                                             navigate('/recruitment-dashboard')
@@ -94,34 +94,34 @@ function EmployerPage() {
             <hr />
 
             <div
-                class="row flex-md-row flex-column-reverse pt-3 pl-3 ml-md-3 mt-md-6"
+                className="row flex-md-row flex-column-reverse pt-3 pl-3 ml-md-3 mt-md-6"
                 style={{ marginLeft: '4rem' }}>
-                <div class="col-md-7">
-                    <div class="d-table h-100">
-                        <div class="d-table-cell align-middle ml-md-10">
-                            <h3 class="text-sm md-text-2xl mb-5 font-weight-bold">
+                <div className="col-md-7">
+                    <div className="d-table h-100">
+                        <div className="d-table-cell align-middle ml-md-10">
+                            <h3 className="text-sm md-text-2xl mb-5 font-weight-bold">
                                 Quảng cáo tuyển dụng
                             </h3>
-                            <ul class="text-sm font-light text-muted">
-                                <li class="mb-4 d-flex align-items-baseline">
+                            <ul className="text-sm font-light text-muted">
+                                <li className="mb-4 d-flex align-items-baseline">
                                     <span>
                                         Tăng lượt tiếp cận người tìm việc
                                     </span>
                                 </li>
-                                <li class="mb-4 d-flex align-items-baseline">
+                                <li className="mb-4 d-flex align-items-baseline">
                                     <span>
                                         Tin tuyển dụng hiển thị ở những vị trí
                                         nổi bật.
                                     </span>
                                 </li>
-                                <li class="mb-4 d-flex align-items-baseline">
+                                <li className="mb-4 d-flex align-items-baseline">
                                     <span>
                                         Đẩy tin tuyển dụng lên vị trí đầu trong
                                         kết quả tìm kiếm việc làm trên trang web
                                         đăng tin tuyển dụng.
                                     </span>
                                 </li>
-                                <li class="mb-4 d-flex align-items-baseline">
+                                <li className="mb-4 d-flex align-items-baseline">
                                     <span>
                                         Tự động gợi ý tin tuyển dụng với ứng
                                         viên phù hợp, giúp tuyển dụng hiệu quả
@@ -129,7 +129,7 @@ function EmployerPage() {
                                     </span>
                                 </li>
                             </ul>
-                            <div class="text-center text-md-left">
+                            <div className="text-center text-md-left">
                                 <StyledButton>
                                     Các bài blog tuyển dụng
                                 </StyledButton>
@@ -137,9 +137,9 @@ function EmployerPage() {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div className="col-md-5">
                     <img
-                        class="w-50"
+                        className="w-50"
                         style={{ margin: '4rem' }}
                         src={HrLooking}
                         title="Quảng cáo tin tuyển dụng hiệu quả"

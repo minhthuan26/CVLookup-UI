@@ -23,6 +23,7 @@ const RecruitmentDetail = () => {
     const user = useSelector(state => state.auth.credentials.user)
     const accessToken = useSelector(state => state.auth.credentials.accessToken)
     const axiosPrivate = usePrivateAxios(accessToken)
+    const role = useSelector(state => state.auth.credentials.role)
 
     useEffect(() => {
         const getRecruitmentDetail = async (id, dispatch, navigate) => await doGetRecruitmentDetail(id, dispatch, navigate)
@@ -34,7 +35,7 @@ const RecruitmentDetail = () => {
         [])
 
     useEffect(() => {
-        if (user && recruitment) {
+        if (user && recruitment && role !== 'Employer') {
             const data = {
                 userId: user.id,
                 recruitmentId: recruitment.id
