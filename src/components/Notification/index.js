@@ -1,4 +1,3 @@
-import { Pagination } from '@mui/material'
 import React, { useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { setNotifications } from '~/Redux/Notification/NotificationSlice'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { doUpdateViewStatus } from '~/action/notification'
+import PaginationAuto from '../PaginationAuto'
 
 const Notification = ({ isDisplay }) => {
 	const [page, setPage] = useState(1)
@@ -71,12 +71,7 @@ const Notification = ({ isDisplay }) => {
 				}
 			</Card.Body>
 			{notifications.length > 0 ? <Card.Footer className='d-flex justify-content-center'>
-				<Pagination
-					onChange={(e, value) => setPage(value)}
-					defaultPage={page}
-					count={Math.ceil(notifications.length * 1.0 / 4)}
-					color='secondary'
-					shape="rounded" />
+				<PaginationAuto list={notifications} itemsPerPage={4} />
 			</Card.Footer> : <></>}
 		</Card>
 	)

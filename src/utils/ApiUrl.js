@@ -23,6 +23,7 @@ export const recruitmentUrl = {
     addRecruitment: `${host}${prefix}/Recruitment/add-recruitment`,
     deleteRecruitment: `${host}${prefix}/Recruitment/delete`,
     updateRecruitment: `${host}${prefix}/Recruitment/update`,
+    searchRecruitment: `${host}${prefix}/Recruitment/get-recruitment`
 }
 
 export const CVUrl = {

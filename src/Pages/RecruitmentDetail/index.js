@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Container } from 'react-bootstrap'
-import JobsSearch from '~/components/JobsSearch'
 import RecruitmentGeneralInfo from '~/components/RecruitmentDetail/RecruitmentGeneralInfo'
 import CompanyInfoHeader from '~/components/RecruitmentDetail/CompanyInfoHeader'
 import RecruitmentContent from '~/components/RecruitmentDetail/RecruitmentContent'

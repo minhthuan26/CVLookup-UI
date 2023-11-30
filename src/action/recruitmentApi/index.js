@@ -38,6 +38,41 @@ export const getNewestJob = async (dispatch) => {
     }
 }
 
+export const searchRecruitment = async (dispatch, filter) => {
+    dispatch(inLoading())
+    try {
+        const res = await axios({
+            url: `${recruitmentUrl.searchRecruitment}`,
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (res.data.success) {
+            dispatch(successLoading())
+            return res.data.data
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return []
+    } catch (error) {
+        dispatch(successLoading())
+        return []
+    }
+}
+
 export const doGetAllRecruitment = async (dispatch) => {
     dispatch(inLoading())
     try {

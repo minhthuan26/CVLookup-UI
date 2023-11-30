@@ -73,7 +73,7 @@ function JobElement() {
                         backgroundColor: '#eee',
                     }}>
                     {jobList.map((job) => (
-                        <Container key={job.result.id}>
+                        <Container key={job.id}>
                             <div
                                 style={{
                                     backgroundColor: '#fff',
@@ -92,12 +92,12 @@ function JobElement() {
                                                 borderRadius: '10px',
                                                 border: 'solid 1px #5767aa',
                                             }}
-                                            src={handleAvatar(job.result.user)}
+                                            src={handleAvatar(job.user)}
                                             alt=""
                                         />
                                     </Col>
                                     <Col
-                                        aria-label={job.result.id}
+                                        aria-label={job.id}
                                         onClick={handleNavigateRecruitmentDetail}
                                         md="8"
                                         lg={true}
@@ -107,8 +107,8 @@ function JobElement() {
                                             alignContent: 'center',
                                             alignItems: 'center',
                                         }}>
-                                        <h5 aria-label={job.result.id}
-                                        >{job.result.jobTitle}</h5>
+                                        <h5 aria-label={job.id}
+                                        >{job.jobTitle}</h5>
                                     </Col>
                                 </Row>
                                 <hr />
@@ -120,14 +120,14 @@ function JobElement() {
                                                 color: '#5767aa',
                                                 paddingBottom: '0.2rem',
                                             }}>
-                                            {job.result.user.username}
+                                            {job.user.username}
                                         </span>
                                     </Col>
                                     <Col>
-                                        <span>{job.result.salary}</span>
+                                        <span>{job.salary}</span>
                                     </Col>
                                     <Col>
-                                        <span>{job.result.createdAt}</span>
+                                        <span>{job.createdAt}</span>
                                     </Col>
                                 </Row>
                             </div>
