@@ -42,7 +42,7 @@ export const searchRecruitment = async (dispatch, filter) => {
     dispatch(inLoading())
     try {
         const res = await axios({
-            url: `${recruitmentUrl.searchRecruitment}`,
+            url: `${recruitmentUrl.searchRecruitment}?Keyword=${filter.Keyword}&Province=${filter.Province}&District=${filter.District}&Career=${filter.Career}&JobField=${filter.JobField}&JobForm=${filter.JobForm}&Experience=${filter.Experience}&Position=${filter.JobPosition}&SortBy=${filter.SortBy}`,
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',

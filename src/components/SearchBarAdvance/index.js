@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { searchRecruitment } from '~/action/recruitmentApi'
 import bannerSearch from '~/assets/bannerSearch.png'
+import { useNavigate } from 'react-router-dom'
+import useSearch from '~/hooks/useSearch'
+import { toast } from 'react-toastify'
 
 
-const SearchBarAdvance = ({ setResultList }) => {
+const SearchBarAdvance = () => {
 	const jobCareers = useSelector(state => state.jobCareer.jobCareerList)
 	const provinces = useSelector(state => state.province.provinceList)
 	const experiences = useSelector(state => state.experience.experienceList)
@@ -24,31 +28,46 @@ const SearchBarAdvance = ({ setResultList }) => {
 	const [position, setPosition] = useState('Tất cả vị trí')
 	const [district, setDistrict] = useState('Tất cả')
 	const [sort, setSort] = useState('title_asc')
-
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+	const { setSearchResult } = useSearch()
 	const handleSearch = (e) => {
 		e.preventDefault()
-		// const filter = {
-		// 	Keyword: keyword,
-		// 	Province: province === 'Tất cả tỉnh thành' ? '' : province,
-		// 	District: ,
-		// 	Career: ,
-		// 	JobField: ,
-		// 	JobForm: ,
-		// 	Experience: ,
-		// 	JobPosition: ,
-		// 	SortBy: ,
-		// }
+		if (!keyword) {
+			toast.error('Vui lòng nhập từ khoá tìm kiếm')
+		} else {
+			const filter = {
+				Keyword: keyword,
+				Province: province === 'Tất cả tỉnh thành' ? '' : province,
+				District: district === 'Tất cả' ? '' : district,
+				Career: career === 'Tất cả ngành nghề' ? '' : career,
+				JobField: field === 'Tất cả lĩnh vực' ? '' : field,
+				JobForm: form === 'Tất cả hình thức' ? '' : form,
+				Experience: experience === 'Tất cả kinh nghiệm' ? '' : experience,
+				JobPosition: position === 'Tất cả vị trí' ? '' : position,
+				SortBy: sort,
+			}
+
+			const searchJob = async (dispatch, filter) => await searchRecruitment(dispatch, filter)
+			searchJob(dispatch, filter).then(data => {
+				setSearchResult(data)
+				navigate('/jobs')
+			})
+		}
+
 	}
 
 	return (
-		<div className='d-flex flex-column align-items-center border border-bottom-1 border-start-0 border-end-0 w-100'>
+		<div
+			style={{
+				backgroundImage: `url(${bannerSearch})`,
+				backgroundRepeat: 'no-repeat',
+				backgroundSize: 'cover',
+				// backgroundColor: 'rgb(149,192,215, 0.5)'
+			}}
+			className='d-flex flex-column align-items-center border border-bottom-1 border-start-0 border-end-0 w-100'>
 			<Form
-				style={{
-					backgroundImage: `url(${bannerSearch})`,
-					backgroundRepeat: 'no-repeat',
-					backgroundSize: 'cover',
-				}}
-				className='d-flex w-100 justify-content-center p-4'>
+				className='d-flex w-100 justify-content-center pt-4'>
 				<Form.Group
 					style={{ width: '100%' }}
 					className="d-flex justify-content-center">
@@ -61,12 +80,7 @@ const SearchBarAdvance = ({ setResultList }) => {
 				</Form.Group>
 			</Form>
 			<Form
-				style={{
-					backgroundImage: `url(${bannerSearch})`,
-					backgroundRepeat: 'no-repeat',
-					backgroundSize: 'cover',
-				}}
-				className='d-flex w-100 justify-content-center p-4'>
+				className='d-flex w-100 justify-content-center pt-3'>
 				<Form.Group
 					style={{ width: '20%' }}
 					className="d-flex justify-content-center">
@@ -132,12 +146,7 @@ const SearchBarAdvance = ({ setResultList }) => {
 				</Form.Group>
 			</Form>
 			<Form
-				style={{
-					backgroundImage: `url(${bannerSearch})`,
-					backgroundRepeat: 'no-repeat',
-					backgroundSize: 'cover',
-				}}
-				className='d-flex w-100 justify-content-center p-4'>
+				className='d-flex w-100 justify-content-center pt-3'>
 				<Form.Group
 					style={{ width: '20%' }}
 					className="d-flex justify-content-center">
@@ -186,12 +195,7 @@ const SearchBarAdvance = ({ setResultList }) => {
 				</Form.Group>
 			</Form>
 			<Form
-				style={{
-					backgroundImage: `url(${bannerSearch})`,
-					backgroundRepeat: 'no-repeat',
-					backgroundSize: 'cover',
-				}}
-				className='d-flex w-100 justify-content-center p-4'>
+				className='d-flex w-100 justify-content-center pt-4'>
 				<Form.Group
 					style={{ width: '20%' }}
 					className='d-flex justify-content-center'>

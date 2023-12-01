@@ -2,9 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Container, Image, Alert } from 'react-bootstrap'
 import defaultAvatar from '~/assets/logo.jpg'
 import PaginationAuto from '../PaginationAuto'
+import useSearch from '~/hooks/useSearch'
+import { useNavigate } from 'react-router-dom'
 
-const SearchResult = ({ list }) => {
+const SearchResult = () => {
     const [page, setPage] = useState(1)
+    const { searchResult } = useSearch()
+    const navigate = useNavigate()
+    const handleGetJobDetail = (id) => {
+        navigate('/recruitment-detail?id=' + id)
+    }
     return (
         <Container
             fluid
@@ -12,13 +19,14 @@ const SearchResult = ({ list }) => {
             style={{
                 backgroundColor: 'rgb(238,238,238)',
             }}>
-            {list.length > 0
+            {searchResult.length > 0
                 ?
                 <>
                     {
-                        list.slice((page * 6 - 6), (page * 6)).map(item => {
+                        searchResult.slice((page * 6 - 6), (page * 6)).map(item => {
                             return (
                                 <div
+                                    onClick={() => handleGetJobDetail(item.id)}
                                     key={item.id}
                                     className='d-flex justify-content-between w-100 onHover rounded-4 px-2 pt-3 pe-4'
                                     style={{
@@ -36,17 +44,18 @@ const SearchResult = ({ list }) => {
                                         </div>
                                         <div className='d-flex flex-column justify-content-between py-2'>
                                             <div>
-                                                <h4>{item.title}</h4>
+                                                <h4>{item.jobTitle}</h4>
                                             </div>
                                             <div style={{
                                                 color: 'rgb(87, 103, 170)'
                                             }}>
-                                                <p><b>{item.company}</b></p>
+                                                <p><b>{item.user.username}</b></p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div className='d-flex flex-column justify-content-between'>
                                         <p>{item.salary}</p>
+                                        <p>{item.jobAddress.province}</p>
                                     </div>
                                     <div className='d-flex flex-column'>
                                         <div className='text-end'>
@@ -65,7 +74,7 @@ const SearchResult = ({ list }) => {
                         })
                     }
                     <div className='d-flex justify-content-center'>
-                        <PaginationAuto list={list} itemsPerPage={6} page={page} setPage={setPage} />
+                        <PaginationAuto list={searchResult} itemsPerPage={6} page={page} setPage={setPage} />
                     </div>
                 </>
                 : <>
