@@ -41,7 +41,6 @@ function JobElement() {
         // eslint-disable-next-line
         []
     )
-    // console.log(jobList);
     const handleNavigateRecruitmentDetail = (e) => {
         const id = e.target.ariaLabel
         navigate('/recruitment-detail?id=' + id)

@@ -227,7 +227,7 @@ const SearchBarAdvance = () => {
 						id='radio-newest'>
 						<Form.Check.Input
 							onChange={(e) => setSort(e.target.value)}
-							value='date_asc'
+							value='date_desc'
 							style={{ borderColor: 'black' }}
 							type='radio'
 							name="group1" />

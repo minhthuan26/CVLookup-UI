@@ -20,6 +20,7 @@ import { Confirm } from '~/components/Popup/Confirm'
 import PopupBase from '~/components/Popup/PopupBase'
 import FormRecruitment from '~/components/FormRecruitment/FormRecruitment'
 import CVListApply from '~/components/CVListApply/CVListApply'
+import { toast } from 'react-toastify'
 function RecruitmentDashBoardPage() {
     const columns = [
         {
@@ -129,7 +130,7 @@ function RecruitmentDashBoardPage() {
                         recruitment.filter((item) => item.result.id !== id)
                     )
                 } catch (error) {
-                    console.log(error)
+                    toast.error(error)
                 }
             },
         })

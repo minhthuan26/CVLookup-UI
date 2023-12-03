@@ -238,8 +238,6 @@ export const doUpdateRecruitment = async (
                 res.data.message.forEach((messageList) => {
                     messageList.forEach((messages) => {
                         messages.forEach((message) => {
-                            console.log('message ' + message)
-
                             toast.error(message)
                         })
                     })

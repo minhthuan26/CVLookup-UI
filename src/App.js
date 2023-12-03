@@ -111,6 +111,7 @@ function App() {
         })
     })
     return (
+
         <BrowserRouter>
             <Routes>
                 {publicRoutes.map((route, index) => {
@@ -159,7 +160,7 @@ function App() {
                 appliedCv={appliedCv}
                 user={user} />
 
-            <Notification isDisplay={isDisplay} />
+            <Notification isDisplay={isDisplay} setIsDisplay={setIsDisplay} />
             <ToastContainer
                 position="top-center"
                 autoClose={3000}

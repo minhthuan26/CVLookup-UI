@@ -6,8 +6,9 @@ import { setNotifications } from '~/Redux/Notification/NotificationSlice'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { doUpdateViewStatus } from '~/action/notification'
 import PaginationAuto from '../PaginationAuto'
+import useApplyJobModal from '~/hooks/useApplyJobModal'
 
-const Notification = ({ isDisplay }) => {
+const Notification = ({ isDisplay, setIsDisplay }) => {
 	const [page, setPage] = useState(1)
 	const navigate = useNavigate()
 	const notifications = useSelector(state => state.notifications.notifications)
@@ -17,6 +18,7 @@ const Notification = ({ isDisplay }) => {
 	const handleNotificationClick = (id) => {
 		const notify = notifications.find(notify => notify.id === id)
 		if (notify.isView) {
+			setIsDisplay(preState => !preState)
 			navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
 		} else {
 			const updateViewStatus = async (axiosPrivate, dispatch, id) => doUpdateViewStatus(axiosPrivate, dispatch, id)
@@ -24,19 +26,23 @@ const Notification = ({ isDisplay }) => {
 				var tmp = [...notifications]
 				tmp[tmp.indexOf(notify)] = data
 				dispatch(setNotifications(tmp))
+				setIsDisplay(preState => !preState)
 				navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
 			})
 		}
 	}
 	return (
-		<Card className='position-absolute top-0 end-0' style={{
-			display: `${isDisplay ? 'block' : 'none'}`,
-			maxHeight: '40rem',
-			minHeight: '23rem',
-			width: '25rem',
-			backgroundColor: 'rgb(43,130,175, 0.5)',
-			marginTop: '80px'
-		}}>
+		<Card
+			className='position-absolute top-0 end-0'
+			style={{
+				display: `${isDisplay ? 'block' : 'none'}`,
+				maxHeight: '40rem',
+				minHeight: '23rem',
+				width: '25rem',
+				backgroundColor: 'rgb(43,130,175, 0.5)',
+				marginTop: '80px',
+				zIndex: '9999',
+			}}>
 			<Card.Header className='d-flex'>
 				<Card.Text style={{ color: '#eee', fontSize: '1.25rem' }} className='w-100 text-center'><b>Thông báo</b></Card.Text>
 			</Card.Header>

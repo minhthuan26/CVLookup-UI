@@ -23,6 +23,7 @@ function Header() {
     }
     const handleOpenNotificationBox = (e) => {
         e.preventDefault()
+        e.stopPropagation()
         setIsDisplay(preState => !preState)
     }
     const [isNewNotification, setIsNewNotification] = useState(false)

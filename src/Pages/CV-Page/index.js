@@ -42,7 +42,7 @@ function CVPage() {
                     deleteCurriculumViate(axiosPrivate, id, dispatch)
                     setCVlist(CVlist.filter((cv) => cv.id !== id))
                 } catch (error) {
-                    console.log(error)
+                    toast.error(error)
                 }
             },
         })
@@ -66,7 +66,7 @@ function CVPage() {
             ) => await downloadCV(axiosPrivate, id, dispatch)
             downloadCurriculumViate(axiosPrivate, id, dispatch)
         } catch (error) {
-            console.log(error)
+            toast.error(error)
         }
     }
 

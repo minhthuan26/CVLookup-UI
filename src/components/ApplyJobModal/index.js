@@ -218,7 +218,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
             }
         },
         //eslint-disable-next-line
-        [user, role]
+        [user, role, appliedCv]
     )
 
     return (
