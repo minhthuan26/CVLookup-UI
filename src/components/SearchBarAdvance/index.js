@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Collapse } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchRecruitment } from '~/action/recruitmentApi'
 import bannerSearch from '~/assets/bannerSearch.png'
 import { useNavigate } from 'react-router-dom'
 import useSearch from '~/hooks/useSearch'
 import { toast } from 'react-toastify'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 
 const SearchBarAdvance = () => {
@@ -31,6 +33,8 @@ const SearchBarAdvance = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const { setSearchResult } = useSearch()
+	const [isUseAdvanced, setIsUseAdvanced] = useState(false)
+
 	const handleSearch = (e) => {
 		e.preventDefault()
 		if (!keyword) {
@@ -58,15 +62,16 @@ const SearchBarAdvance = () => {
 	}
 
 	return (
-		<div
+		<Form
 			style={{
-				backgroundImage: `url(${bannerSearch})`,
-				backgroundRepeat: 'no-repeat',
-				backgroundSize: 'cover',
-				// backgroundColor: 'rgb(149,192,215, 0.5)'
+				// backgroundImage: `url(${bannerSearch})`,
+				// backgroundRepeat: 'no-repeat',
+				// backgroundSize: 'cover',
+				backgroundColor: 'rgb(224, 228, 237)'
 			}}
+			onSubmit={handleSearch}
 			className='d-flex flex-column align-items-center border border-bottom-1 border-start-0 border-end-0 w-100'>
-			<Form
+			<div
 				className='d-flex w-100 justify-content-center pt-4'>
 				<Form.Group
 					style={{ width: '100%' }}
@@ -78,123 +83,137 @@ const SearchBarAdvance = () => {
 						type="search"
 						placeholder="Từ khoá tìm kiếm..." />
 				</Form.Group>
-			</Form>
-			<Form
-				className='d-flex w-100 justify-content-center pt-3'>
-				<Form.Group
-					style={{ width: '20%' }}
-					className="d-flex justify-content-center">
-					<Form.Select
-						value={province}
-						aria-label="Tỉnh thành"
-						className='rounded-5 w-75'
-						onChange={(e) => {
-							setProvince(e.target.value)
-							var districts = provinces.find(item => item.name === e.target.value).districts
-							if (districts.length > 0) {
-								setDistricts(districts)
-								setHasDistrict(true)
-							} else {
-								setDistricts([])
-								setHasDistrict(false)
-							}
-						}}>
-						{provinces.map(province => {
-							return <option key={province.id}>{province.name}</option>
-						})}
-					</Form.Select>
-				</Form.Group>
-				<Form.Group
-					style={{ width: '20%' }}
-					className="d-flex justify-content-center">
-					<Form.Select
-						value={district}
-						onChange={(e) => setDistrict(e.target.value)}
-						disabled={districts.length > 0 ? false : true}
-						aria-label="Quận"
-						className='rounded-5 w-75' >
-						{hasDistrict ? districts.map(district => {
-							return <option key={district.id}>{district.name}</option>
-						}) : <></>}
-					</Form.Select>
-				</Form.Group>
-				<Form.Group
-					style={{ width: '20%' }}
-					className='d-flex justify-content-center'>
-					<Form.Select
-						value={career}
-						onChange={(e) => setCareer(e.target.value)}
-						aria-label="Ngành nghề"
-						className='w-75 rounded-5'>
-						{jobCareers.map(career => {
-							return <option key={career.id}>{career.career}</option>
-						})}
-					</Form.Select>
-				</Form.Group>
-				<Form.Group
-					style={{ width: '20%' }}
-					className='d-flex justify-content-center'>
-					<Form.Select
+			</div>
+			<div className='d-flex w-75 justify-content-start pt-4'>
+				<Button onClick={() => setIsUseAdvanced(preState => !preState)}>
+					Nâng cao
+					{isUseAdvanced
+						? <KeyboardArrowUpIcon />
+						: <KeyboardArrowDownIcon />
+					}
 
-						value={experience}
-						onChange={(e) => setExperience(e.target.value)}
-						aria-label="Kinh nghiệm" className='w-75 rounded-5'>
-						{experiences.map(experience => {
-							return <option key={experience.id}>{experience.exp}</option>
-						})}
-					</Form.Select>
-				</Form.Group>
-			</Form>
-			<Form
-				className='d-flex w-100 justify-content-center pt-3'>
-				<Form.Group
-					style={{ width: '20%' }}
-					className="d-flex justify-content-center">
-					<Form.Select
-						value={position}
-						onChange={(e) => setPosition(e.target.value)}
-						aria-label="Vị trí"
-						className='rounded-5 w-75' >
-						{jobPositions.map(position => {
-							return <option key={position.id}>{position.position}</option>
-						})}
-					</Form.Select>
-				</Form.Group>
-				<Form.Group
-					style={{ width: '20%' }}
-					className='d-flex justify-content-center'>
-					<Form.Select
-						value={field}
-						onChange={(e) => setField(e.target.value)}
-						aria-label="Lĩnh vực"
-						className='w-75 rounded-5'>
-						{jobFields.map(field => {
-							return <option key={field.id}>{field.field}</option>
-						})}
-					</Form.Select>
-				</Form.Group>
-				<Form.Group
-					style={{ width: '20%' }}
-					className='d-flex justify-content-center'>
-					<Form.Select
-						value={form}
-						onChange={(e) => setForm(e.target.value)}
-						aria-label="Hình thức"
-						className='w-75 rounded-5'>
-						{jobForms.map(form => {
-							return <option key={form.id}>{form.form}</option>
-						})}
-					</Form.Select>
-				</Form.Group>
-				<Form.Group
-					style={{ width: '20%', visibility: 'hidden' }}
-					className='d-flex justify-content-center'>
-					<Form.Select className='w-75 rounded-5'>
+				</Button>
+			</div>
+			<Collapse in={isUseAdvanced}>
+				<div style={{ width: '100%' }}>
+					<div
+						className='d-flex w-100 justify-content-center pt-3'>
+						<Form.Group
+							style={{ width: '20%' }}
+							className="d-flex justify-content-center">
+							<Form.Select
+								value={province}
+								aria-label="Tỉnh thành"
+								className='rounded-5 w-75'
+								onChange={(e) => {
+									setProvince(e.target.value)
+									var districts = provinces.find(item => item.name === e.target.value).districts
+									if (districts.length > 0) {
+										setDistricts(districts)
+										setHasDistrict(true)
+									} else {
+										setDistricts([])
+										setHasDistrict(false)
+									}
+								}}>
+								{provinces.map(province => {
+									return <option key={province.id}>{province.name}</option>
+								})}
+							</Form.Select>
+						</Form.Group>
+						<Form.Group
+							style={{ width: '20%' }}
+							className="d-flex justify-content-center">
+							<Form.Select
+								value={district}
+								onChange={(e) => setDistrict(e.target.value)}
+								disabled={districts.length > 0 ? false : true}
+								aria-label="Quận"
+								className='rounded-5 w-75' >
+								{hasDistrict ? districts.map(district => {
+									return <option key={district.id}>{district.name}</option>
+								}) : <></>}
+							</Form.Select>
+						</Form.Group>
+						<Form.Group
+							style={{ width: '20%' }}
+							className='d-flex justify-content-center'>
+							<Form.Select
+								value={career}
+								onChange={(e) => setCareer(e.target.value)}
+								aria-label="Ngành nghề"
+								className='w-75 rounded-5'>
+								{jobCareers.map(career => {
+									return <option key={career.id}>{career.career}</option>
+								})}
+							</Form.Select>
+						</Form.Group>
+						<Form.Group
+							style={{ width: '20%' }}
+							className='d-flex justify-content-center'>
+							<Form.Select
 
-					</Form.Select>
-				</Form.Group>
-			</Form>
-			<Form
+								value={experience}
+								onChange={(e) => setExperience(e.target.value)}
+								aria-label="Kinh nghiệm" className='w-75 rounded-5'>
+								{experiences.map(experience => {
+									return <option key={experience.id}>{experience.exp}</option>
+								})}
+							</Form.Select>
+						</Form.Group>
+					</div>
+					<div
+						className='d-flex w-100 justify-content-center pt-3'>
+						<Form.Group
+							style={{ width: '20%' }}
+							className="d-flex justify-content-center">
+							<Form.Select
+								value={position}
+								onChange={(e) => setPosition(e.target.value)}
+								aria-label="Vị trí"
+								className='rounded-5 w-75' >
+								{jobPositions.map(position => {
+									return <option key={position.id}>{position.position}</option>
+								})}
+							</Form.Select>
+						</Form.Group>
+						<Form.Group
+							style={{ width: '20%' }}
+							className='d-flex justify-content-center'>
+							<Form.Select
+								value={field}
+								onChange={(e) => setField(e.target.value)}
+								aria-label="Lĩnh vực"
+								className='w-75 rounded-5'>
+								{jobFields.map(field => {
+									return <option key={field.id}>{field.field}</option>
+								})}
+							</Form.Select>
+						</Form.Group>
+						<Form.Group
+							style={{ width: '20%' }}
+							className='d-flex justify-content-center'>
+							<Form.Select
+								value={form}
+								onChange={(e) => setForm(e.target.value)}
+								aria-label="Hình thức"
+								className='w-75 rounded-5'>
+								{jobForms.map(form => {
+									return <option key={form.id}>{form.form}</option>
+								})}
+							</Form.Select>
+						</Form.Group>
+						<Form.Group
+							style={{ width: '20%', visibility: 'hidden' }}
+							className='d-flex justify-content-center'>
+							<Form.Select className='w-75 rounded-5'>
+
+							</Form.Select>
+						</Form.Group>
+					</div>
+				</div>
+			</Collapse>
+			<div
 				className='d-flex w-100 justify-content-center pt-4'>
 				<Form.Group
 					style={{ width: '20%' }}
@@ -204,8 +223,8 @@ const SearchBarAdvance = () => {
 						Tìm kiếm
 					</Button>
 				</Form.Group>
-			</Form >
-			<Form className='d-flex w-50 justify-content-center p-2'>
+			</div >
+			<div className='d-flex w-50 justify-content-center pt-4'>
 				<div className='w-25'>
 					<p><strong>Sắp xếp theo:</strong></p>
 				</div>
@@ -243,8 +262,8 @@ const SearchBarAdvance = () => {
 						<Form.Check.Label>Lương</Form.Check.Label>
 					</Form.Check> */}
 				</Form.Group>
-			</Form>
-		</div >
+			</div>
+		</Form >
 	)
 }
 
