@@ -3,16 +3,17 @@ import { Container, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import {
+    doGetCVByIsPass,
     doGetCVByRecruitmentId,
     doToggleIsPass,
     doUpdateIsView,
 } from '~/action/recruitmentCvApi'
-import { faCaretDown, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faEye, faL } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PopupBase from '../Popup/PopupBase'
 import CVViewer from '../CVViewer/CVViewer'
-function CVListApply(props) {
-    const [isDuyet, setIsDuyet] = useState(false)
+function CVListApply(props, { cvCount }) {
+    const [isDuyet, setIsDuyet] = useState({})
 
     const [openCvMap, setOpenCvMap] = useState({})
     const [cvList, setCvList] = useState([])
@@ -25,15 +26,52 @@ function CVListApply(props) {
     const axiosPrivate = usePrivateAxios(accessToken)
     const getCvByRecruitmentId = async (axiosPrivate, dispatch, id) =>
         await doGetCVByRecruitmentId(axiosPrivate, dispatch, id)
+
+    const getCvByIsPass = async (axiosPrivate, dispatch, id) =>
+        await doGetCVByIsPass(axiosPrivate, dispatch, id)
+
     const updateIsView = async (axiosPrivate, dispatch, id) =>
         await doUpdateIsView(axiosPrivate, dispatch, id)
     const toggleIsPass = async (axiosPrivate, dispatch, id) =>
         await doToggleIsPass(axiosPrivate, dispatch, id)
-    useEffect(() => {
-        getCvByRecruitmentId(axiosPrivate, dispatch, props.id).then((data) =>
-            setCvList(data.curriculumVitaes)
-        )
-    }, [axiosPrivate, dispatch, props.id])
+    // .then((data) =>
+    //     setIsDuyet((prevIsDuyet) => !prevIsDuyet)
+    // )
+    useEffect(
+        () => {
+            if (props.checkIsPassSuccess === true) {
+                getCvByIsPass(axiosPrivate, dispatch, props.id).then((data) => {
+                    setCvList(data.curriculumVitaes)
+                    if (data.length > 0) {
+                        setIsDuyet(
+                            data.curriculumVitaes.reduce((acc, cv) => {
+                                acc[cv.id] = data.isPass
+                                return acc
+                            }, {})
+                        )
+                        cvCount(data.curriculumVitaes.length)
+                    }
+                })
+            } else {
+                getCvByRecruitmentId(axiosPrivate, dispatch, props.id).then(
+                    (data) => {
+                        setCvList(data.curriculumVitaes)
+                        if (data.length > 0) {
+                            setIsDuyet(
+                                data.curriculumVitaes.reduce((acc, cv) => {
+                                    acc[cv.id] = data.isPass
+                                    return acc
+                                }, {})
+                            )
+                            cvCount(data.curriculumVitaes.length)
+                        }
+                    }
+                )
+            }
+        },
+        // eslint-disable-next-line
+        [props.id]
+    )
 
     const toggleCvDetails = (cvId) => {
         setOpenCvMap((prevOpenCvMap) => ({
@@ -48,10 +86,10 @@ function CVListApply(props) {
         updateIsView(axiosPrivate, dispatch, cv.id)
     }
     return (
-        <>
+        <div style={{ height: '85vh' }}>
             {cvList && cvList.length > 0 ? (
                 cvList.map((cv) => (
-                    <Row key={cv.id} style={{}}>
+                    <Row key={cv.id}>
                         <div
                             style={{
                                 margin: '1rem',
@@ -112,37 +150,36 @@ function CVListApply(props) {
                                                         Xem CV
                                                     </span>
                                                 </div>
-                                                <div className="form-check d-flex justify-content-around align-items-center">
-                                                    <input
-                                                        style={{
-                                                            padding: '10px',
-                                                            margin: '0 1rem',
-                                                        }}
-                                                        type="checkbox"
-                                                        className="form-check-input     "
-                                                        id="duyetCheckbox"
-                                                        checked={isDuyet}
-                                                        onChange={() => {
-                                                            setIsDuyet(!isDuyet)
+                                                {!props.checkIsPassSuccess && (
+                                                    <button
+                                                        className={`btn ${
+                                                            isDuyet[cv.id]
+                                                                ? 'btn-success'
+                                                                : 'btn-danger'
+                                                        }`}
+                                                        onClick={() => {
+                                                            const newIsDuyetMap =
+                                                                { ...isDuyet }
+                                                            newIsDuyetMap[
+                                                                cv.id
+                                                            ] =
+                                                                !newIsDuyetMap[
+                                                                    cv.id
+                                                                ]
+                                                            setIsDuyet(
+                                                                newIsDuyetMap
+                                                            )
                                                             toggleIsPass(
                                                                 axiosPrivate,
                                                                 dispatch,
                                                                 cv.id
                                                             )
-                                                        }}
-                                                    />
-                                                    <label
-                                                        htmlFor="duyetCheckbox"
-                                                        className={`form-check-label text ${
-                                                            isDuyet
-                                                                ? 'text-success'
-                                                                : 'text-danger'
-                                                        }`}>
-                                                        {isDuyet
-                                                            ? 'Đã Duyệt'
-                                                            : 'Chưa Duyệt'}
-                                                    </label>
-                                                </div>
+                                                        }}>
+                                                        {isDuyet[cv.id]
+                                                            ? 'Duyệt'
+                                                            : 'Huỷ'}
+                                                    </button>
+                                                )}
                                             </div>
                                         </li>
                                     </ul>
@@ -160,7 +197,7 @@ function CVListApply(props) {
                             trigger={showCV}
                             setTriger={setShowCV}
                             title={`${CVDetail.fullName} - ${CVDetail.email}`}>
-                            <div style={{ height: '90vh' }}>
+                            <div style={{ height: '90vh', overflow: 'hidden' }}>
                                 <CVViewer Cvid={CVDetail.id} check={true} />
                             </div>
                         </PopupBase>
@@ -171,13 +208,17 @@ function CVListApply(props) {
                     style={{
                         color: 'red',
                         fontWeight: '500',
-                        fontSize: '1.5rem',
+                        fontSize: '1.3rem',
                         padding: '2rem',
                     }}>
-                    <em>Chưa có ứng viên ứng tuyển</em>
+                    {props.checkIsPassSuccess ? (
+                        <em>Chưa có CV được duyệt</em>
+                    ) : (
+                        <em>Chưa có ứng viên ứng tuyển</em>
+                    )}
                 </span>
             )}
-        </>
+        </div>
     )
 }
 

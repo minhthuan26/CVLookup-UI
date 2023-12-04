@@ -8,11 +8,17 @@ import {
     getNewestJob,
 } from '~/action/recruitmentApi'
 import {
+    faTrash,
+    faPenToSquare,
+    faList,
+    faCheckCircle,
+} from '@fortawesome/free-solid-svg-icons'
+import {
     ButtonForm,
     InputForm,
     TitleForm,
 } from '~/components/CustomChildComponent/Form'
-import { Container } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import CustomPagination from './CustomPagination'
 import usePrivateAxios from '~/action/AxiosCredentials'
@@ -20,58 +26,88 @@ import { Confirm } from '~/components/Popup/Confirm'
 import PopupBase from '~/components/Popup/PopupBase'
 import FormRecruitment from '~/components/FormRecruitment/FormRecruitment'
 import CVListApply from '~/components/CVListApply/CVListApply'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import styled from 'styled-components'
 function RecruitmentDashBoardPage() {
     const columns = [
         {
-            name: 'ID tuyển dụng',
-            selector: (row) => <span>{row.id}</span>,
-        },
-        {
             name: 'Tiêu đề',
-            selector: (row) => row.jobTitle,
+            selector: (row) => <span className="bold">{row.jobTitle}</span>,
         },
         {
             name: 'Mức lương',
             selector: (row) => row.salary,
         },
         {
+            name: 'Ngành',
+            selector: (row) => row.jobCareer.career,
+        },
+        {
+            name: 'Vị trí',
+            selector: (row) => row.jobPosition.position,
+        },
+        {
             name: '',
             cell: (row) => (
                 <>
                     <button
-                        className="btn btn-danger"
-                        style={{ marginRight: '2rem' }}
+                        title="Xoá đơn tuyển dụng"
+                        className="btn bg-transparent text-danger w-50"
                         onClick={() => handleDelete(row.id)}>
-                        Xoá tin
+                        <FontAwesomeIcon icon={faTrash} />
+                        <br />
+                        Xoá
                     </button>
                     <button
-                        className="btn btn-warning"
-                        style={{ marginRight: '2rem' }}
+                        title="Sửa đơn tuyển dụng"
+                        className="btn bg-transparent  text-warning w-50"
                         onClick={() => {
                             setShowFormEdit(true)
                             setIdRecruitment(row.id)
                         }}>
-                        Sửa tin
+                        <FontAwesomeIcon icon={faPenToSquare} /> <br />
+                        Sửa
                     </button>
+                </>
+            ),
+        },
+        {
+            name: '',
+            cell: (row) => (
+                <>
                     <button
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            color: 'blue',
-                        }}
+                        title="Xem các đơn ứng tuyển"
+                        className="btn btn-link w-50"
                         onClick={() => {
                             setShowFormDetail(true)
                             setIdRecruitment(row.id)
                         }}>
-                        Xem chi tiết
+                        <FontAwesomeIcon icon={faList} /> <br />
+                        CV ứng tuyển
+                    </button>
+                    <button
+                        className="btn bg-transparent text-success w-50"
+                        title="Xem CV đã duyệt"
+                        onClick={() => {
+                            setShowFormCVPass(true)
+                            setIdRecruitment(row.id)
+                        }}>
+                        <FontAwesomeIcon icon={faCheckCircle} />
+                        <br />
+                        CV đã duyệt
                     </button>
                 </>
             ),
         },
     ]
     const [idRecruitment, setIdRecruitment] = useState('')
+
     const [showFormEdit, setShowFormEdit] = useState(false)
     const [showFormDetail, setShowFormDetail] = useState(false)
+    const [showFormCVPass, setShowFormCVPass] = useState(false)
+
+    const [cvCount, setCVCount] = useState(0)
+    const [cvPassCount, setCVPassCount] = useState(0)
 
     const [recruitment, setRecruitment] = useState([])
     const [search, SetSearch] = useState('')
@@ -83,10 +119,11 @@ function RecruitmentDashBoardPage() {
     )
     const axiosPrivate = usePrivateAxios(accessToken)
 
-    const getJobList = async (dispatch) => await doGetAllRecruitment(dispatch)
+    const getJobList = async (dispatch, axiosPrivate) =>
+        await doGetAllRecruitment(dispatch, axiosPrivate)
     useEffect(
         () => {
-            getJobList(dispatch).then((data) => {
+            getJobList(dispatch, axiosPrivate).then((data) => {
                 setRecruitment(data)
                 setFilter(data)
             })
@@ -125,9 +162,8 @@ function RecruitmentDashBoardPage() {
                         axiosPrivate
                     ) => await doDeleteRecruitment(id, dispatch, axiosPrivate)
                     deleteRecruitment(id, dispatch, axiosPrivate)
-                    setFilter(
-                        recruitment.filter((item) => item.result.id !== id)
-                    )
+                    setFilter(recruitment.filter((item) => item.id !== id))
+                    setRecruitment(recruitment.filter((item) => item.id !== id))
                 } catch (error) {
                     console.log(error)
                 }
@@ -171,6 +207,35 @@ function RecruitmentDashBoardPage() {
                 }
                 subHeaderAlign="right"
             />
+            <hr />
+            <TitleForm>Thống kê tuyển dụng</TitleForm>
+
+            <Row
+                style={{
+                    gap: '2rem',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    margin: '3rem 0',
+                }}
+                className="row-cols-1 row-cols-sm-2 row-cols-md-3">
+                <StyledCol customColor="#b7d5ff" className="mb-sm-3">
+                    <h4>Tổng số bài đăng</h4>
+                    <TitleForm>{recruitment.length}</TitleForm>
+                </StyledCol>
+
+                <StyledCol customColor="#b7d5ff" className="mb-sm-3">
+                    <h4>Số CV Ứng tuyển</h4>
+                    <TitleForm>{cvCount}</TitleForm>
+                </StyledCol>
+                <StyledCol customColor="#b7d5ff" className="mb-sm-3">
+                    <h4>Số CV Được duyệt</h4>
+                    <TitleForm>{cvPassCount}</TitleForm>
+                </StyledCol>
+                <StyledCol customColor="#b7d5ff" className="mb-sm-3">
+                    <h4>Tổng số bài đăng</h4>
+                    <TitleForm>{recruitment.length}</TitleForm>
+                </StyledCol>
+            </Row>
 
             <PopupBase
                 trigger={showFormEdit}
@@ -186,8 +251,32 @@ function RecruitmentDashBoardPage() {
                 trigger={showFormDetail}
                 setTriger={setShowFormDetail}
                 title="Danh sách CV đã ứng tuyển">
-                <div style={{ height: '80vh', overflow: 'auto' }}>
-                    <CVListApply id={idRecruitment}></CVListApply>
+                <div
+                    style={{
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                    }}>
+                    <CVListApply
+                        cvCount={(e) => {
+                            setCVCount(e)
+                        }}
+                        checkIsPassSuccess={false}
+                        id={idRecruitment}></CVListApply>
+                </div>
+            </PopupBase>
+            <PopupBase
+                trigger={showFormCVPass}
+                setTriger={setShowFormCVPass}
+                title="Danh sách CV đã được duyệt">
+                <div
+                    style={{
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                    }}>
+                    <CVListApply
+                        checkIsPassSuccess={true}
+                        cvCount={(e) => setCVPassCount(e)}
+                        id={idRecruitment}></CVListApply>
                 </div>
             </PopupBase>
         </Container>
@@ -195,3 +284,19 @@ function RecruitmentDashBoardPage() {
 }
 
 export default RecruitmentDashBoardPage
+const StyledCol = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: rgba(130, 130, 130, 0.3) 0px 8px 24px;
+    background-color: ${(prop) => prop.customColor || '#eee'};
+
+    font-weight: bold;
+    transform: 0.5s;
+    &:hover {
+        transform: scale(1.1);
+    }
+`

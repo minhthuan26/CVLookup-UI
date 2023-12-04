@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components'
 
 function PopupBase(props) {
     return props.trigger ? (
-        <PopUp className="modal">
+        <PopUp className="modal" style={{ overflow: 'hidden' }}>
             <WrapPopUp>
                 <TitleBar>
                     <Title>{props.title}</Title>

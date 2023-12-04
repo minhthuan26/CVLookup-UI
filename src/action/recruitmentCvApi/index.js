@@ -117,8 +117,7 @@ export const doGetCVByRecruitmentId = async (axiosPrivate, dispatch, id) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
-            // eslint-disable-next-line
-            url: `${recruitmentCVUrl.getCvByRecruitmentId}` + `?id=${id}`,
+            url: `${recruitmentCVUrl.getCvByRecruitmentId}?id=${id}`,
             method: 'get',
             withCredentials: true,
             headers: {
@@ -146,6 +145,40 @@ export const doGetCVByRecruitmentId = async (axiosPrivate, dispatch, id) => {
         dispatch(successLoading())
     }
 }
+
+export const doGetCVByIsPass = async (axiosPrivate, dispatch, id) => {
+    dispatch(inLoading())
+    try {
+        const res = await axiosPrivate({
+            url: `${recruitmentCVUrl.getCvByIsPass}?id=${id}`,
+            method: 'get',
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (!res.data.success) {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return res.data.data
+    } catch (error) {
+        toast.error(error.message)
+        dispatch(successLoading())
+    }
+}
+
 export const doUpdateIsView = async (axiosPrivate, dispatch, id) => {
     dispatch(inLoading())
     try {
@@ -183,9 +216,47 @@ export const doToggleIsPass = async (axiosPrivate, dispatch, id) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
-            // eslint-disable-next-line
-            url: `${recruitmentCVUrl.toggleIsPass}` + `?id=${id}`,
+            url: `${recruitmentCVUrl.toggleIsPass}?id=${id}`,
             method: 'patch',
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (!res.data.success) {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return res.data.data
+    } catch (error) {
+        toast.error(error.message)
+        dispatch(successLoading())
+    }
+}
+
+export const doGetRecruitmentCVByUserId = async (
+    axiosPrivate,
+    dispatch,
+    userId,
+    recruitmentId
+) => {
+    dispatch(inLoading())
+    try {
+        const res = await axiosPrivate({
+            // eslint-disable-next-line
+            url: `${recruitmentCVUrl.getCvByRecruitmentId}?userId=${userId}&recruitmentId=${recruitmentId}`,
+            method: 'get',
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
