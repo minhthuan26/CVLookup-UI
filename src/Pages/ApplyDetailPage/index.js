@@ -20,6 +20,7 @@ const ApplyDetailPage = () => {
 	const getRecruitmentCv = async (axiosPrivate, dispatch, cvId, recruitmentId) => await getBy_CvId_And_RecruitmentId(axiosPrivate, dispatch, cvId, recruitmentId)
 
 	useEffect(() => {
+		console.log(location);
 		if (!location || !location.state || !location.state.notify) {
 			navigate('/bad-request')
 		} else {
