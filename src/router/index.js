@@ -11,6 +11,8 @@ import RecruitmentDetail from '~/Pages/RecruitmentDetail'
 import DefaultLayout from '~/components/Layout/DefaultLayout'
 import EmployerLayout from '~/components/Layout/EmployerLayout'
 import LoginLayout from '~/components/Layout/LoginLayout'
+import ApplyDetailPage from '~/Pages/ApplyDetailPage'
+import NotAllowed from '~/Pages/NotAllowed'
 const publicRoutes = [
     {
         path: '/',
@@ -42,6 +44,11 @@ const publicRoutes = [
         layout: DefaultLayout,
         page: RecruitmentDetail,
     },
+    {
+        path: '/bad-request',
+        layout: DefaultLayout,
+        page: NotAllowed,
+    },
 ]
 
 const privateRoutes = [
@@ -67,6 +74,12 @@ const privateRoutes = [
         path: '/recruitment-dashboard',
         layout: DefaultLayout,
         page: RecruitmentDashBoardPage,
+        allowedRoles: ['Admin', 'Employer'],
+    },
+    {
+        path: '/apply-detail',
+        layout: DefaultLayout,
+        page: ApplyDetailPage,
         allowedRoles: ['Admin', 'Employer'],
     },
 ]

@@ -23,6 +23,7 @@ export const recruitmentUrl = {
     addRecruitment: `${host}${prefix}/Recruitment/add-recruitment`,
     deleteRecruitment: `${host}${prefix}/Recruitment/delete`,
     updateRecruitment: `${host}${prefix}/Recruitment/update`,
+    searchRecruitment: `${host}${prefix}/Recruitment/get-recruitment`
 }
 
 export const CVUrl = {
@@ -58,6 +59,7 @@ export const recruitmentCVUrl = {
     getCvByRecruitmentId: `${host}${prefix}/RecruitmentCV/get-by-recruitment-id`,
     updateIsView: `${host}${prefix}/RecruitmentCV/update-isView`,
     toggleIsPass: `${host}${prefix}/RecruitmentCV/toggle-isPass`,
+    getBy_CvId_And_RecruitmentId: `${host}${prefix}/RecruitmentCV/get-by-cv-and-recruitment-id`
 }
 
 export const jobFormUrl = {

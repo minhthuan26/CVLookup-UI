@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Container } from 'react-bootstrap'
-import JobsSearch from '~/components/JobsSearch'
 import RecruitmentGeneralInfo from '~/components/RecruitmentDetail/RecruitmentGeneralInfo'
 import CompanyInfoHeader from '~/components/RecruitmentDetail/CompanyInfoHeader'
 import RecruitmentContent from '~/components/RecruitmentDetail/RecruitmentContent'
@@ -32,7 +31,7 @@ const RecruitmentDetail = () => {
         })
     },
         //eslint-disable-next-line
-        [])
+        [searchParams.get('id')])
 
     useEffect(() => {
         if (user && recruitment && role !== 'Employer') {
@@ -71,8 +70,6 @@ const RecruitmentDetail = () => {
                     </div>
                     : <></>
             }
-
-
         </>
     )
 }

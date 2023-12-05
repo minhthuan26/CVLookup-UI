@@ -12,7 +12,7 @@ const UploadedCVCard = ({ data, show }) => {
                     <Form.Control
                         disabled
                         type="text"
-                        value={data.user.username} />
+                        value={data.fullName} />
                 </Form.Group>
                 <div className='d-flex'>
                     <Form.Group className='w-50 p-2 my-2 me-2 rounded'>

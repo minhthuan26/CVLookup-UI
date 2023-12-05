@@ -121,7 +121,10 @@
 
 .onHover:hover {
     cursor: pointer;
+    transform: scaleX(1.01);
+    transition: 0.3s all ease-in-out;
 }
+
 
 .btn {
     transition: 0.3s all ease-in-out;
