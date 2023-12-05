@@ -76,8 +76,8 @@ export const searchRecruitment = async (dispatch, filter) => {
 export const doGetAllRecruitment = async (dispatch) => {
     dispatch(inLoading())
     try {
-        const res = await axios({
-            url: `${recruitmentUrl.getAllRecruitment}`,
+        const res = await axiosPrivate({
+            url: `${recruitmentUrl.getAllRecruitmentByEmployer}`,
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
