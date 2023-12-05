@@ -8,7 +8,6 @@ import { doGetRecruitmentDetail } from '~/action/recruitmentApi'
 import { getBy_CvId_And_RecruitmentId } from '~/action/recruitmentCvApi'
 
 const ApplyDetailPage = () => {
-	const [cvIsPass, setCvIsPass] = useState(false)
 	const location = useLocation()
 	const [recruitment, setRecruitment] = useState()
 	const [cv, setCv] = useState()
@@ -26,11 +25,11 @@ const ApplyDetailPage = () => {
 		} else {
 			const recruitmentId = location.state.notify.recruitmentId
 			const cvId = location.state.notify.curriculumVitaeId
-			const candidateId = location.state.notify.senderId
-			const employerId = location.state.notify.userId
 			getRecruitmentCv(axiosPrivate, dispatch, cvId, recruitmentId)
 				.then(data => {
-					console.log(data);
+					setRecruitment(data.recruitment)
+					setCv(data.curriculumVitae)
+					setRecruitmentCv(data)
 				})
 		}
 
@@ -40,11 +39,11 @@ const ApplyDetailPage = () => {
 	return (
 		<div className='d-flex w-100 gap-2'>
 			<div className='w-50 border border-1 rounded-4'>
-				<JobInfo />
+				<JobInfo recruitment={recruitment} />
 			</div>
 
 			<div className='w-50 border border-1 rounded-4'>
-				<CVInfo cvIsPass={cvIsPass} setCvIsPass={setCvIsPass} />
+				<CVInfo recruitmentCv={recruitmentCv} cv={cv} />
 			</div>
 		</div>
 	)

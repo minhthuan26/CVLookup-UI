@@ -1,35 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Card, Button, Form, Modal } from 'react-bootstrap'
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded'
 import PersonIcon from '@mui/icons-material/Person'
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid'
 import CVViewer from '~/components/CVViewer/CVViewer'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+import { doToggleIsPass, doUpdateIsView } from '~/action/recruitmentCvApi'
+import { useDispatch, useSelector } from 'react-redux'
+import usePrivateAxios from '~/action/AxiosCredentials'
 
-const recruitment = {
-    jobTitle: 'Tuyen thuc tap sinh PHP',
-    salary: 'Thoa thuan',
-    jobAddress: {
-        addressDetail: 'test',
-        province: 'test',
-        district: 'test',
-    },
-    experience: {
-        exp: 'test'
-    },
-    applicationDeadline: Date.now(),
-    jobDescription: 'Test',
-    jobRequirement: 'test',
-    benefit: 'test'
-}
-
-const CVInfo = ({ cvIsPass, setCvIsPass }) => {
+const CVInfo = ({ recruitmentCv, cv }) => {
     const [showCv, setShowCv] = useState(false)
+    const [cvIsPass, setCvIsPass] = useState(false)
+    const [cvIsView, setCvIsView] = useState(false)
+    const accessToken = useSelector(state => state.auth.credentials.accessToken)
+    const axiosPrivate = usePrivateAxios(accessToken)
+    const dispatch = useDispatch()
+    const updateIsView = async (axiosPrivate, dispatch, id) =>
+        await doUpdateIsView(axiosPrivate, dispatch, id)
+    const toggleIsPass = async (axiosPrivate, dispatch, id) =>
+        await doToggleIsPass(axiosPrivate, dispatch, id)
+    useEffect(() => {
+        if (recruitmentCv) {
+            setCvIsPass(recruitmentCv.isPass)
+            setCvIsView(recruitmentCv.isView)
+        }
+    },
+        //eslint-disable-next-line
+        [recruitmentCv])
     return (
         <div
             className='d-flex flex-column gap-3 justify-content-center align-items-center p-3'>
-            <div
+            {recruitmentCv ? <div
                 style={{
                     backgroundColor: cvIsPass ? 'rgba(13, 245, 5, 0.1)' : 'rgba(255, 0, 0,0.1)'
                 }} className='d-flex w-100 gap-4 align-items-center justify-content-start rounded-4 ps-3 py-2'>
@@ -42,10 +44,13 @@ const CVInfo = ({ cvIsPass, setCvIsPass }) => {
                         color: cvIsPass ? 'green' : 'red'
                     }}
                     onChange={() => {
-                        setCvIsPass(preState => !preState)
+                        toggleIsPass(axiosPrivate, dispatch, cv.id).then(data => {
+                            setCvIsPass(data.isPass)
+                        })
                     }}
                 />
             </div>
+                : <></>}
             <div className='text-center text-decoration-underline mb-2'>
                 <h4>ĐƠN XIN TUYỂN DỤNG</h4>
             </div>
@@ -56,7 +61,7 @@ const CVInfo = ({ cvIsPass, setCvIsPass }) => {
                     </div>
                     <div className='d-flex flex-column'>
                         <div>Họ và tên</div>
-                        <div><b>{recruitment.salary}</b></div>
+                        <div><b>{cv?.fullName}</b></div>
                     </div>
                 </div>
 
@@ -68,7 +73,7 @@ const CVInfo = ({ cvIsPass, setCvIsPass }) => {
                         <div>Email</div>
                         <div>
                             <b>
-                                {recruitment.jobAddress?.addressDetail ? recruitment.jobAddress.addressDetail : ''}{recruitment.jobAddress?.province ? ', ' + recruitment.jobAddress?.province : ''}{recruitment.jobAddress?.district ? ', ' + recruitment.jobAddress.district : ''}
+                                {cv?.email}
                             </b>
                         </div>
                     </div>
@@ -80,7 +85,7 @@ const CVInfo = ({ cvIsPass, setCvIsPass }) => {
                     </div>
                     <div className='d-flex flex-column'>
                         <div>Số điện thoại</div>
-                        <div><b>{recruitment.experience.exp}</b></div>
+                        <div><b>{cv?.phoneNumber}</b></div>
                     </div>
                 </div>
             </div>
@@ -90,7 +95,7 @@ const CVInfo = ({ cvIsPass, setCvIsPass }) => {
                         <AccessTimeFilledRoundedIcon style={{ color: 'rgb(127,135,143)' }} fontSize='small' />
                     </div>
                     <div>
-                        Ứng tuyển vào lúc: {new Date(recruitment.applicationDeadline).toLocaleDateString('nl')}
+                        Ứng tuyển vào lúc: {recruitmentCv?.appliedAt}
                     </div>
                 </div>
                 <div></div>
@@ -119,15 +124,16 @@ const CVInfo = ({ cvIsPass, setCvIsPass }) => {
                                 whiteSpace: 'pre-wrap'
                             }}
                             className='mb-2'>
-                            {recruitment.jobDescription}
+                            {cv?.introdution}
                         </Card.Text>
 
-                        <div className='d-flex justify-content-center'>
-                            <Button
+                        <div className='d-flex mt-4 justify-content-end'>
+                            <Card.Link href='#'
                                 onClick={(e) => {
                                     e.preventDefault()
                                     setShowCv(true)
-                                }}>Xem CV</Button>
+                                    updateIsView(axiosPrivate, dispatch, cv.id)
+                                }}>Xem CV</Card.Link>
                         </div>
                         <Modal
                             animation={true}
@@ -141,8 +147,13 @@ const CVInfo = ({ cvIsPass, setCvIsPass }) => {
                                 <Modal.Title>ĐƠN XIN TUYỂN DỤNG</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <CVViewer cvId={'7e79f15a-4248-40fa-ba0f-991da5a22620'} check={false} height={'100%'} />
+                                <CVViewer cvId={cv?.id} check={false} height={'100%'} />
                             </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant='danger' onClick={() => setShowCv(false)}>
+                                    Đóng
+                                </Button>
+                            </Modal.Footer>
                         </Modal>
                     </Card.Body >
                 </Card >

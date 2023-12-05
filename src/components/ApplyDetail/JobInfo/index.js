@@ -5,31 +5,14 @@ import PlaceRoundedIcon from '@mui/icons-material/PlaceRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded'
 
-const recruitment = {
-    jobTitle: 'Tuyen thuc tap sinh PHP',
-    salary: 'Thoa thuan',
-    jobAddress: {
-        addressDetail: 'test',
-        province: 'test',
-        district: 'test',
-    },
-    experience: {
-        exp: 'test'
-    },
-    applicationDeadline: Date.now(),
-    jobDescription: 'Test',
-    jobRequirement: 'test',
-    benefit: 'test'
-}
-
-const JobInfo = () => {
+const JobInfo = ({ recruitment }) => {
     return (
         <div className='d-flex flex-column gap-3 justify-content-center align-items-center p-3'>
             <div className='d-flex w-100 gap-4 align-items-center justify-content-start py-2' style={{ visibility: 'hidden' }}>
                 <Form.Check />
             </div>
             <div className='text-center text-decoration-underline mb-2 text-uppercase'>
-                <h4>{recruitment.jobTitle}</h4>
+                <h4>{recruitment?.jobTitle}</h4>
             </div>
             <div style={{ width: '90%' }} className='d-flex gap-5 justify-content-between'>
                 <div className='d-flex justify-content-start align-items-center gap-2 me-3'>
@@ -38,7 +21,7 @@ const JobInfo = () => {
                     </div>
                     <div className='d-flex flex-column'>
                         <div>Mức lương</div>
-                        <div><b>{recruitment.salary}</b></div>
+                        <div><b>{recruitment?.salary}</b></div>
                     </div>
                 </div>
 
@@ -50,7 +33,7 @@ const JobInfo = () => {
                         <div>Địa điểm</div>
                         <div>
                             <b>
-                                {recruitment.jobAddress?.addressDetail ? recruitment.jobAddress.addressDetail : ''}{recruitment.jobAddress?.province ? ', ' + recruitment.jobAddress?.province : ''}{recruitment.jobAddress?.district ? ', ' + recruitment.jobAddress.district : ''}
+                                {recruitment?.jobAddress?.addressDetail ? recruitment?.jobAddress.addressDetail : ''}{recruitment?.jobAddress?.province ? ', ' + recruitment?.jobAddress?.province : ''}{recruitment?.jobAddress?.district ? ', ' + recruitment?.jobAddress.district : ''}
                             </b>
                         </div>
                     </div>
@@ -62,7 +45,7 @@ const JobInfo = () => {
                     </div>
                     <div className='d-flex flex-column'>
                         <div>Kinh nghiệm</div>
-                        <div><b>{recruitment.experience.exp}</b></div>
+                        <div><b>{recruitment?.experience.exp}</b></div>
                     </div>
                 </div>
             </div>
@@ -72,7 +55,7 @@ const JobInfo = () => {
                         <AccessTimeFilledRoundedIcon style={{ color: 'rgb(127,135,143)' }} fontSize='small' />
                     </div>
                     <div>
-                        Hạn nộp hồ sơ: {new Date(recruitment.applicationDeadline).toLocaleDateString('nl')}
+                        Hạn nộp hồ sơ: {new Date(recruitment?.applicationDeadline).toLocaleDateString('nl')}
                     </div>
                 </div>
                 <div></div>
@@ -102,7 +85,7 @@ const JobInfo = () => {
                                 whiteSpace: 'pre-wrap'
                             }}
                             className='mb-2'>
-                            {recruitment.jobDescription}
+                            {recruitment?.jobDescription}
                         </Card.Text>
 
                         <Card.Title>Yêu cầu ứng viên</Card.Title>
@@ -112,7 +95,7 @@ const JobInfo = () => {
                                 whiteSpace: 'pre-wrap'
                             }}
                             className='mb-2'>
-                            {recruitment.jobRequirement}
+                            {recruitment?.jobRequirement}
                         </Card.Text>
 
                         <Card.Title>Quyền lợi</Card.Title>
@@ -122,7 +105,7 @@ const JobInfo = () => {
                                 whiteSpace: 'pre-wrap'
                             }}
                             className='mb-2'>
-                            {recruitment.benefit}
+                            {recruitment?.benefit}
                         </Card.Text >
 
                         <Card.Title>Địa điểm làm việc</Card.Title>
@@ -131,7 +114,7 @@ const JobInfo = () => {
                                 marginLeft: '3em'
                             }}
                             className='mb-2'>
-                            {recruitment.jobAddress?.addressDetail ? recruitment.jobAddress.addressDetail : ''}{recruitment.jobAddress?.province ? ', ' + recruitment.jobAddress?.province : ''}{recruitment.jobAddress?.district ? ', ' + recruitment.jobAddress.district : ''}
+                            {recruitment?.jobAddress?.addressDetail ? recruitment?.jobAddress.addressDetail : ''}{recruitment?.jobAddress?.province ? ', ' + recruitment?.jobAddress?.province : ''}{recruitment?.jobAddress?.district ? ', ' + recruitment?.jobAddress.district : ''}
                         </Card.Text >
 
                         <Card.Title>Cách thức ứng tuyển</Card.Title>
