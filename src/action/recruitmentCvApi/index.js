@@ -146,12 +146,12 @@ export const doGetCVByRecruitmentId = async (axiosPrivate, dispatch, id) => {
         dispatch(successLoading())
     }
 }
-export const doUpdateIsView = async (axiosPrivate, dispatch, id) => {
+export const doUpdateIsView = async (axiosPrivate, dispatch, cvId, recruitmentId) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
             // eslint-disable-next-line
-            url: `${recruitmentCVUrl.updateIsView}` + `?id=${id}`,
+            url: `${recruitmentCVUrl.updateIsView}` + `?cvId=${cvId}` + `&recruitmentId=${recruitmentId}`,
             method: 'patch',
             withCredentials: true,
             headers: {
@@ -179,12 +179,12 @@ export const doUpdateIsView = async (axiosPrivate, dispatch, id) => {
         dispatch(successLoading())
     }
 }
-export const doToggleIsPass = async (axiosPrivate, dispatch, id) => {
+export const doToggleIsPass = async (axiosPrivate, dispatch, cvId, recruitmentId) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
             // eslint-disable-next-line
-            url: `${recruitmentCVUrl.toggleIsPass}` + `?id=${id}`,
+            url: `${recruitmentCVUrl.toggleIsPass}` + `?cvId=${cvId}` + `&recruitmentId=${recruitmentId}`,
             method: 'patch',
             withCredentials: true,
             headers: {

@@ -90,6 +90,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
+                        setCvSelected('')
                         setAppliedCv(data)
                     }
                 )
@@ -114,6 +115,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
+                        setCvSelected('')
                         setAppliedCv(data)
                     }
                 )
@@ -170,6 +172,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
+                        setCvSelected('')
                         setAppliedCv(data)
                     }
                 )

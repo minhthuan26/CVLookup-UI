@@ -97,16 +97,16 @@ const RecruitmentHeader = ({ recruitment, cvApplied }) => {
             <div>
                 {role !== 'Employer' ?
                     !cvApplied
-                        ? <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
+                        ? <Button disabled={recruitment.isExpired} className='w-100 text-center' variant='primary' onClick={handleApply}>
                             <b>
                                 <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
-                                Ứng tuyển ngay
+                                {recruitment.isExpired ? 'Hết hạn ứng tuyển' : 'Ứng tuyển ngay'}
                             </b>
                         </Button>
-                        : <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
+                        : <Button disabled={recruitment.isExpired} className='w-100 text-center' variant='primary' onClick={handleApply}>
                             <b>
                                 <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
-                                Ứng tuyển lại
+                                {recruitment.isExpired ? 'Hết hạn ứng tuyển' : 'Ứng tuyển lại'}
                             </b>
                         </Button>
                     : <Button className='w-100 text-center' variant='primary' onClick={handleApply}>

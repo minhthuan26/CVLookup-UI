@@ -25,10 +25,10 @@ function CVListApply(props) {
     const axiosPrivate = usePrivateAxios(accessToken)
     const getCvByRecruitmentId = async (axiosPrivate, dispatch, id) =>
         await doGetCVByRecruitmentId(axiosPrivate, dispatch, id)
-    const updateIsView = async (axiosPrivate, dispatch, id) =>
-        await doUpdateIsView(axiosPrivate, dispatch, id)
-    const toggleIsPass = async (axiosPrivate, dispatch, id) =>
-        await doToggleIsPass(axiosPrivate, dispatch, id)
+    const updateIsView = async (axiosPrivate, dispatch, cvId, recruitmentId) =>
+        await doUpdateIsView(axiosPrivate, dispatch, cvId, recruitmentId)
+    const toggleIsPass = async (axiosPrivate, dispatch, cvId, recruitmentId) =>
+        await doToggleIsPass(axiosPrivate, dispatch, cvId, recruitmentId)
     useEffect(() => {
         getCvByRecruitmentId(axiosPrivate, dispatch, props.id).then((data) =>
             setCvList(data.curriculumVitaes)
@@ -46,7 +46,7 @@ function CVListApply(props) {
         setShowCV(true)
         setCVDetail(cv)
         if (!cv.isView) {
-            updateIsView(axiosPrivate, dispatch, cv.id)
+            updateIsView(axiosPrivate, dispatch, cv.id, props.id)
         }
 
     }
@@ -130,7 +130,8 @@ function CVListApply(props) {
                                                             toggleIsPass(
                                                                 axiosPrivate,
                                                                 dispatch,
-                                                                cv.id
+                                                                cv.id,
+                                                                props.id
                                                             )
                                                         }}
                                                     />

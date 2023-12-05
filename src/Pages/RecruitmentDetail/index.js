@@ -31,7 +31,7 @@ const RecruitmentDetail = () => {
         })
     },
         //eslint-disable-next-line
-        [])
+        [searchParams.get('id')])
 
     useEffect(() => {
         if (user && recruitment && role !== 'Employer') {

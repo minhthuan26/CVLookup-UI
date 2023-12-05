@@ -16,10 +16,10 @@ const CVInfo = ({ recruitmentCv, cv }) => {
     const accessToken = useSelector(state => state.auth.credentials.accessToken)
     const axiosPrivate = usePrivateAxios(accessToken)
     const dispatch = useDispatch()
-    const updateIsView = async (axiosPrivate, dispatch, id) =>
-        await doUpdateIsView(axiosPrivate, dispatch, id)
-    const toggleIsPass = async (axiosPrivate, dispatch, id) =>
-        await doToggleIsPass(axiosPrivate, dispatch, id)
+    const updateIsView = async (axiosPrivate, dispatch, cvId, recruitmentId) =>
+        await doUpdateIsView(axiosPrivate, dispatch, cvId, recruitmentId)
+    const toggleIsPass = async (axiosPrivate, dispatch, cvId, recruitmentId) =>
+        await doToggleIsPass(axiosPrivate, dispatch, cvId, recruitmentId)
     useEffect(() => {
         if (recruitmentCv) {
             setCvIsPass(recruitmentCv.isPass)
@@ -44,7 +44,7 @@ const CVInfo = ({ recruitmentCv, cv }) => {
                         color: cvIsPass ? 'green' : 'red'
                     }}
                     onChange={() => {
-                        toggleIsPass(axiosPrivate, dispatch, cv.id).then(data => {
+                        toggleIsPass(axiosPrivate, dispatch, cv.id, recruitmentCv.recruitment.id).then(data => {
                             setCvIsPass(data.isPass)
                         })
                     }}
@@ -132,7 +132,7 @@ const CVInfo = ({ recruitmentCv, cv }) => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     setShowCv(true)
-                                    updateIsView(axiosPrivate, dispatch, cv.id)
+                                    updateIsView(axiosPrivate, dispatch, cv.id, recruitmentCv.recruitment.id)
                                 }}>Xem CV</Card.Link>
                         </div>
                         <Modal

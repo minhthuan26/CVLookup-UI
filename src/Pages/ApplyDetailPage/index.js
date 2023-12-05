@@ -35,7 +35,7 @@ const ApplyDetailPage = () => {
 
 	},
 		// eslint-disable-next-line
-		[])
+		[location])
 	return (
 		<div className='d-flex w-100 gap-2'>
 			<div className='w-50 border border-1 rounded-4'>
