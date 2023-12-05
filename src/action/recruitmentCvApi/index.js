@@ -179,12 +179,13 @@ export const doGetCVByIsPass = async (axiosPrivate, dispatch, id) => {
     }
 }
 
-export const doUpdateIsView = async (axiosPrivate, dispatch, id) => {
+
+export const doUpdateIsView = async (axiosPrivate, dispatch, cvId, recruitmentId) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
             // eslint-disable-next-line
-            url: `${recruitmentCVUrl.updateIsView}` + `?id=${id}`,
+            url: `${recruitmentCVUrl.updateIsView}` + `?cvId=${cvId}` + `&recruitmentId=${recruitmentId}`,
             method: 'patch',
             withCredentials: true,
             headers: {
@@ -212,11 +213,12 @@ export const doUpdateIsView = async (axiosPrivate, dispatch, id) => {
         dispatch(successLoading())
     }
 }
-export const doToggleIsPass = async (axiosPrivate, dispatch, id) => {
+export const doToggleIsPass = async (axiosPrivate, dispatch, cvId, recruitmentId) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
-            url: `${recruitmentCVUrl.toggleIsPass}?id=${id}`,
+            // eslint-disable-next-line
+            url: `${recruitmentCVUrl.toggleIsPass}` + `?cvId=${cvId}` + `&recruitmentId=${recruitmentId}`,
             method: 'patch',
             withCredentials: true,
             headers: {
@@ -245,17 +247,13 @@ export const doToggleIsPass = async (axiosPrivate, dispatch, id) => {
     }
 }
 
-export const doGetRecruitmentCVByUserId = async (
-    axiosPrivate,
-    dispatch,
-    userId,
-    recruitmentId
-) => {
+
+export const getBy_CvId_And_RecruitmentId = async (axiosPrivate, dispatch, cvId, recruitmentId) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
             // eslint-disable-next-line
-            url: `${recruitmentCVUrl.getCvByRecruitmentId}?userId=${userId}&recruitmentId=${recruitmentId}`,
+            url: `${recruitmentCVUrl.getBy_CvId_And_RecruitmentId}` + `?cvId=${cvId}` + `&recruitmentId=${recruitmentId}`,
             method: 'get',
             withCredentials: true,
             headers: {

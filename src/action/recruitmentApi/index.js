@@ -38,7 +38,42 @@ export const getNewestJob = async (dispatch) => {
     }
 }
 
-export const doGetAllRecruitment = async (dispatch, axiosPrivate) => {
+export const searchRecruitment = async (dispatch, filter) => {
+    dispatch(inLoading())
+    try {
+        const res = await axios({
+            url: `${recruitmentUrl.searchRecruitment}?Keyword=${filter.Keyword}&Province=${filter.Province}&District=${filter.District}&Career=${filter.Career}&JobField=${filter.JobField}&JobForm=${filter.JobForm}&Experience=${filter.Experience}&Position=${filter.JobPosition}&SortBy=${filter.SortBy}`,
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (res.data.success) {
+            dispatch(successLoading())
+            return res.data.data
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return []
+    } catch (error) {
+        dispatch(successLoading())
+        return []
+    }
+}
+
+export const doGetAllRecruitment = async (dispatch) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
@@ -203,8 +238,6 @@ export const doUpdateRecruitment = async (
                 res.data.message.forEach((messageList) => {
                     messageList.forEach((messages) => {
                         messages.forEach((message) => {
-                            console.log('message ' + message)
-
                             toast.error(message)
                         })
                     })

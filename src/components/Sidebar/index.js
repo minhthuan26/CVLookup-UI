@@ -7,7 +7,7 @@ function Sidebar({ children }) {
     const [show, setShow] = useState(false)
 
     return (
-        <main className={show ? 'spgace-toggle' : null}>
+        <main className={show ? 'space-toggle' : null}>
             <header className={`header ${show ? 'space-toggle' : null}`}>
                 <div className="header-toggle" onClick={() => setShow(!show)}>
                     <i className={`fas fa-bars ${show ? 'fa-solid fa-xmark' : null}`}></i>

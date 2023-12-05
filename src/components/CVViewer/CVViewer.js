@@ -5,7 +5,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
 import '@react-pdf-viewer/thumbnail/lib/styles/index.css'
 import { thumbnailPlugin } from '@react-pdf-viewer/thumbnail'
-import { getCVbyId } from '~/action/CVApi'
+import { getCVbyId } from '~/action/CvApi'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -21,12 +21,12 @@ function CVViewer(props) {
         await getCVbyId(axiosPrivate, id, dispatch)
     useEffect(
         () => {
-            getDetail(axiosPrivate, props.Cvid, dispatch).then((data) =>
+            getDetail(axiosPrivate, props.cvId, dispatch).then((data) =>
                 setCVDetail(data)
             )
         },
         // eslint-disable-next-line
-        [props.Cvid]
+        [props.cvId]
     )
 
     const thumbnailPluginInstance = thumbnailPlugin()
@@ -51,7 +51,12 @@ function CVViewer(props) {
                 display: 'flex',
                 overflow: 'hidden',
             }}>
-            <div style={{ flex: 1, height: '25vw' }}>
+            <div style={{
+                flex: 1,
+                height: props.height ? props.height : '25vh',
+                width: props.width ? props.width : '100%',
+                overflow: 'hidden'
+            }}>
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                     <Viewer
                         fileUrl={`data:application/pdf;base64,${CVDetail.cvPath}`}

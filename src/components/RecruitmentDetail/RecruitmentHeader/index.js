@@ -13,6 +13,7 @@ const RecruitmentHeader = ({ recruitment, cvApplied }) => {
     const user = useSelector(state => state.auth.credentials.user)
     const { setLoginModal } = useLoginModal()
     const { setApplyJobModal } = useApplyJobModal()
+    const role = useSelector(state => state.auth.credentials.role)
 
     const handleApply = () => {
         if (!user) {
@@ -86,7 +87,7 @@ const RecruitmentHeader = ({ recruitment, cvApplied }) => {
                                     <ArticleIcon style={{ color: 'rgb(127,135,143)' }} fontSize='small' />
                                 </div>
                                 <div>
-                                    Đã ứng tuyển vào: {new Date(cvApplied.appliedAt).toLocaleDateString('nl')}
+                                    Đã ứng tuyển vào: {cvApplied.appliedAt}
                                 </div>
                             </div>
                         )
@@ -94,17 +95,24 @@ const RecruitmentHeader = ({ recruitment, cvApplied }) => {
                 }
             </div>
             <div>
-                {!cvApplied
-                    ? <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
-                        <b>
-                            <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
-                            Ứng tuyển ngay
-                        </b>
-                    </Button>
+                {role !== 'Employer' ?
+                    !cvApplied
+                        ? <Button disabled={recruitment.isExpired} className='w-100 text-center' variant='primary' onClick={handleApply}>
+                            <b>
+                                <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
+                                {recruitment.isExpired ? 'Hết hạn ứng tuyển' : 'Ứng tuyển ngay'}
+                            </b>
+                        </Button>
+                        : <Button disabled={recruitment.isExpired} className='w-100 text-center' variant='primary' onClick={handleApply}>
+                            <b>
+                                <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
+                                {recruitment.isExpired ? 'Hết hạn ứng tuyển' : 'Ứng tuyển lại'}
+                            </b>
+                        </Button>
                     : <Button className='w-100 text-center' variant='primary' onClick={handleApply}>
                         <b>
                             <i className="fa fa-paper-plane" aria-hidden="true"></i> {' '}
-                            Ứng tuyển lại
+                            Xem CV đã ứng tuyển
                         </b>
                     </Button>
                 }

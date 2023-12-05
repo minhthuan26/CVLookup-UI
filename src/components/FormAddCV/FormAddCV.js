@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { doUploadCV } from '~/action/CVApi'
+import { doUploadCV } from '~/action/CvApi'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
@@ -33,7 +33,6 @@ function FormAddCV(props) {
     const candidateId = useSelector((state) => state.auth.credentials.user.id)
     const uploadCurriculumViate = async (axiosPrivate, dispatch, cvInfo) => {
         await doUploadCV(axiosPrivate, dispatch, cvInfo).then((data) => {
-            console.log(data)
             props.setCVlist((prev) => [...prev, data])
         })
     }
@@ -69,7 +68,7 @@ function FormAddCV(props) {
                 setShowFormAdd(false)
                 props.setShowAddCV(false)
             } catch (error) {
-                console.log(error)
+                toast.error(error)
             }
         }
     }

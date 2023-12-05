@@ -23,8 +23,8 @@ const RecruitmentContent = ({ recruitment }) => {
                         <Card.Title>Mô tả công việc</Card.Title>
                         <Card.Text
                             style={{
-                                display: 'list-item',
-                                marginLeft: '3em'
+                                marginLeft: '3em',
+                                whiteSpace: 'pre-wrap'
                             }}
                             className='mb-2'>
                             {recruitment.jobDescription}
@@ -33,8 +33,8 @@ const RecruitmentContent = ({ recruitment }) => {
                         <Card.Title>Yêu cầu ứng viên</Card.Title>
                         <Card.Text
                             style={{
-                                display: 'list-item',
-                                marginLeft: '3em'
+                                marginLeft: '3em',
+                                whiteSpace: 'pre-wrap'
                             }}
                             className='mb-2'>
                             {recruitment.jobRequirement}
@@ -43,8 +43,8 @@ const RecruitmentContent = ({ recruitment }) => {
                         <Card.Title>Quyền lợi</Card.Title>
                         <Card.Text
                             style={{
-                                display: 'list-item',
-                                marginLeft: '3em'
+                                marginLeft: '3em',
+                                whiteSpace: 'pre-wrap'
                             }}
                             className='mb-2'>
                             {recruitment.benefit}
@@ -53,7 +53,6 @@ const RecruitmentContent = ({ recruitment }) => {
                         <Card.Title>Địa điểm làm việc</Card.Title>
                         <Card.Text
                             style={{
-                                display: 'list-item',
                                 marginLeft: '3em'
                             }}
                             className='mb-2'>
@@ -63,7 +62,6 @@ const RecruitmentContent = ({ recruitment }) => {
                         <Card.Title>Cách thức ứng tuyển</Card.Title>
                         <Card.Text
                             style={{
-                                display: 'list-item',
                                 marginLeft: '3em'
                             }}
                             className='mb-2' >

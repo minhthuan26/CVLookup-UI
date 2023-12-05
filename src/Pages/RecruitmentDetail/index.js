@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Container } from 'react-bootstrap'
-import JobsSearch from '~/components/JobsSearch'
 import RecruitmentGeneralInfo from '~/components/RecruitmentDetail/RecruitmentGeneralInfo'
 import CompanyInfoHeader from '~/components/RecruitmentDetail/CompanyInfoHeader'
 import RecruitmentContent from '~/components/RecruitmentDetail/RecruitmentContent'
 import RecruitmentHeader from '~/components/RecruitmentDetail/RecruitmentHeader'
 import SearchBarAdvance from '~/components/SearchBarAdvance'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { doGetRecruitmentDetail } from '~/action/recruitmentApi'
-import LoginModal from '~/components/LoginModal'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { doGetAppliedCV } from '~/action/recruitmentCvApi'
 import useApplyJobModal from '~/hooks/useApplyJobModal'
@@ -23,18 +20,25 @@ const RecruitmentDetail = () => {
     const user = useSelector(state => state.auth.credentials.user)
     const accessToken = useSelector(state => state.auth.credentials.accessToken)
     const axiosPrivate = usePrivateAxios(accessToken)
+    const role = useSelector(state => state.auth.credentials.role)
+    const location = useLocation()
 
     useEffect(() => {
-        const getRecruitmentDetail = async (id, dispatch, navigate) => await doGetRecruitmentDetail(id, dispatch, navigate)
-        getRecruitmentDetail(searchParams.get('id'), dispatch, navigate).then(data => {
-            setRecruitment(data)
-        })
+        if (searchParams.get('id')) {
+            const getRecruitmentDetail = async (id, dispatch, navigate) => await doGetRecruitmentDetail(id, dispatch, navigate)
+            getRecruitmentDetail(searchParams.get('id'), dispatch, navigate).then(data => {
+                setRecruitment(data)
+            })
+        } else {
+            navigate('/bad-request')
+        }
+
     },
         //eslint-disable-next-line
-        [])
+        [searchParams.get('id')])
 
     useEffect(() => {
-        if (user && recruitment) {
+        if (user && recruitment && role !== 'Employer') {
             const data = {
                 userId: user.id,
                 recruitmentId: recruitment.id
@@ -70,8 +74,6 @@ const RecruitmentDetail = () => {
                     </div>
                     : <></>
             }
-
-
         </>
     )
 }

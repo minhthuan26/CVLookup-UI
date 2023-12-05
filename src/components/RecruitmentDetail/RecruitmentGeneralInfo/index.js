@@ -31,7 +31,7 @@ const RecruitmentGeneralInfo = ({ recruitment }) => {
 
                     <div className='d-flex justify-content-start align-items-center gap-2 me-3'>
                         <div>
-                            <i className="fa fa-users" aria-hidden="true"></i>
+                            <i style={{ color: '#5767aa' }} className="fa fa-users" aria-hidden="true"></i>
                         </div>
                         <div className='d-flex flex-column'>
                             <div>Số lượng</div>
