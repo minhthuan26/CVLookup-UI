@@ -59,6 +59,7 @@ export const recruitmentCVUrl = {
     getCvByRecruitmentId: `${host}${prefix}/RecruitmentCV/get-by-recruitment-id`,
     updateIsView: `${host}${prefix}/RecruitmentCV/update-isView`,
     toggleIsPass: `${host}${prefix}/RecruitmentCV/toggle-isPass`,
+    getBy_CvId_And_RecruitmentId: `${host}${prefix}/RecruitmentCV/get-by-cv-and-recruitment-id`
 }
 
 export const jobFormUrl = {

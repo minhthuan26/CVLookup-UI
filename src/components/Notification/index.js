@@ -6,7 +6,6 @@ import { setNotifications } from '~/Redux/Notification/NotificationSlice'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { doUpdateViewStatus } from '~/action/notification'
 import PaginationAuto from '../PaginationAuto'
-import useApplyJobModal from '~/hooks/useApplyJobModal'
 
 const Notification = ({ isDisplay, setIsDisplay }) => {
 	const [page, setPage] = useState(1)
@@ -15,11 +14,18 @@ const Notification = ({ isDisplay, setIsDisplay }) => {
 	const accessToken = useSelector(state => state.auth.credentials.accessToken)
 	const axiosPrivate = usePrivateAxios(accessToken)
 	const dispatch = useDispatch()
+	const role = useSelector(state => state.auth.credentials.role)
 	const handleNotificationClick = (id) => {
 		const notify = notifications.find(notify => notify.id === id)
 		if (notify.isView) {
 			setIsDisplay(preState => !preState)
-			navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
+			role === 'Employer'
+				? navigate(`/apply-detail`, {
+					state: {
+						notify
+					}
+				})
+				: navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
 		} else {
 			const updateViewStatus = async (axiosPrivate, dispatch, id) => doUpdateViewStatus(axiosPrivate, dispatch, id)
 			updateViewStatus(axiosPrivate, dispatch, notify.id).then(data => {
@@ -27,7 +33,13 @@ const Notification = ({ isDisplay, setIsDisplay }) => {
 				tmp[tmp.indexOf(notify)] = data
 				dispatch(setNotifications(tmp))
 				setIsDisplay(preState => !preState)
-				navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
+				role === 'Employer'
+					? navigate(`/apply-detail`, {
+						state: {
+							notify
+						}
+					})
+					: navigate(`/recruitment-detail?id=${notify.recruitmentId}`)
 			})
 		}
 	}

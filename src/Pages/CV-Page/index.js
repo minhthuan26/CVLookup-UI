@@ -96,7 +96,7 @@ function CVPage() {
                         {CVlist?.map((cv) => (
                             <CVCard key={cv.id} sm={6} md={4}>
                                 <ContentRow>
-                                    <CVViewer Cvid={cv.id} check={false} />
+                                    <CVViewer cvId={cv.id} check={false} />
                                 </ContentRow>
                                 <ContentRow>
                                     <InfoRow>

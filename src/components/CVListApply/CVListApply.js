@@ -137,8 +137,8 @@ function CVListApply(props) {
                                                     <label
                                                         htmlFor="duyetCheckbox"
                                                         className={`form-check-label text ${isDuyet
-                                                                ? 'text-success'
-                                                                : 'text-danger'
+                                                            ? 'text-success'
+                                                            : 'text-danger'
                                                             }`}>
                                                         {isDuyet
                                                             ? 'Đã Duyệt'
@@ -163,7 +163,7 @@ function CVListApply(props) {
                             setTriger={setShowCV}
                             title={`${CVDetail.fullName} - ${CVDetail.email}`}>
                             <div style={{ height: '90vh' }}>
-                                <CVViewer Cvid={CVDetail.id} check={true} />
+                                <CVViewer cvId={CVDetail.id} check={true} />
                             </div>
                         </PopupBase>
                     </Row>
