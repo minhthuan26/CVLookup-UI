@@ -11,6 +11,7 @@ import {
 } from '~/action/recruitmentCvApi'
 import useApplyJobModal from '~/hooks/useApplyJobModal'
 import UploadedCVCard from '../UploadedCVCard'
+import CvModal from '../CvModal'
 
 const ApplyJobModal = ({ show, appliedCv, user }) => {
     const { setApplyJobModal, setAppliedCv } = useApplyJobModal()
@@ -224,6 +225,8 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
         [user, role, appliedCv]
     )
 
+    const [showCv, setShowCv] = useState(false)
+
     return (
         <Modal
             animation={true}
@@ -309,9 +312,16 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                                                                         cv.uploadedAt
                                                                     }
                                                                 </div>
-                                                                <a href="/test">
+
+                                                                <a
+                                                                    href="/"
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault()
+                                                                        setShowCv(true)
+                                                                    }}>
                                                                     Xem
                                                                 </a>
+                                                                <CvModal showCv={showCv} setShowCv={setShowCv} cv={cv} check={false} height={'100%'} />
                                                             </div>
                                                         </Form.Check.Label>
                                                     </Form.Check>
