@@ -12,7 +12,7 @@ import { faCaretDown, faEye, faL } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PopupBase from '../Popup/PopupBase'
 import CVViewer from '../CVViewer/CVViewer'
-function CVListApply(props, { cvCount }) {
+function CVListApply(props) {
     const [isDuyet, setIsDuyet] = useState({})
 
     const [openCvMap, setOpenCvMap] = useState({})
@@ -49,7 +49,6 @@ function CVListApply(props, { cvCount }) {
                                 return acc
                             }, {})
                         )
-                        cvCount(data.curriculumVitaes.length)
                     }
                 })
             } else {
@@ -63,7 +62,6 @@ function CVListApply(props, { cvCount }) {
                                     return acc
                                 }, {})
                             )
-                            cvCount(data.curriculumVitaes.length)
                         }
                     }
                 )
