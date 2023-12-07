@@ -119,13 +119,20 @@
     --bs-form-invalid-border-color: #dc3545;
 }
 
+.onHover:hover {
+    cursor: pointer;
+    transform: scaleX(1.01);
+    transition: 0.3s all ease-in-out;
+}
+
+
 .btn {
     transition: 0.3s all ease-in-out;
 }
 
 .btn-primary {
     --bs-btn-color: #eee;
-    --bs-btn-bg: #5767aa;
+    --bs-btn-bg: rgb(85, 102, 170);
     --bs-btn-border-color: #5767aa;
     --bs-btn-hover-color: #5767aa;
     --bs-btn-hover-bg: #eee;

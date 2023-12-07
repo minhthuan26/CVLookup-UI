@@ -24,6 +24,7 @@ export const recruitmentUrl = {
     deleteRecruitment: `${host}${prefix}/Recruitment/delete`,
     updateRecruitment: `${host}${prefix}/Recruitment/update`,
     getAll: `${host}${prefix}/Recruitment/get-all-recruitment`,
+    searchRecruitment: `${host}${prefix}/Recruitment/get-recruitment`,
 }
 
 export const CVUrl = {
@@ -72,6 +73,7 @@ export const recruitmentCVUrl = {
     getCvByIsPass: `${host}${prefix}/RecruitmentCV/get-by-isPass`,
     updateIsView: `${host}${prefix}/RecruitmentCV/update-isView`,
     toggleIsPass: `${host}${prefix}/RecruitmentCV/toggle-isPass`,
+    getBy_CvId_And_RecruitmentId: `${host}${prefix}/RecruitmentCV/get-by-cv-and-recruitment-id`,
 }
 
 export const jobFormUrl = {
@@ -95,4 +97,9 @@ export const AccountUserUrl = {
     deleteAccountUser: `${host}${prefix}/AccountUser/delete-account-user`,
     getByUserId: `${host}${prefix}/AccountUser/get-by-user-id`,
     getAllAccountUser: `${host}${prefix}/AccountUser/get-all-account-users`,
+}
+
+export const notificationUrl = {
+    getNotificationByUserId: `${host}${prefix}/notification/get-notification-by-user-id`,
+    updateViewStatus: `${host}${prefix}/notification/update-view-status`,
 }

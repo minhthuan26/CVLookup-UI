@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from '~/components/Sidebar'
 import Header from '~/components/Header'
 import Footer from '~/components/Footer'
+import useNotificationBox from '~/hooks/useNotificationBox'
 
 const DefaultLayout = ({ children }) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 1024)
@@ -17,8 +17,9 @@ const DefaultLayout = ({ children }) => {
             window.removeEventListener('resize', handleResize)
         }
     }, [])
+    const { setIsDisplay } = useNotificationBox()
     return (
-        <div className='d-flex flex-column justify-content-end min-vh-100'>
+        <div onClick={() => setIsDisplay(false)} className='d-flex flex-column justify-content-end min-vh-100'>
             {isMobile ? (
                 <Sidebar />
             ) : (

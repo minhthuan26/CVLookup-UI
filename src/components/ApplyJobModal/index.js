@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
-import { doGetCurrentUserCVUploaded, doUploadCV } from '~/action/CVApi'
+import { doGetCurrentUserCVUploaded, doUploadCV } from '~/action/CvApi'
 import {
     doApplyToRecruitment,
     doReApplyToRecruitment,
@@ -13,7 +13,7 @@ import useApplyJobModal from '~/hooks/useApplyJobModal'
 import UploadedCVCard from '../UploadedCVCard'
 
 const ApplyJobModal = ({ show, appliedCv, user }) => {
-    const { setApplyJobModal } = useApplyJobModal()
+    const { setApplyJobModal, setAppliedCv } = useApplyJobModal()
     const [isChooseOldCV, setIsChooseOldCV] = useState(true)
     const dispatch = useDispatch()
     const [fullname, setFullname] = useState('')
@@ -28,6 +28,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
+    const role = useSelector(state => state.auth.credentials.role)
     const axiosPrivate = usePrivateAxios(accessToken)
 
     const handleClose = () => {
@@ -44,18 +45,6 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
 
     const handleApply = (e) => {
         e.preventDefault()
-
-        const phoneRegex = /^\d{10}$/
-        if (
-            !fullname.trim() ||
-            !email.trim() ||
-            !phoneNumber.trim() ||
-            !cv ||
-            !introduction.trim()
-        ) {
-            toast.error('Vui lòng điền đầy đủ thông tin')
-            return
-        }
 
         var formData = new FormData()
         if (!isChooseOldCV) {
@@ -101,7 +90,8 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
-                        navigate(0)
+                        setCvSelected('')
+                        setAppliedCv(data)
                     }
                 )
             })
@@ -125,6 +115,8 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
+                        setCvSelected('')
+                        setAppliedCv(data)
                     }
                 )
             } else {
@@ -180,7 +172,8 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIntroduction('')
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
-                        navigate(0)
+                        setCvSelected('')
+                        setAppliedCv(data)
                     }
                 )
             })
@@ -206,6 +199,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
                         setIsChooseOldCV(true)
                         setApplyJobModal(false)
                         setCvSelected('')
+                        setAppliedCv(data)
                     }
                 )
             } else {
@@ -216,7 +210,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
 
     useEffect(
         () => {
-            if (user) {
+            if (user && role !== 'Employer') {
                 const getAllCVUploaded = async (axiosPrivate, dispatch) =>
                     await doGetCurrentUserCVUploaded(axiosPrivate, dispatch)
                 getAllCVUploaded(axiosPrivate, dispatch).then((data) => {
@@ -227,7 +221,7 @@ const ApplyJobModal = ({ show, appliedCv, user }) => {
             }
         },
         //eslint-disable-next-line
-        [user]
+        [user, role, appliedCv]
     )
 
     return (

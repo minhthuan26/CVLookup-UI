@@ -26,6 +26,7 @@ import FormRecruitment from '~/components/FormRecruitment/FormRecruitment'
 import CVListApply from '~/components/CVListApply/CVListApply'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styled from 'styled-components'
+import { toast } from 'react-toastify'
 function RecruitmentDashBoardPage() {
     const columns = [
         {
@@ -163,7 +164,7 @@ function RecruitmentDashBoardPage() {
                     setFilter(recruitment.filter((item) => item.id !== id))
                     setRecruitment(recruitment.filter((item) => item.id !== id))
                 } catch (error) {
-                    console.log(error)
+                    toast.error(error)
                 }
             },
         })

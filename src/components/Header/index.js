@@ -7,8 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import useNotificationBox from '~/hooks/useNotificationBox'
+import { Badge } from 'react-bootstrap'
 
-function Header({ children }) {
+function Header() {
+    const { setIsDisplay } = useNotificationBox()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector(state => state.auth.credentials.user)
@@ -18,7 +21,21 @@ function Header({ children }) {
         const logout = async (axiosPrivate, dispatch, navigate, from) => await doLogout(axiosPrivate, dispatch, navigate, from)
         logout(axiosPrivate, dispatch, navigate, '/login')
     }
-
+    const handleOpenNotificationBox = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDisplay(preState => !preState)
+    }
+    const [isNewNotification, setIsNewNotification] = useState(false)
+    const notifications = useSelector(state => state.notifications.notifications)
+    useEffect(() => {
+        if (notifications.length > 0) {
+            const isNew = notifications.some(noti => noti.isView === false)
+            setIsNewNotification(isNew)
+        }
+    },
+        //eslint-disable-next-line
+        [notifications])
     return (
         <>
             <HeaderComponent.HeaderContainer>
@@ -51,10 +68,16 @@ function Header({ children }) {
                 <div className='ms-auto d-flex gap-2'>
                     {user ? (
                         <>
-
                             <HeaderComponent.LinkName
-                                className="link-name">
+                                onClick={handleOpenNotificationBox}
+                                className="link-name position-relative">
                                 <NotificationsIcon />
+                                <Badge
+                                    style={{
+                                        visibility: `${isNewNotification ? 'visible' : 'hidden'}`
+                                    }}
+                                    bg="danger"
+                                    className='position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle'> </Badge>
                             </HeaderComponent.LinkName>
                             <HeaderComponent.LinkName onClick={handleLogout}
                                 className="link-name">
@@ -92,7 +115,6 @@ function Header({ children }) {
                     )}
                 </div>
             </HeaderComponent.HeaderContainer>
-            {children}
         </>
     )
 }

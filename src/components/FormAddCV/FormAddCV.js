@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { doUploadCV } from '~/action/CVApi'
+import { doUploadCV } from '~/action/CvApi'
 import { toast } from 'react-toastify'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
@@ -67,7 +67,7 @@ function FormAddCV(props) {
                 setShowFormAdd(false)
                 props.setShowAddCV(false)
             } catch (error) {
-                console.log(error)
+                toast.error(error)
             }
         }
     }

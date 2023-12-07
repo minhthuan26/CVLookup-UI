@@ -3,7 +3,7 @@ const { createSlice } = require('@reduxjs/toolkit')
 const JobPositionSlice = createSlice({
     name: 'jobPosition',
     initialState: {
-        jobPosition: [],
+        jobPositionList: [],
     },
     reducers: {
         setJobPosition: (state, action) => {

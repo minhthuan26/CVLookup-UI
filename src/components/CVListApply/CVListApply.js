@@ -81,7 +81,10 @@ function CVListApply(props) {
     const handleViewCV = (cv) => {
         setShowCV(true)
         setCVDetail(cv)
-        updateIsView(axiosPrivate, dispatch, cv.id)
+        if (!cv.isView) {
+            updateIsView(axiosPrivate, dispatch, cv.id, props.id)
+        }
+
     }
     return (
         <div style={{ height: '85vh' }}>
@@ -170,7 +173,8 @@ function CVListApply(props) {
                                                             toggleIsPass(
                                                                 axiosPrivate,
                                                                 dispatch,
-                                                                cv.id
+                                                                cv.id,
+                                                                props.id
                                                             )
                                                         }}>
                                                         {isDuyet[cv.id]
@@ -178,6 +182,7 @@ function CVListApply(props) {
                                                             : 'Huỷ'}
                                                     </button>
                                                 )}
+
                                             </div>
                                         </li>
                                     </ul>
@@ -197,6 +202,7 @@ function CVListApply(props) {
                             title={`${CVDetail.fullName} - ${CVDetail.email}`}>
                             <div style={{ height: '90vh', overflow: 'hidden' }}>
                                 <CVViewer Cvid={CVDetail.id} check={true} />
+
                             </div>
                         </PopupBase>
                     </Row>

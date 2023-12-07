@@ -22,6 +22,8 @@ import JobPositionManagement from '../Pages/CategoriesManagement/JobPositionMana
 import JobFieldManagement from '../Pages/CategoriesManagement/JobFieldManagement/JobFieldManagement'
 import RecruitmentManagement from '../Pages/RecruitmentManagement/RecruitmentManagement'
 import CVManagement from '../Pages/CVManagement/CVManagement'
+import ApplyDetailPage from '~/Pages/ApplyDetailPage'
+import NotAllowed from '~/Pages/NotAllowed'
 const publicRoutes = [
     {
         path: '/',
@@ -52,6 +54,11 @@ const publicRoutes = [
         path: '/recruitment-detail',
         layout: DefaultLayout,
         page: RecruitmentDetail,
+    },
+    {
+        path: '/bad-request',
+        layout: DefaultLayout,
+        page: NotAllowed,
     },
 ]
 
@@ -139,6 +146,12 @@ const privateRoutes = [
         layout: AdminLayout,
         page: CVManagement,
         allowedRoles: ['Admin'],
+    },
+    {
+        path: '/apply-detail',
+        layout: DefaultLayout,
+        page: ApplyDetailPage,
+        allowedRoles: ['Admin', 'Employer'],
     },
 ]
 
