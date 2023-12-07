@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import CVViewer from '~/components/CVViewer/CVViewer'
 import PopupBase from '~/components/Popup/PopupBase'
 import { Confirm } from '~/components/Popup/Confirm'
-import { deleteCV, downloadCV } from '~/action/CVApi'
 
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
-import { doGetAllCV } from '~/action/CVApi'
+import { doGetAllCV, deleteCV, downloadCV } from '~/action/CVApi'
 function CVManagement() {
     const [cvList, setCVList] = useState([])
     const [showCV, setShowCV] = useState(false)

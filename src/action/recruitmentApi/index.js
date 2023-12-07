@@ -73,7 +73,7 @@ export const searchRecruitment = async (dispatch, filter) => {
     }
 }
 
-export const doGetAllRecruitment = async (dispatch) => {
+export const doGetAllRecruitment = async (dispatch, axiosPrivate) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
