@@ -163,7 +163,7 @@ export const doAddRecruitment = async (
 
         if (res.data.success) {
             toast.success(res.data.message)
-            navigate('/')
+            navigate(-1)
         } else {
             if (typeof res.data.message !== 'string') {
                 res.data.message.forEach((messageList) => {
@@ -250,5 +250,38 @@ export const doUpdateRecruitment = async (
     } catch (error) {
         toast.error(error.message)
         dispatch(successLoading())
+    }
+}
+export const doGetRecruitmentList = async (axiosPrivate, dispatch) => {
+    dispatch(inLoading())
+    try {
+        const res = await axiosPrivate({
+            url: `${recruitmentUrl.getAll}`,
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (res.data.success) {
+            dispatch(successLoading())
+            return res.data.data
+        } else {
+            if (typeof res.data.message !== 'string') {
+                res.data.message.forEach((messageList) => {
+                    messageList.forEach((messages) => {
+                        messages.forEach((message) => {
+                            toast.error(message)
+                        })
+                    })
+                })
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+        dispatch(successLoading())
+        return []
+    } catch (error) {
+        dispatch(successLoading())
+        return []
     }
 }
