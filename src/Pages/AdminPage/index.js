@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
 import { doGetAllEmployer, doGetAllCandidate } from '~/action/accountUserApi'
-import { doGetAllCV } from '~/action/CVApi'
+import { doGetAllCV } from '~/action/CvApi'
 import { doGetRecruitmentList } from '~/action/recruitmentApi'
 
 const AdminPage = () => {

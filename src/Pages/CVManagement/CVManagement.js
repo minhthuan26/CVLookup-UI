@@ -5,7 +5,7 @@ import { Confirm } from '~/components/Popup/Confirm'
 
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
-import { doGetAllCV, deleteCV, downloadCV } from '~/action/CVApi'
+import { doGetAllCV, deleteCV, downloadCV } from '~/action/CvApi'
 function CVManagement() {
     const [cvList, setCVList] = useState([])
     const [showCV, setShowCV] = useState(false)
@@ -81,7 +81,7 @@ function CVManagement() {
                                         <div className="card-body pt-0">
                                             <div className="row">
                                                 <CVViewer
-                                                    Cvid={cv.id}
+                                                    cvId={cv.id}
                                                     check={false}
                                                 />
                                             </div>
@@ -150,7 +150,7 @@ function CVManagement() {
                         setTriger={setShowCV}
                         title={`${CVDetail.fullName} - ${CVDetail.email}`}>
                         <div style={{ height: '90vh' }}>
-                            <CVViewer Cvid={CVDetail.id} check={true} />
+                            <CVViewer cvId={CVDetail.id} check={true} />
                         </div>
                     </PopupBase>
                     <div className="card-footer">
