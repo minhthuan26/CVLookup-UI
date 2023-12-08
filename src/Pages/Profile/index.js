@@ -98,7 +98,10 @@ const Profile = ({ user, role, avatarBase64 }) => {
                 formData.append('DateOfBirth', moment(dateOfBirth).format('YYYY-MM-DD'))
                 updateCandidate(axiosPrivate, dispatch, formData, user.id)
                     .then(data => {
-                        dispatch(setUser(data))
+                        console.log(data)
+                        if (user === currentUser) {
+                            dispatch(setUser(data))
+                        }
                         toast.success('Thành công')
                     }).catch(error => {
                         toast.error(error)
