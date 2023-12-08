@@ -28,7 +28,7 @@ function HeaderAdmin() {
                         </span>
                     </li>
                     <li className="nav-item d-none d-sm-inline-block">
-                        <a href="/" className="nav-link">
+                        <a href="/admin" className="nav-link">
                             Trang chủ
                         </a>
                     </li>

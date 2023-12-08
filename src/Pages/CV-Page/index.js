@@ -152,7 +152,7 @@ function CVPage() {
                         trigger={showCV}
                         setTriger={setShowCV}
                         title={`${CVDetail.fullName} - ${CVDetail.email}`}>
-                        <div>
+                        <div style={{ height: '90vh', overflow: 'auto' }}>
                             <CVViewer cvId={CVDetail.id} check={true} />
                         </div>
                     </PopupBase>

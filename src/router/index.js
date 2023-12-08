@@ -89,7 +89,7 @@ const privateRoutes = [
         allowedRoles: ['Admin', 'Employer'],
     },
     {
-        path: '/aaa',
+        path: '/admin',
         layout: AdminLayout,
         page: AdminPage,
         allowedRoles: ['Admin'],

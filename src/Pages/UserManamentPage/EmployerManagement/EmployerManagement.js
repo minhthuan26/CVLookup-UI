@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Confirm } from '~/components/Popup/Confirm'
+import Profile from '~/Pages/Profile/index'
 
 function EmployerManagement() {
     const [filter, setFilter] = useState([])
@@ -21,6 +22,10 @@ function EmployerManagement() {
     const [employer, setEmployer] = useState([])
     const [showDetail, setShowDetail] = useState(false)
     const [userId, setUserId] = useState('')
+    const [avatarBase64, setavatarBase64] = useState('')
+
+    const [showFormEdit, setShowFormEdit] = useState(false)
+    const [user, setUser] = useState([])
 
     const dispatch = useDispatch()
     const accessToken = useSelector(
@@ -31,6 +36,8 @@ function EmployerManagement() {
     const handleAvatar = (user) => {
         const avatarString = user.avatar
         if (avatarString) {
+            setavatarBase64(avatarString)
+
             return 'data:image/png;base64,' + avatarString
         }
         return defaultAvatar
@@ -48,6 +55,20 @@ function EmployerManagement() {
                         onClick={() => {
                             setShowDetail(true)
                             setUserId(row.userId)
+                            setFilter(
+                                employer.filter(
+                                    (item) =>
+                                        item.userId !== userId &&
+                                        item.accountId !== row.account.id
+                                )
+                            )
+                            setEmployer(
+                                employer.filter(
+                                    (item) =>
+                                        item.userId !== userId &&
+                                        item.accountId !== row.account.id
+                                )
+                            )
                         }}>
                         <FontAwesomeIcon icon={faEye} />
                     </button>
@@ -91,7 +112,10 @@ function EmployerManagement() {
                     <button
                         title="Sửa người dùng"
                         className="btn bg-transparent  text-warning w-50"
-                        onClick={() => {}}>
+                        onClick={() => {
+                            setUser(row?.user)
+                            setShowFormEdit(true)
+                        }}>
                         <FontAwesomeIcon icon={faPenToSquare} /> <br />
                         Sửa
                     </button>
@@ -229,6 +253,18 @@ function EmployerManagement() {
                     </div>
                 </div>
             </section>
+            <PopupBase
+                trigger={showFormEdit}
+                setTriger={setShowFormEdit}
+                title="Sửa người dùng">
+                <div style={{ height: '90vh', overflow: 'auto' }}>
+                    <Profile
+                        user={user}
+                        avatarBase64={avatarBase64}
+                        role={'Employer'}
+                    />
+                </div>
+            </PopupBase>
             <PopupBase
                 trigger={showDetail}
                 setTriger={setShowDetail}

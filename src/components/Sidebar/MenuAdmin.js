@@ -51,7 +51,7 @@ function MenuAdmin() {
                             role="menu"
                             data-accordion="false">
                             <li className="nav-item menu-open">
-                                <a href="/" className="nav-link active">
+                                <a href="/admin" className="nav-link active">
                                     <i className="nav-icon fas fa-tachometer-alt" />
                                     <p>Dashboard</p>
                                 </a>

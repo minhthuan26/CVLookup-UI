@@ -154,8 +154,8 @@ function CVListApply(props) {
                                                     <button
                                                         className={`btn ${
                                                             isDuyet[cv.id]
-                                                                ? 'btn-success'
-                                                                : 'btn-danger'
+                                                                ? 'btn-danger'
+                                                                : 'btn-success'
                                                         }`}
                                                         onClick={() => {
                                                             const newIsDuyetMap =
@@ -177,8 +177,8 @@ function CVListApply(props) {
                                                             )
                                                         }}>
                                                         {isDuyet[cv.id]
-                                                            ? 'Duyệt'
-                                                            : 'Huỷ'}
+                                                            ? 'Huỷ'
+                                                            : 'Duyệt'}
                                                     </button>
                                                 )}
                                             </div>
