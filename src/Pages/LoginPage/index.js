@@ -102,7 +102,7 @@ function LoginPage() {
             formData.append('Account.Email', registerEmail)
             formData.append('Account.Password', registerPassword)
             formData.append('Candidate.Email', registerEmail)
-            formData.append('Candidate.PhoneNumber', registerEmail)
+            formData.append('Candidate.PhoneNumber', phoneNumber)
             formData.append('Candidate.Avatar', avatar)
             formData.append('Candidate.Username', userName)
             formData.append('Candidate.DateOfBirth', birthDay)
