@@ -30,7 +30,6 @@ function FormAddCV(props) {
         (state) => state.auth.credentials.accessToken
     )
     const axiosPrivate = usePrivateAxios(accessToken)
-    const candidateId = useSelector((state) => state.auth.credentials.user.id)
     const uploadCurriculumViate = async (axiosPrivate, dispatch, cvInfo) => {
         await doUploadCV(axiosPrivate, dispatch, cvInfo).then((data) => {
             props.setCVlist((prev) => [...prev, data])

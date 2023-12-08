@@ -26,7 +26,7 @@ function CVViewer(props) {
             )
         },
         // eslint-disable-next-line
-        [props.cvId]
+        []
     )
 
     const thumbnailPluginInstance = thumbnailPlugin()
@@ -51,12 +51,13 @@ function CVViewer(props) {
                 display: 'flex',
                 overflow: 'hidden',
             }}>
-            <div style={{
-                flex: 1,
-                height: props.height ? props.height : '25vh',
-                width: props.width ? props.width : '100%',
-                overflow: 'hidden'
-            }}>
+            <div
+                style={{
+                    flex: 1,
+                    height: props.height ? props.height : '25vh',
+                    width: props.width ? props.width : '100%',
+                    overflow: 'hidden',
+                }}>
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                     <Viewer
                         fileUrl={`data:application/pdf;base64,${CVDetail.cvPath}`}

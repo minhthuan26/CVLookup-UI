@@ -5,7 +5,6 @@ import {
     doDeleteRecruitment,
     doGetAllRecruitment,
     doUpdateRecruitment,
-    getNewestJob,
 } from '~/action/recruitmentApi'
 import {
     faTrash,
@@ -20,7 +19,6 @@ import {
 } from '~/components/CustomChildComponent/Form'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import CustomPagination from './CustomPagination'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { Confirm } from '~/components/Popup/Confirm'
 import PopupBase from '~/components/Popup/PopupBase'
@@ -107,8 +105,8 @@ function RecruitmentDashBoardPage() {
     const [showFormDetail, setShowFormDetail] = useState(false)
     const [showFormCVPass, setShowFormCVPass] = useState(false)
 
-    const [cvCount, setCVCount] = useState(0)
-    const [cvPassCount, setCVPassCount] = useState(0)
+    // const [cvCount, setCVCount] = useState(0)
+    // const [cvPassCount, setCVPassCount] = useState(0)
 
     const [recruitment, setRecruitment] = useState([])
     const [search, SetSearch] = useState('')
@@ -209,7 +207,7 @@ function RecruitmentDashBoardPage() {
                 subHeaderAlign="right"
             />
             <hr />
-            <TitleForm>Thống kê tuyển dụng</TitleForm>
+            {/* <TitleForm>Thống kê tuyển dụng</TitleForm>
 
             <Row
                 style={{
@@ -236,7 +234,7 @@ function RecruitmentDashBoardPage() {
                     <h4>Tổng số bài đăng</h4>
                     <TitleForm>{recruitment.length}</TitleForm>
                 </StyledCol>
-            </Row>
+            </Row> */}
 
             <PopupBase
                 trigger={showFormEdit}
@@ -258,9 +256,6 @@ function RecruitmentDashBoardPage() {
                         overflowX: 'hidden',
                     }}>
                     <CVListApply
-                        cvCount={(e) => {
-                            setCVCount(e)
-                        }}
                         checkIsPassSuccess={false}
                         id={idRecruitment}></CVListApply>
                 </div>
@@ -276,7 +271,6 @@ function RecruitmentDashBoardPage() {
                     }}>
                     <CVListApply
                         checkIsPassSuccess={true}
-                        cvCount={(e) => setCVPassCount(e)}
                         id={idRecruitment}></CVListApply>
                 </div>
             </PopupBase>
@@ -293,8 +287,7 @@ const StyledCol = styled(Col)`
     height: 200px;
     border-radius: 10px;
     box-shadow: rgba(130, 130, 130, 0.3) 0px 8px 24px;
-    background-color: ${(prop) => prop.customColor || '#eee'};
-
+    background-color: ${(props) => props.customColor || '#eee'};
     font-weight: bold;
     transform: 0.5s;
     &:hover {

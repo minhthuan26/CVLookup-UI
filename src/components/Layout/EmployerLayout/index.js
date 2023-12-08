@@ -21,12 +21,21 @@ const EmpoyerLayout = ({ children }) => {
     return (
         <>
             {isMobile ? (
-                <Sidebar>{children}</Sidebar>
+                <>
+                    <Sidebar>{children}</Sidebar>
+                    <div className="mt-auto">
+                        {isMobile ? <></> : <Footer />}
+                    </div>
+                </>
             ) : (
-                <HeaderEmployer>{children}</HeaderEmployer>
+                <>
+                    <HeaderEmployer />
+                    <div className="p-3">{children}</div>
+                    <div className="mt-auto">
+                        {isMobile ? <></> : <Footer />}
+                    </div>
+                </>
             )}
-
-            {isMobile ? <></> : <Footer />}
         </>
     )
 }
