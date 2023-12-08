@@ -24,6 +24,7 @@ import RecruitmentManagement from '../Pages/RecruitmentManagement/RecruitmentMan
 import CVManagement from '../Pages/CVManagement/CVManagement'
 import ApplyDetailPage from '~/Pages/ApplyDetailPage'
 import NotAllowed from '~/Pages/NotAllowed'
+import Profile from '~/Pages/Profile'
 const publicRoutes = [
     {
         path: '/',
@@ -152,6 +153,12 @@ const privateRoutes = [
         layout: DefaultLayout,
         page: ApplyDetailPage,
         allowedRoles: ['Admin', 'Employer'],
+    },
+    {
+        path: '/profile',
+        layout: DefaultLayout,
+        page: Profile,
+        allowedRoles: ['Admin', 'Employer', 'Candidate'],
     },
 ]
 

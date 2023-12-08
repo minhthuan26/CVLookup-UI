@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Container, Image } from 'react-bootstrap'
 import defaultAvatar from '~/assets/default_avatar.jpg'
 import PlaceRoundedIcon from '@mui/icons-material/PlaceRounded'
+import { Avatar } from '@mui/material'
 
 const CompanyInfoHeader = ({ user }) => {
     const handleAvatar = (user) => {
@@ -14,10 +15,10 @@ const CompanyInfoHeader = ({ user }) => {
     return (
         <Container style={{ width: '90%' }} className='d-flex flex-column gap-2 justify-content-center p-3 mb-2'>
             <div className='d-flex gap-2'>
-                <Image
-                    style={{ height: '6rem' }}
-                    className='w-25 rounded'
-                    src={handleAvatar(user)} />
+                <Avatar
+                    variant='rounded'
+                    src={handleAvatar(user)}
+                    sx={{ width: '6rem', height: '6rem' }} />
                 <h5>{user.username}</h5>
             </div>
             <div>

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Button } from 'react-bootstrap'
+import GoogleIcon from '@mui/icons-material/Google';
 import {
     doLogin,
     doLogout,
@@ -328,7 +330,13 @@ function LoginPage() {
                                 value="Submit">
                                 Đăng nhập
                             </LoginComponents.Button>
+                            <div className='d-flex mt-3'>
+                                <Button variant='danger' className='rounded-5 p-2'>
+                                    <div className='d-flex align-items-center gap-3' ><GoogleIcon />Đăng nhập bằng Google</div>
+                                </Button>
+                            </div>
                         </LoginComponents.Form>
+
                     </LoginComponents.SignInContainer>
                 ) : (
                     <LoginComponents.SignInContainer signin={+signIn}>

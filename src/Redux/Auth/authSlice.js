@@ -7,16 +7,24 @@ const authSlice = createSlice({
             user: null,
             role: '',
             accessToken: '',
-            accountId: ''
+            accountId: '',
+            avatarBase64: ''
         }
     },
     reducers: {
         setCredentials: (state, action) => {
-            const { user, role, accessToken, accountId } = action.payload.data
+            const { user, role, accessToken, accountId, avatarBase64 } = action.payload.data
             state.credentials.user = user
             state.credentials.role = role
             state.credentials.accessToken = accessToken
             state.credentials.accountId = accountId
+            state.credentials.avatarBase64 = avatarBase64
+        },
+
+        setUser: (state, action) => {
+            const { user, avatarBase64 } = action.payload
+            state.credentials.user = user
+            state.credentials.avatarBase64 = avatarBase64
         },
 
         renewToken: (state, action) => {
@@ -29,10 +37,11 @@ const authSlice = createSlice({
             state.credentials.role = ''
             state.credentials.accessToken = ''
             state.credentials.accountId = ''
+            state.credentials.avatarBase64 = ''
         }
     }
 })
 
-export const { setCredentials, logout, renewToken, inFetching, successFetching } = authSlice.actions
+export const { setCredentials, logout, renewToken, inFetching, successFetching, setUser } = authSlice.actions
 
 export default authSlice.reducer

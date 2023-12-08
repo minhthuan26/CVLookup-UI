@@ -103,3 +103,8 @@ export const notificationUrl = {
     getNotificationByUserId: `${host}${prefix}/notification/get-notification-by-user-id`,
     updateViewStatus: `${host}${prefix}/notification/update-view-status`,
 }
+
+export const userUrl = {
+    updateCandidate: `${host}${prefix}/user/update-candidate`,
+    updateEmployer: `${host}${prefix}/user/update-employer`,
+}
