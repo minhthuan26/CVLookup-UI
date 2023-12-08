@@ -111,7 +111,15 @@ const Profile = ({ user, role, avatarBase64 }) => {
     }
 
     return (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center position-relative'>
+            <Button
+                variant='danger'
+                style={{
+                    display: user === currentUser ? 'block' : 'none'
+                }}
+                className='position-absolute end-0 top-0'>
+                Yêu cầu xoá tài khoản
+            </Button>
             <Card
                 className='w-50 rounded-4'
                 style={{

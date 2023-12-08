@@ -68,7 +68,7 @@ export const experienceUrl = {
 export const recruitmentCVUrl = {
     applyCVToRecruitment: `${host}${prefix}/RecruitmentCV/apply-to-recruitment`,
     reApplyCVToRecruitment: `${host}${prefix}/RecruitmentCV/update-applied-cv`,
-    getAppliedCV: `${host}${prefix}/RecruitmentCV/get-all-cv-applied`,
+    getAppliedCV: `${host}${prefix}/RecruitmentCV/get-by-user-and-recruitment-id`,
     getCvByRecruitmentId: `${host}${prefix}/RecruitmentCV/get-by-recruitment-id`,
     getCvByIsPass: `${host}${prefix}/RecruitmentCV/get-by-isPass`,
     updateIsView: `${host}${prefix}/RecruitmentCV/update-isView`,
