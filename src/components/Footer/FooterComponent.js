@@ -192,8 +192,8 @@ export function ContactSection() {
             <Padding1x>
                 <h4>Liên hệ</h4>
                 <p>Điện thoại: 0123456789</p>
-                <p>Địa chỉ: Vương quốc Vĩnh Hưng</p>
-                <p>Email: contact@cvlookup.com</p>
+                <p>Địa chỉ: 273 An Dương Vương</p>
+                <p>Email: cvlookup.sgu.2023@gmail.com</p>
             </Padding1x>
         </FlexContent>
     )
@@ -222,8 +222,8 @@ export function CopyrightSection() {
         <FlexContent>
             <Padding1x>
                 <p>
-                    Copyright ©2023 All rights CVLookup || Angela Trịnh & Lily
-                    Lê
+                    Copyright ©2023 All rights CVLookup || Trịnh Nam Siêu Sao &
+                    Lê Minh Thuận
                 </p>
             </Padding1x>
         </FlexContent>

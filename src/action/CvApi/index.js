@@ -1,7 +1,7 @@
 import { inLoading, successLoading } from '~/Redux/Loader/loaderSlice'
 import { CVUrl } from '~/utils/ApiUrl'
 import { toast } from 'react-toastify'
-export const getAllCV = async (dispatch, axiosPrivate) => {
+export const doGetAllCV = async (axiosPrivate, dispatch) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({

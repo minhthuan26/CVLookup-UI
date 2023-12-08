@@ -6,7 +6,7 @@ import { doLogout } from '~/action/authApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import usePrivateAxios from '~/action/AxiosCredentials'
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from '@mui/icons-material/Notifications'
 import useNotificationBox from '~/hooks/useNotificationBox'
 import { Badge } from 'react-bootstrap'
 
@@ -14,28 +14,37 @@ function Header() {
     const { setIsDisplay } = useNotificationBox()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const user = useSelector(state => state.auth.credentials.user)
-    const accessToken = useSelector(state => state.auth.credentials.accessToken)
+    const user = useSelector((state) => state.auth.credentials.user)
+    const accessToken = useSelector(
+        (state) => state.auth.credentials.accessToken
+    )
     const axiosPrivate = usePrivateAxios(accessToken)
     const handleLogout = (e) => {
-        const logout = async (axiosPrivate, dispatch, navigate, from) => await doLogout(axiosPrivate, dispatch, navigate, from)
+        const logout = async (axiosPrivate, dispatch, navigate, from) =>
+            await doLogout(axiosPrivate, dispatch, navigate, from)
         logout(axiosPrivate, dispatch, navigate, '/login')
     }
     const handleOpenNotificationBox = (e) => {
         e.preventDefault()
         e.stopPropagation()
-        setIsDisplay(preState => !preState)
+        setIsDisplay((preState) => !preState)
     }
     const [isNewNotification, setIsNewNotification] = useState(false)
-    const notifications = useSelector(state => state.notifications.notifications)
-    useEffect(() => {
-        if (notifications.length > 0) {
-            const isNew = notifications.some(noti => noti.isView === false)
-            setIsNewNotification(isNew)
-        }
-    },
+    const notifications = useSelector(
+        (state) => state.notifications.notifications
+    )
+    useEffect(
+        () => {
+            if (notifications.length > 0) {
+                const isNew = notifications.some(
+                    (noti) => noti.isView === false
+                )
+                setIsNewNotification(isNew)
+            }
+        },
         //eslint-disable-next-line
-        [notifications])
+        [notifications]
+    )
     return (
         <>
             <HeaderComponent.HeaderContainer>
@@ -65,7 +74,7 @@ function Header() {
                         Công cụ
                     </HeaderComponent.LinkStyled>
                 </HeaderComponent.NavList>
-                <div className='ms-auto d-flex gap-2'>
+                <div className="ms-auto d-flex gap-2">
                     {user ? (
                         <>
                             <HeaderComponent.LinkName
@@ -74,12 +83,19 @@ function Header() {
                                 <NotificationsIcon />
                                 <Badge
                                     style={{
-                                        visibility: `${isNewNotification ? 'visible' : 'hidden'}`
+                                        visibility: `${
+                                            isNewNotification
+                                                ? 'visible'
+                                                : 'hidden'
+                                        }`,
                                     }}
                                     bg="danger"
-                                    className='position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle'> </Badge>
+                                    className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    {' '}
+                                </Badge>
                             </HeaderComponent.LinkName>
-                            <HeaderComponent.LinkName onClick={handleLogout}
+                            <HeaderComponent.LinkName
+                                onClick={handleLogout}
                                 className="link-name">
                                 <span>Đăng xuất</span>
                             </HeaderComponent.LinkName>
@@ -97,7 +113,6 @@ function Header() {
                                 </svg>
                                 &emsp; {user.username}
                             </HeaderComponent.LinkName2>
-
                         </>
                     ) : (
                         <>
@@ -106,11 +121,6 @@ function Header() {
                                 className="link-name">
                                 <span>Đăng nhập</span>
                             </HeaderComponent.LinkName>
-                            {/* <HeaderComponent.LinkName2
-                            to="/employer"
-                            className="link-name2">
-                            <span>Dành cho nhà tuyển dụng</span>
-                        </HeaderComponent.LinkName2> */}
                         </>
                     )}
                 </div>

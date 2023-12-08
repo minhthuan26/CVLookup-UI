@@ -12,7 +12,7 @@ import { faCaretDown, faEye, faL } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PopupBase from '../Popup/PopupBase'
 import CVViewer from '../CVViewer/CVViewer'
-function CVListApply(props, { cvCount }) {
+function CVListApply(props) {
     const [isDuyet, setIsDuyet] = useState({})
 
     const [openCvMap, setOpenCvMap] = useState({})
@@ -49,7 +49,6 @@ function CVListApply(props, { cvCount }) {
                                 return acc
                             }, {})
                         )
-                        cvCount(data.curriculumVitaes.length)
                     }
                 })
             } else {
@@ -63,7 +62,6 @@ function CVListApply(props, { cvCount }) {
                                     return acc
                                 }, {})
                             )
-                            cvCount(data.curriculumVitaes.length)
                         }
                     }
                 )
@@ -86,7 +84,6 @@ function CVListApply(props, { cvCount }) {
         if (!cv.isView) {
             updateIsView(axiosPrivate, dispatch, cv.id, props.id)
         }
-
     }
     return (
         <div style={{ height: '85vh' }}>
@@ -184,7 +181,6 @@ function CVListApply(props, { cvCount }) {
                                                             : 'Huỷ'}
                                                     </button>
                                                 )}
-
                                             </div>
                                         </li>
                                     </ul>
@@ -203,8 +199,7 @@ function CVListApply(props, { cvCount }) {
                             setTriger={setShowCV}
                             title={`${CVDetail.fullName} - ${CVDetail.email}`}>
                             <div style={{ height: '90vh', overflow: 'hidden' }}>
-                                <CVViewer Cvid={CVDetail.id} check={true} />
-
+                                <CVViewer cvId={CVDetail.id} check={true} />
                             </div>
                         </PopupBase>
                     </Row>
