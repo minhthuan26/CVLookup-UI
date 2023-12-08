@@ -6,11 +6,12 @@ import { Confirm } from '~/components/Popup/Confirm'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import { useDispatch, useSelector } from 'react-redux'
 import { doGetAllCV, deleteCV, downloadCV } from '~/action/CvApi'
+import PaginationAuto from '~/components/PaginationAuto'
 function CVManagement() {
     const [cvList, setCVList] = useState([])
     const [showCV, setShowCV] = useState(false)
     const [CVDetail, setCVDetail] = useState([])
-
+    const [page, setPage] = useState(1)
     const dispatch = useDispatch()
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
@@ -50,9 +51,13 @@ function CVManagement() {
         }
     }
 
-    useEffect(() => {
-        getAllCV(axiosPrivate, dispatch).then((data) => setCVList(data))
-    }, [])
+    useEffect(
+        () => {
+            getAllCV(axiosPrivate, dispatch).then((data) => setCVList(data))
+        },
+        // eslint-disable-next-line
+        []
+    )
     return (
         <div className="content-wrapper">
             <section className="content-header">
@@ -68,81 +73,96 @@ function CVManagement() {
                 <div className="card card-solid">
                     <div className="card-body pb-0">
                         <div className="row">
-                            {cvList.map((cv) => (
-                                <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-                                    <div
-                                        className="card bg-light d-flex flex-fill"
-                                        key={cv.id}>
-                                        <div className="card-header text-muted border-bottom-0">
-                                            {new Date(
-                                                cv.uploadedAt
-                                            ).toLocaleDateString('en-GB')}
-                                        </div>
-                                        <div className="card-body pt-0">
-                                            <div className="row">
-                                                <CVViewer
-                                                    cvId={cv.id}
-                                                    check={false}
-                                                />
-                                            </div>
-                                            <div className="row">
-                                                <h2 className="lead">
-                                                    <b>{cv.fullName}</b>
-                                                </h2>
+                            {cvList.length > 0 ? (
+                                cvList
+                                    .slice(page * 4 - 4, page * 4)
+                                    .map((cv) => (
+                                        <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                            <div
+                                                className="card bg-light d-flex flex-fill"
+                                                key={cv.id}>
+                                                <div className="card-header text-muted border-bottom-0">
+                                                    {new Date(
+                                                        cv.uploadedAt
+                                                    ).toLocaleDateString(
+                                                        'en-GB'
+                                                    )}
+                                                </div>
+                                                <div className="card-body pt-0">
+                                                    <div className="row">
+                                                        <CVViewer
+                                                            cvId={cv.id}
+                                                            check={false}
+                                                        />
+                                                    </div>
+                                                    <div className="row">
+                                                        <h2 className="lead">
+                                                            <b>{cv.fullName}</b>
+                                                        </h2>
 
-                                                <ul className="ml-4 mb-0 fa-ul text-muted">
-                                                    <li className="small">
-                                                        <span className="fa-li">
-                                                            <i className="fas fa-sm fa-envelope" />
-                                                        </span>
-                                                        Email: {cv.email}
-                                                    </li>
-                                                    <li className="small">
-                                                        <span className="fa-li">
-                                                            <i className="fas fa-sm fa-phone" />
-                                                        </span>
-                                                        Số điện thoại:
-                                                        {cv.phoneNumber}
-                                                    </li>
-                                                </ul>
-                                                <p className="text-muted text-sm">
-                                                    <b>Thư giới thiệu: </b>
-                                                    {cv.introdution}
-                                                </p>
+                                                        <ul className="ml-4 mb-0 fa-ul text-muted">
+                                                            <li className="small">
+                                                                <span className="fa-li">
+                                                                    <i className="fas fa-sm fa-envelope" />
+                                                                </span>
+                                                                Email:{' '}
+                                                                {cv.email}
+                                                            </li>
+                                                            <li className="small">
+                                                                <span className="fa-li">
+                                                                    <i className="fas fa-sm fa-phone" />
+                                                                </span>
+                                                                Số điện thoại:
+                                                                {cv.phoneNumber}
+                                                            </li>
+                                                        </ul>
+                                                        <p className="text-muted text-sm">
+                                                            <b>
+                                                                Thư giới thiệu:{' '}
+                                                            </b>
+                                                            {cv.introdution}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div className="card-footer">
+                                                    <div className="text-right">
+                                                        <button
+                                                            className="btn btn-sm bg-secondary"
+                                                            onClick={() =>
+                                                                handleDownload(
+                                                                    cv.id
+                                                                )
+                                                            }>
+                                                            <i className="fas fa-download" />
+                                                        </button>
+                                                        &emsp;
+                                                        <button
+                                                            className="btn btn-sm bg-danger"
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    cv.id
+                                                                )
+                                                            }>
+                                                            <i className="fas fa-trash" />
+                                                        </button>
+                                                        &emsp;
+                                                        <button
+                                                            className="btn btn-sm btn-primary"
+                                                            onClick={() => {
+                                                                setShowCV(true)
+                                                                setCVDetail(cv)
+                                                            }}>
+                                                            <i className="fas fa-user" />
+                                                            &nbsp; Xem CV
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="card-footer">
-                                            <div className="text-right">
-                                                <button
-                                                    className="btn btn-sm bg-secondary"
-                                                    onClick={() =>
-                                                        handleDownload(cv.id)
-                                                    }>
-                                                    <i className="fas fa-download" />
-                                                </button>
-                                                &emsp;
-                                                <button
-                                                    className="btn btn-sm bg-danger"
-                                                    onClick={() =>
-                                                        handleDelete(cv.id)
-                                                    }>
-                                                    <i className="fas fa-trash" />
-                                                </button>
-                                                &emsp;
-                                                <button
-                                                    className="btn btn-sm btn-primary"
-                                                    onClick={() => {
-                                                        setShowCV(true)
-                                                        setCVDetail(cv)
-                                                    }}>
-                                                    <i className="fas fa-user" />
-                                                    &nbsp; Xem CV
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                                    ))
+                            ) : (
+                                <span>Chưa có cv</span>
+                            )}
                         </div>
                     </div>
                     <PopupBase
@@ -157,9 +177,12 @@ function CVManagement() {
                         <nav aria-label="Contacts Page Navigation">
                             <ul className="pagination justify-content-center m-0">
                                 <li className="page-item active">
-                                    <a className="page-link" href="#">
-                                        1
-                                    </a>
+                                    <PaginationAuto
+                                        list={cvList}
+                                        itemsPerPage={6}
+                                        page={page}
+                                        setPage={setPage}
+                                    />
                                 </li>
                                 {/* Phân trang giúp mình nhé  */}
                             </ul>
