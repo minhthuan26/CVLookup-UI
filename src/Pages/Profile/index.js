@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Card, Button, Form } from 'react-bootstrap'
 import defaultAvatar from '~/assets/default_avatar.jpg'
 import { Avatar, TextField } from '@mui/material'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import { toBase64 } from '~/utils/FileToBase64'
+import moment from 'moment'
+import { toast } from 'react-toastify'
+import usePrivateAxios from '~/action/AxiosCredentials'
+import { doUpdateCandidate, doUpdateEmployer } from '~/action/userApi'
+import { setUser } from '~/Redux/Auth/authSlice'
 
-const Profile = () => {
-    const user = useSelector(state => state.auth.credentials.user)
+const Profile = ({ user }) => {
+    const currentUser = useSelector(state => state.auth.credentials.user)
+    user ??= currentUser
     const avatarBase64 = useSelector(state => state.auth.credentials.avatarBase64)
     const role = useSelector(state => state.auth.credentials.role)
     const [isEdit, setIsEdit] = useState(false)
@@ -17,17 +24,25 @@ const Profile = () => {
     const [website, setWebsite] = useState('')
     const [description, setDescription] = useState('')
     const [address, setAddress] = useState('')
+    const [avatarUrl, setAvatarUrl] = useState('')
     const [avatar, setAvatar] = useState('')
+    const [dateOfBirth, setDateOfBirth] = useState('')
+    const accessToken = useSelector(state => state.auth.credentials.accessToken)
+    const axiosPrivate = usePrivateAxios(accessToken)
+    const dispatch = useDispatch()
+
     useEffect(() => {
+        var ava
         if (user) {
-            setUsername(user.username)
-            setEmail(user.email)
-            setPhoneNum(user.phoneNumber)
-            setWebsite(user.website)
-            setDescription(user.description)
-            setAddress(user.address)
-            var ava = handleAvatar(avatarBase64)
-            setAvatar(ava)
+            user.username ? setUsername(user.username) : setUsername('')
+            user.email ? setEmail(user.email) : setEmail('')
+            user.phoneNumber ? setPhoneNum(user.phoneNumber) : setPhoneNum('')
+            user.website ? setWebsite(user.website) : setWebsite('')
+            user.description ? setDescription(user.description) : setDescription('user.description')
+            user.address ? setAddress(user.address) : setAddress('')
+            user.dateOfBirth ? setDateOfBirth(new Date(user.dateOfBirth)) : setDateOfBirth('')
+            ava = handleAvatar(avatarBase64)
+            setAvatarUrl(ava)
         }
     },
         //eslint disable next line
@@ -40,8 +55,56 @@ const Profile = () => {
         return defaultAvatar
     }
     const revertValue = () => {
-        setUsername(user.username)
+        user.username ? setUsername(user.username) : setUsername('')
+        user.email ? setEmail(user.email) : setEmail('')
+        user.phoneNumber ? setPhoneNum(user.phoneNumber) : setPhoneNum('')
+        user.website ? setWebsite(user.website) : setWebsite()
+        user.description ? setDescription(user.description) : setDescription('user.description')
+        user.address ? setAddress(user.address) : setAddress('')
+        user.dateOfBirth ? setDateOfBirth(new Date(user.dateOfBirth)) : setDateOfBirth('')
+        var ava = handleAvatar(avatarBase64)
+        setAvatarUrl(ava)
     }
+
+    const updateCandidate = async (axiosPrivate, dispatch, data, id) => await doUpdateCandidate(axiosPrivate, dispatch, data, id)
+    const updateEmployer = async (axiosPrivate, dispatch, data, id) => await doUpdateEmployer(axiosPrivate, dispatch, data, id)
+    const handleSave = () => {
+        var formData = new FormData()
+        if (role === 'Employer') {
+            if (!username) {
+                toast.error('Vui lòng điền đầy đủ thông tin')
+            } else {
+                formData.append('PhoneNumber', phoneNum)
+                formData.append('Avatar', avatar)
+                formData.append('Address', address)
+                formData.append('Description', description)
+                formData.append('Username', username)
+                formData.append('Website', website)
+                updateEmployer(axiosPrivate, dispatch, formData, user.id)
+                    .then(data => {
+                        dispatch(setUser(data))
+                    })
+            }
+
+        } else {
+            if (!username || !dateOfBirth) {
+                toast.error('Vui lòng điền đầy đủ thông tin')
+            } else {
+                formData.append('PhoneNumber', phoneNum)
+                formData.append('Avatar', avatar)
+                formData.append('Username', username)
+                formData.append('DateOfBirth', moment(dateOfBirth).format('YYYY-MM-DD'))
+                updateCandidate(axiosPrivate, dispatch, formData, user.id)
+                    .then(data => {
+                        dispatch(setUser(data))
+                        toast.success('Thành công')
+                    }).catch(error => {
+                        toast.error(error)
+                    })
+            }
+        }
+    }
+
     return (
         <div className='d-flex justify-content-center'>
             <Card
@@ -64,7 +127,7 @@ const Profile = () => {
                                 boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
                             }}
                             variant='rounded'
-                            src={avatar}
+                            src={avatarUrl}
                             sx={{ width: '10rem', height: '10rem' }} />
                         {isEdit ? <Form.Group>
                             <Form.Label
@@ -87,7 +150,12 @@ const Profile = () => {
                                 }}
                                 id='avatar'
                                 type="file"
-                                accept="image/png, image/jpeg" />
+                                accept="image/png, image/jpeg"
+                                onChange={async (e) => {
+                                    const avaBase64 = await toBase64(e.target.files[0])
+                                    setAvatarUrl(avaBase64);
+                                    setAvatar(e.target.files[0])
+                                }} />
                         </Form.Group> : <></>}
                     </div>
                     <Form.Group>
@@ -108,9 +176,7 @@ const Profile = () => {
                 </Card.Header>
 
                 <Card.Body>
-                    <Card style={{
-                        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
-                    }}>
+                    <Card >
                         <Card.Body>
                             <Form.Group className='pb-3'>
                                 <Form.Label>Email <span className='text-danger'>*</span></Form.Label>
@@ -120,7 +186,7 @@ const Profile = () => {
                                         border: '1px solid rgba(0, 0, 0, 0.175)',
                                         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
                                     }}
-                                    className='ps-3'
+                                    className='ps-3 onHover'
                                     disabled
                                     readOnly={true}
                                     plaintext={true}
@@ -129,6 +195,24 @@ const Profile = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)} />
                             </Form.Group>
+                            {role === 'Candidate'
+                                ? <Form.Group className='pb-3'>
+                                    <Form.Label>Date of birth</Form.Label>
+                                    <Form.Control
+                                        style={{
+                                            fontWeight: '600',
+                                            border: '1px solid rgba(0, 0, 0, 0.175)',
+                                            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
+                                        }}
+                                        className='ps-3 onHover'
+                                        disabled={!isEdit}
+                                        readOnly={!isEdit}
+                                        plaintext={true}
+                                        type='date'
+                                        size='lg'
+                                        value={moment(dateOfBirth).format('YYYY-MM-DD')}
+                                        onChange={(e) => setDateOfBirth(e.target.value)} />
+                                </Form.Group> : <></>}
                             <Form.Group className='pb-3'>
                                 <Form.Label>Phone</Form.Label>
                                 <Form.Control
@@ -137,7 +221,7 @@ const Profile = () => {
                                         border: '1px solid rgba(0, 0, 0, 0.175)',
                                         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
                                     }}
-                                    className='ps-3'
+                                    className='ps-3 onHover'
                                     disabled={!isEdit}
                                     readOnly={!isEdit}
                                     plaintext={true}
@@ -156,7 +240,7 @@ const Profile = () => {
                                                 border: '1px solid rgba(0, 0, 0, 0.175)',
                                                 boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
                                             }}
-                                            className='ps-3'
+                                            className='ps-3 onHover'
                                             disabled={!isEdit}
                                             readOnly={!isEdit}
                                             plaintext={true}
@@ -173,7 +257,7 @@ const Profile = () => {
                                                 border: '1px solid rgba(0, 0, 0, 0.175)',
                                                 boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
                                             }}
-                                            className='ps-3'
+                                            className='ps-3 onHover'
                                             disabled={!isEdit}
                                             readOnly={!isEdit}
                                             plaintext={true}
@@ -190,7 +274,7 @@ const Profile = () => {
                                                 border: '1px solid rgba(0, 0, 0, 0.175)',
                                                 boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
                                             }}
-                                            className='ps-3'
+                                            className='ps-3 onHover'
                                             disabled={!isEdit}
                                             readOnly={!isEdit}
                                             plaintext={true}
@@ -205,7 +289,10 @@ const Profile = () => {
                 </Card.Body>
 
                 {isEdit ? <Card.Footer className='d-flex justify-content-end gap-2'>
-                    <Button variant='info'>
+                    <Button variant='info' onClick={() => {
+                        handleSave()
+                        setIsEdit(false)
+                    }}>
                         Lưu
                     </Button>
 

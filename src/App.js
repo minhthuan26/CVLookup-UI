@@ -6,7 +6,7 @@ import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Loader from './components/Loader/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { connection } from './utils/HubConnection'
 import { postRestoreRefreshToken } from './action/authApi'
 import { persistor } from './Redux/store'
@@ -35,6 +35,7 @@ function App() {
     const user = useSelector((state) => state.auth.credentials.user)
     const accessToken = useSelector(state => state.auth.credentials.accessToken)
     const axiosPrivate = usePrivateAxios(accessToken)
+    const [userId, setUserId] = useState('')
 
     useEffect(
         () => {
@@ -63,7 +64,8 @@ function App() {
 
     useEffect(
         () => {
-            if (user) {
+            if (user && user.id !== userId) {
+                setUserId(user.id)
                 connect.start().then(() => {
                     connect
                         .invoke('AddHubConnection', user.id)

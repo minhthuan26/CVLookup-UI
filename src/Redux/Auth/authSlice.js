@@ -21,6 +21,12 @@ const authSlice = createSlice({
             state.credentials.avatarBase64 = avatarBase64
         },
 
+        setUser: (state, action) => {
+            const { user, avatarBase64 } = action.payload
+            state.credentials.user = user
+            state.credentials.avatarBase64 = avatarBase64
+        },
+
         renewToken: (state, action) => {
             const { accessToken } = action.payload.data
             state.credentials.accessToken = accessToken
@@ -36,6 +42,6 @@ const authSlice = createSlice({
     }
 })
 
-export const { setCredentials, logout, renewToken, inFetching, successFetching } = authSlice.actions
+export const { setCredentials, logout, renewToken, inFetching, successFetching, setUser } = authSlice.actions
 
 export default authSlice.reducer
