@@ -39,9 +39,7 @@ function MenuAdmin() {
                         </div>
                         <div className="info">
                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <a href="#" className="d-block">
-                                {user.username}
-                            </a>
+                            <a className="d-block">{user.username}</a>
                         </div>
                     </div>
                     <nav className="mt-2">
@@ -61,7 +59,7 @@ function MenuAdmin() {
 
                             <li className="nav-item">
                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                <a href="#" className="nav-link">
+                                <a className="nav-link">
                                     <i className="nav-icon fas fa-user" />
                                     <p>
                                         Người dùng
@@ -89,7 +87,7 @@ function MenuAdmin() {
                             </li>
                             <li className="nav-item">
                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                <a href="#" className="nav-link">
+                                <a className="nav-link">
                                     <i className="nav-icon fas fa-book" />
                                     <p>
                                         Danh mục
