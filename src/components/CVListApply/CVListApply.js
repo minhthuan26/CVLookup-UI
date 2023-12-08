@@ -84,7 +84,6 @@ function CVListApply(props) {
         if (!cv.isView) {
             updateIsView(axiosPrivate, dispatch, cv.id, props.id)
         }
-
     }
     return (
         <div style={{ height: '85vh' }}>
@@ -182,7 +181,6 @@ function CVListApply(props) {
                                                             : 'Huỷ'}
                                                     </button>
                                                 )}
-
                                             </div>
                                         </li>
                                     </ul>
@@ -201,8 +199,7 @@ function CVListApply(props) {
                             setTriger={setShowCV}
                             title={`${CVDetail.fullName} - ${CVDetail.email}`}>
                             <div style={{ height: '90vh', overflow: 'hidden' }}>
-                                <CVViewer Cvid={CVDetail.id} check={true} />
-
+                                <CVViewer cvId={CVDetail.id} check={true} />
                             </div>
                         </PopupBase>
                     </Row>
