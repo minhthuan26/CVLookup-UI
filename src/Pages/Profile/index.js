@@ -12,11 +12,13 @@ import usePrivateAxios from '~/action/AxiosCredentials'
 import { doUpdateCandidate, doUpdateEmployer } from '~/action/userApi'
 import { setUser } from '~/Redux/Auth/authSlice'
 
-const Profile = ({ user }) => {
+const Profile = ({ user, role, avatarBase64 }) => {
     const currentUser = useSelector(state => state.auth.credentials.user)
     user ??= currentUser
-    const avatarBase64 = useSelector(state => state.auth.credentials.avatarBase64)
-    const role = useSelector(state => state.auth.credentials.role)
+    const currentAvatarBase64 = useSelector(state => state.auth.credentials.avatarBase64)
+    avatarBase64 ??= currentAvatarBase64
+    const currentRole = useSelector(state => state.auth.credentials.role)
+    role ??= currentRole
     const [isEdit, setIsEdit] = useState(false)
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
