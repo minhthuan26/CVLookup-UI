@@ -55,20 +55,6 @@ function EmployerManagement() {
                         onClick={() => {
                             setShowDetail(true)
                             setUserId(row.userId)
-                            setFilter(
-                                employer.filter(
-                                    (item) =>
-                                        item.userId !== userId &&
-                                        item.accountId !== row.account.id
-                                )
-                            )
-                            setEmployer(
-                                employer.filter(
-                                    (item) =>
-                                        item.userId !== userId &&
-                                        item.accountId !== row.account.id
-                                )
-                            )
                         }}>
                         <FontAwesomeIcon icon={faEye} />
                     </button>

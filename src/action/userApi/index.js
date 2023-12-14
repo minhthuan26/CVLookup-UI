@@ -1,8 +1,14 @@
-import { inLoading, successLoading } from "~/Redux/Loader/loaderSlice"
-import { userUrl } from "~/utils/ApiUrl"
+import { inLoading, successLoading } from '~/Redux/Loader/loaderSlice'
+import { userUrl } from '~/utils/ApiUrl'
 import { toast } from 'react-toastify'
 
-export const doUpdateCandidate = async (axiosPrivate, dispatch, data, id) => {
+export const doUpdateCandidate = async (
+    axiosPrivate,
+    dispatch,
+    data,
+    id,
+    navigate
+) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
@@ -15,6 +21,8 @@ export const doUpdateCandidate = async (axiosPrivate, dispatch, data, id) => {
         })
         if (res.data.success) {
             dispatch(successLoading())
+            navigate(0)
+
             return res.data.data
         } else {
             if (typeof res.data.message !== 'string') {
@@ -37,7 +45,13 @@ export const doUpdateCandidate = async (axiosPrivate, dispatch, data, id) => {
     }
 }
 
-export const doUpdateEmployer = async (axiosPrivate, dispatch, data, id) => {
+export const doUpdateEmployer = async (
+    axiosPrivate,
+    dispatch,
+    data,
+    id,
+    navigate
+) => {
     dispatch(inLoading())
     try {
         const res = await axiosPrivate({
@@ -50,6 +64,7 @@ export const doUpdateEmployer = async (axiosPrivate, dispatch, data, id) => {
         })
         if (res.data.success) {
             dispatch(successLoading())
+            navigate(0)
             return res.data.data
         } else {
             if (typeof res.data.message !== 'string') {

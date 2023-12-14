@@ -40,18 +40,17 @@ function FormRecruitment(props) {
     const [salary, setSalary] = useState('')
     const [applicationDeadline, setApplicationDeadline] = useState(new Date())
 
-    const [startDate, setStartDate] = useState(new Date())
     useEffect(
         () => {
             if (props.id) {
                 getRecruitmentDetail(props.id, dispatch).then((data) => {
                     setRecruitmentDetail(data)
                     setJobTitle(data.jobTitle)
-                    setCareer(data.jobCareer)
-                    setJobField(data.jobField)
-                    setExp(data.experience)
-                    setJobForm(data.jobForm)
-                    setJobPosition(data.jobPosition)
+                    setCareer(data.jobCareer.career)
+                    setJobField(data.jobField.field)
+                    setExp(data.experience.exp)
+                    setJobForm(data.jobForm.form)
+                    setJobPosition(data.jobPosition.position)
                     setJobDescription(data.jobDescription)
                     setJobRequirement(data.jobRequirement)
                     setBenefit(data.benefit)
@@ -85,41 +84,43 @@ function FormRecruitment(props) {
     const provinceList = useSelector((state) => state.province.provinceList)
     const [districtList, setDistrictList] = useState([])
 
-    useEffect(() => {
-        if (provinceList.length > 0 && province) {
-            var pro = provinceList.find(pro => pro.name === province)
-            setDistrictList(preState => [...pro.districts])
-        }
-    },
+    useEffect(
+        () => {
+            if (provinceList.length > 0 && province) {
+                var pro = provinceList.find((pro) => pro.name === province)
+                setDistrictList((preState) => [...pro.districts])
+            }
+        },
         //eslint-disable-next-line
-        [provinceList, province])
+        [provinceList, province]
+    )
 
     //Fetch dữ liệu đồng bộ
-    useEffect(() => {
-        setJobTitle(props.id ? recruitmentDetail.jobTitle : '')
-        setJobDescription(props.id ? recruitmentDetail.jobDescription : '')
-        setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
-        setBenefit(props.id ? recruitmentDetail.benefit : '')
-        setExp(props.id ? recruitmentDetail.experience : '')
-        setJobForm(props.id ? recruitmentDetail.jobForm : '')
-        setJobPosition(props.id ? recruitmentDetail.jobPosition : '')
-        setJobDescription(props.id ? recruitmentDetail.jobDescription : '')
-        setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
-        setBenefit(props.id ? recruitmentDetail.benefit : '')
-        setProvince(props.id ? recruitmentDetail?.jobAddress?.province : '')
-        // setDistrictList(
-        //     props.id ? recruitmentDetail?.jobAddress?.districts : []
-        // )
-        setDistrict(props.id ? recruitmentDetail?.jobAddress?.district : '')
-        setAddress(props.id ? recruitmentDetail?.jobAddress?.addressDetail : '')
-        setQuantity(props.id ? recruitmentDetail.quantity : 0)
-        setApplicationDeadline(
-            props.id
-                ? new Date(recruitmentDetail.applicationDeadline)
-                : new Date()
-        )
-        setSalary(props.id ? recruitmentDetail.salary : '')
-    }, [props.id, recruitmentDetail])
+    // useEffect(() => {
+    //     setJobTitle(props.id ? recruitmentDetail.jobTitle : '')
+    //     setJobDescription(props.id ? recruitmentDetail.jobDescription : '')
+    //     setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
+    //     setBenefit(props.id ? recruitmentDetail.benefit : '')
+    //     setExp(props.id ? recruitmentDetail.experience : '')
+    //     setJobForm(props.id ? recruitmentDetail.jobForm : '')
+    //     setJobPosition(props.id ? recruitmentDetail.jobPosition : '')
+    //     setJobDescription(props.id ? recruitmentDetail.jobDescription : '')
+    //     setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
+    //     setBenefit(props.id ? recruitmentDetail.benefit : '')
+    //     setProvince(props.id ? recruitmentDetail?.jobAddress?.province : '')
+    //     // setDistrictList(
+    //     //     props.id ? recruitmentDetail?.jobAddress?.districts : []
+    //     // )
+    //     setDistrict(props.id ? recruitmentDetail?.jobAddress?.district : '')
+    //     setAddress(props.id ? recruitmentDetail?.jobAddress?.addressDetail : '')
+    //     setQuantity(props.id ? recruitmentDetail.quantity : 0)
+    //     setApplicationDeadline(
+    //         props.id
+    //             ? new Date(recruitmentDetail.applicationDeadline)
+    //             : new Date()
+    //     )
+    //     setSalary(props.id ? recruitmentDetail.salary : '')
+    // }, [props.id, recruitmentDetail])
     //handle
     const validationForm = () => {
         if (!jobTitle.trim()) {
@@ -205,11 +206,11 @@ function FormRecruitment(props) {
                 province: province,
                 district: district ? district : '',
             },
-            jobCareer: career.career,
-            jobField: jobField.field,
-            jobForm: jobForm.form,
-            experience: exp.exp,
-            jobPosition: jobPosition.position,
+            jobCareer: career,
+            jobField: jobField,
+            jobForm: jobForm,
+            experience: exp,
+            jobPosition: jobPosition,
             applicationDeadline: applicationDeadline,
             jobDescription: jobDescription,
             jobRequirement: jobRequirement,
@@ -229,11 +230,12 @@ function FormRecruitment(props) {
     return (
         <Form onSubmit={handleSubmit} style={{ paddingBottom: '3rem' }}>
             <Container>
-                <Row className='d-flex'>
+                <Row className="d-flex">
                     <StyledCol>
                         <TitleInput>Tiêu đề</TitleInput>
                         <InputForm2
                             placeholder="Ví dụ: Thực tập sinh ReactJS"
+                            readOnly={props.id ? true : false}
                             value={jobTitle}
                             type="text"
                             onChange={(e) => setJobTitle(e.target.value)}
@@ -244,15 +246,15 @@ function FormRecruitment(props) {
                         <DropdownListComponent
                             data={getExp}
                             item="exp"
-                            value={exp}
+                            value={getExp.find((prop) => prop.exp === exp)}
                             title={'kinh nghiệm'}
-                            onChange={(e) => {
-                                setExp(e.target.value)
+                            onSelect={(e) => {
+                                setExp(e.exp)
                             }}
                         />
                     </StyledCol>
                 </Row>
-                <Row className='d-flex justify-content-between'>
+                <Row className="d-flex justify-content-between">
                     <StyledCol>
                         <TitleInput>Ngày hết hạn nộp hồ sơ</TitleInput>
                         <DatePickerCustom
@@ -262,7 +264,7 @@ function FormRecruitment(props) {
                             onChange={(date) => {
                                 setApplicationDeadline(date)
                             }}
-                            value={applicationDeadline}
+                            value={Date.parse(applicationDeadline)}
                             minDate={new Date()}
                             locale={vn}
                             icon={
@@ -312,16 +314,18 @@ function FormRecruitment(props) {
                         />
                     </StyledCol>
                 </Row>
-                <Row className='d-flex'>
+                <Row className="d-flex">
                     <StyledCol>
                         <TitleInput>Ngành nghề</TitleInput>
                         <DropdownListComponent
                             data={careerList}
                             title={'ngành nghề'}
                             item="career"
-                            value={career}
-                            onChange={(e) => {
-                                setCareer(e.target.value)
+                            value={careerList.find(
+                                (prop) => prop.career === career
+                            )}
+                            onSelect={(e) => {
+                                setCareer(e.career)
                             }}
                         />
                     </StyledCol>
@@ -331,9 +335,11 @@ function FormRecruitment(props) {
                             data={jobFieldList}
                             item="field"
                             title={'lĩnh vực'}
-                            value={jobField}
-                            onChange={(e) => {
-                                setJobField(e.target.value)
+                            value={jobFieldList.find(
+                                (prop) => prop.field === jobField
+                            )}
+                            onSelect={(e) => {
+                                setJobField(e.field)
                             }}
                         />
                     </StyledCol>
@@ -345,9 +351,11 @@ function FormRecruitment(props) {
                             data={jobFormList}
                             item="form"
                             title={'hình thức'}
-                            value={jobForm}
-                            onChange={(e) => {
-                                setJobForm(e.target.value)
+                            value={jobFormList.find(
+                                (prop) => prop.form === jobForm
+                            )}
+                            onSelect={(e) => {
+                                setJobForm(e.form)
                             }}
                         />
                     </StyledCol>
@@ -357,9 +365,11 @@ function FormRecruitment(props) {
                             data={jobPositionList}
                             item="position"
                             title={'chức vụ'}
-                            value={jobPosition}
-                            onChange={(e) => {
-                                setJobPosition(e.target.value)
+                            value={jobPositionList.find(
+                                (prop) => prop.position === jobPosition
+                            )}
+                            onSelect={(e) => {
+                                setJobPosition(e.position)
                             }}
                         />
                     </StyledCol>
@@ -416,7 +426,9 @@ function FormRecruitment(props) {
                                     data={provinceList}
                                     title={'tỉnh thành'}
                                     item="name"
-                                    value={provinceList.find(pro => pro.name === province)}
+                                    value={provinceList.find(
+                                        (pro) => pro.name === province
+                                    )}
                                     onSelect={(e) => {
                                         setProvince(e.name)
                                     }}
@@ -432,9 +444,11 @@ function FormRecruitment(props) {
                                     data={districtList}
                                     title={'quận huyện'}
                                     item="name"
-                                    value={districtList?.find(dis => dis.name === district)}
-                                    onChange={(e) => {
-                                        setDistrict(e.target.value)
+                                    value={districtList?.find(
+                                        (dis) => dis.name === district
+                                    )}
+                                    onSelect={(e) => {
+                                        setDistrict(e.name)
                                     }}
                                 />
                             </Col>

@@ -218,7 +218,6 @@ export const doUpdateRecruitment = async (
     id
 ) => {
     dispatch(inLoading())
-    console.log(data);
     try {
         const res = await axiosPrivate({
             // eslint-disable-next-line

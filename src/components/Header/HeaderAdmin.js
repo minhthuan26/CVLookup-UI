@@ -1,10 +1,11 @@
 import React from 'react'
 import { doLogout } from '~/action/authApi'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import usePrivateAxios from '~/action/AxiosCredentials'
 function HeaderAdmin() {
     const dispatch = useDispatch()
+    const location = useLocation()
     const navigate = useNavigate()
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
@@ -13,7 +14,7 @@ function HeaderAdmin() {
     const handleLogout = (e) => {
         const logout = async (axiosPrivate, dispatch, navigate, from) =>
             await doLogout(axiosPrivate, dispatch, navigate, from)
-        logout(axiosPrivate, dispatch, navigate, '/').then(data => {
+        logout(axiosPrivate, dispatch, navigate, '/').then((data) => {
             location.from = '/'
         })
     }

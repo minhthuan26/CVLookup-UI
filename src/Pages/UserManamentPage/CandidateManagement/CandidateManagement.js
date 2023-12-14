@@ -101,20 +101,6 @@ function CandidateManagement() {
                         onClick={() => {
                             setUser(row?.user)
                             setShowFormEdit(true)
-                            setFilter(
-                                candidate.filter(
-                                    (item) =>
-                                        item.userId !== userId &&
-                                        item.accountId !== row.account.id
-                                )
-                            )
-                            setCandidate(
-                                candidate.filter(
-                                    (item) =>
-                                        item.userId !== userId &&
-                                        item.accountId !== row.account.id
-                                )
-                            )
                         }}>
                         <FontAwesomeIcon icon={faPenToSquare} /> <br />
                         Sửa
