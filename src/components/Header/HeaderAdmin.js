@@ -13,7 +13,9 @@ function HeaderAdmin() {
     const handleLogout = (e) => {
         const logout = async (axiosPrivate, dispatch, navigate, from) =>
             await doLogout(axiosPrivate, dispatch, navigate, from)
-        logout(axiosPrivate, dispatch, navigate, '/login')
+        logout(axiosPrivate, dispatch, navigate, '/').then(data => {
+            location.from = '/'
+        })
     }
     return (
         <div>

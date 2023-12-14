@@ -38,12 +38,14 @@ function LoginPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
-
-    const from = location.state?.from
+    var from = location.state?.from
         ? location.state.from.pathname
         : location.search
             ? location.pathname + location.search
             : '/'
+    if (from === '/employer' || from === 'admin') {
+        from = '/'
+    }
     const handleNameFileChange = (event) => {
         const file = event.target.files[0]
         setSelectedFileName(file?.name)

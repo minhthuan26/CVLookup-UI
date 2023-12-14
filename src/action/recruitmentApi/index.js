@@ -120,7 +120,6 @@ export const doGetRecruitmentDetail = async (recruitmentId, dispatch) => {
 
         if (res.data.success) {
             dispatch(successLoading())
-            // navigate('?id=' + recruitmentId)
             return res.data.data
         } else {
             if (typeof res.data.message !== 'string') {
@@ -219,6 +218,7 @@ export const doUpdateRecruitment = async (
     id
 ) => {
     dispatch(inLoading())
+    console.log(data);
     try {
         const res = await axiosPrivate({
             // eslint-disable-next-line

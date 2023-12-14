@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import logo from '~/assets/logo-transparent.png'
 import { doLogout } from '~/action/authApi'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import usePrivateAxios from '~/action/AxiosCredentials'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import useNotificationBox from '~/hooks/useNotificationBox'
@@ -14,6 +14,7 @@ function HeaderEmployer({ children }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector((state) => state.auth.credentials.user)
+    const location = useLocation()
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
@@ -21,7 +22,9 @@ function HeaderEmployer({ children }) {
     const handleLogout = (e) => {
         const logout = async (axiosPrivate, dispatch, navigate, from) =>
             await doLogout(axiosPrivate, dispatch, navigate, from)
-        logout(axiosPrivate, dispatch, navigate, '/login')
+        logout(axiosPrivate, dispatch, navigate, '/').then(data => {
+            location.from = '/'
+        })
     }
     const handleOpenNotificationBox = (e) => {
         e.preventDefault()
@@ -76,11 +79,10 @@ function HeaderEmployer({ children }) {
                                 <NotificationsIcon />
                                 <Badge
                                     style={{
-                                        visibility: `${
-                                            isNewNotification
-                                                ? 'visible'
-                                                : 'hidden'
-                                        }`,
+                                        visibility: `${isNewNotification
+                                            ? 'visible'
+                                            : 'hidden'
+                                            }`,
                                     }}
                                     bg="danger"
                                     className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></Badge>

@@ -10,7 +10,6 @@ export const doLogin = async (user, dispatch, navigate, from) => {
     dispatch(inLoading())
     try {
         const res = await axios.post(authUrl.login, user)
-
         if (res.data.success) {
             toast.success(res.data.message)
             dispatch(setCredentials(res.data))
@@ -43,7 +42,7 @@ export const doLogout = async (axiosPrivate, dispatch, navigate, from) => {
         if (res.data.success) {
             toast.success(res.data.message)
             dispatch(logout())
-            navigate(from, { replace: true })
+            navigate('/', { replace: true })
         } else {
             if (typeof res.data.message !== 'string') {
                 res.data.message.forEach((messageList) => {

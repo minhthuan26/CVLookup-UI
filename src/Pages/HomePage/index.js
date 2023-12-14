@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CompanyElements from '~/components/CompanyElement'
 import JobCareer from '~/components/JobCareer'
 import JobElement from '~/components/JobElements'
@@ -9,10 +9,21 @@ import { useNavigate } from 'react-router-dom'
 const HomePage = () => {
     const credentials = useSelector((state) => state.auth.credentials)
     const navigate = useNavigate()
-    return credentials.role ? (
-        credentials.role === 'Admin' ? (
+    const role = useSelector((state) => state.auth.credentials.role)
+    const [roleName, setRoleName] = useState('')
+
+    useEffect(() => {
+        if (role) {
+            setRoleName(role)
+        }
+    },
+        //eslint-disable-next-line
+        [role])
+
+    return roleName ? (
+        roleName === 'Admin' ? (
             navigate('/admin')
-        ) : credentials.role === 'Employer' ? (
+        ) : roleName === 'Employer' ? (
             navigate('/employer')
         ) : (
             <div>

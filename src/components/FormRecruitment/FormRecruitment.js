@@ -23,14 +23,45 @@ import { useNavigate } from 'react-router-dom'
 function FormRecruitment(props) {
     const getRecruitmentDetail = async (id, dispatch) =>
         await doGetRecruitmentDetail(id, dispatch)
-    const [recruitmentDetail, setRecruitmentDetail] = useState([])
+    const [recruitmentDetail, setRecruitmentDetail] = useState({})
+    const [jobTitle, setJobTitle] = useState('')
+    const [career, setCareer] = useState('')
+    const [jobField, setJobField] = useState('')
+    const [exp, setExp] = useState('')
+    const [jobForm, setJobForm] = useState('')
+    const [jobPosition, setJobPosition] = useState('')
+    const [jobDescription, setJobDescription] = useState('')
+    const [jobRequirement, setJobRequirement] = useState('')
+    const [benefit, setBenefit] = useState('')
+    const [province, setProvince] = useState('')
+    const [district, setDistrict] = useState('')
+    const [address, setAddress] = useState('')
+    const [quantity, setQuantity] = useState(0)
+    const [salary, setSalary] = useState('')
+    const [applicationDeadline, setApplicationDeadline] = useState(new Date())
 
+    const [startDate, setStartDate] = useState(new Date())
     useEffect(
         () => {
             if (props.id) {
-                getRecruitmentDetail(props.id, dispatch).then((data) =>
+                getRecruitmentDetail(props.id, dispatch).then((data) => {
                     setRecruitmentDetail(data)
-                )
+                    setJobTitle(data.jobTitle)
+                    setCareer(data.jobCareer)
+                    setJobField(data.jobField)
+                    setExp(data.experience)
+                    setJobForm(data.jobForm)
+                    setJobPosition(data.jobPosition)
+                    setJobDescription(data.jobDescription)
+                    setJobRequirement(data.jobRequirement)
+                    setBenefit(data.benefit)
+                    setProvince(data.jobAddress.province)
+                    setDistrict(data.jobAddress.district)
+                    setAddress(data.jobAddress.addressDetail)
+                    setApplicationDeadline(data.applicationDeadline)
+                    setSalary(data.salary)
+                    setQuantity(data.quantity)
+                })
             }
         },
         // eslint-disable-next-line
@@ -43,36 +74,25 @@ function FormRecruitment(props) {
         (state) => state.auth.credentials.accessToken
     )
     const axiosPrivate = usePrivateAxios(accessToken)
-    //init state
-
-    const [jobTitle, setJobTitle] = useState('')
-    const [career, setCareer] = useState('')
-    const [jobField, setJobField] = useState('')
-    const [exp, setExp] = useState('')
-    const [jobForm, setJobForm] = useState('')
-    const [jobPosition, setJobPosition] = useState('')
-    const [jobDescription, setJobDescription] = useState('')
-    const [jobRequirement, setJobRequirement] = useState('')
-    const [benefit, setBenefit] = useState('')
-    const [province, setProvince] = useState('')
-    const [districtList, setDistrictList] = useState([])
-    const [district, setDistrict] = useState('')
-    const [address, setAddress] = useState('')
-    const [quantity, setQuantity] = useState(0)
-    const [startDate, setStartDate] = useState(new Date())
-
-    const [applicationDeadline, setApplicationDeadline] = useState(new Date())
-    const [salary, setSalary] = useState('')
-
     //get data
-    const getCareer = useSelector((state) => state.jobCareer.jobCareerList)
-    const getJobField = useSelector((state) => state.jobField.jobField)
+    const careerList = useSelector((state) => state.jobCareer.jobCareerList)
+    const jobFieldList = useSelector((state) => state.jobField.jobField)
     const getExp = useSelector((state) => state.experience.experienceList)
-    const getJobForm = useSelector((state) => state.jobForm.jobFormList)
-    const getJobPositon = useSelector(
+    const jobFormList = useSelector((state) => state.jobForm.jobFormList)
+    const jobPositionList = useSelector(
         (state) => state.jobPosition.jobPositionList
     )
-    const getProvince = useSelector((state) => state.province.provinceList)
+    const provinceList = useSelector((state) => state.province.provinceList)
+    const [districtList, setDistrictList] = useState([])
+
+    useEffect(() => {
+        if (provinceList.length > 0 && province) {
+            var pro = provinceList.find(pro => pro.name === province)
+            setDistrictList(preState => [...pro.districts])
+        }
+    },
+        //eslint-disable-next-line
+        [provinceList, province])
 
     //Fetch dữ liệu đồng bộ
     useEffect(() => {
@@ -87,9 +107,9 @@ function FormRecruitment(props) {
         setJobRequirement(props.id ? recruitmentDetail.jobRequirement : '')
         setBenefit(props.id ? recruitmentDetail.benefit : '')
         setProvince(props.id ? recruitmentDetail?.jobAddress?.province : '')
-        setDistrictList(
-            props.id ? recruitmentDetail?.jobAddress?.districts : []
-        )
+        // setDistrictList(
+        //     props.id ? recruitmentDetail?.jobAddress?.districts : []
+        // )
         setDistrict(props.id ? recruitmentDetail?.jobAddress?.district : '')
         setAddress(props.id ? recruitmentDetail?.jobAddress?.addressDetail : '')
         setQuantity(props.id ? recruitmentDetail.quantity : 0)
@@ -175,9 +195,7 @@ function FormRecruitment(props) {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        // if (!validationForm()) {
-        //     return
-        // }
+        // if (validationForm()) {
 
         const newRecruitment = {
             jobTitle: jobTitle,
@@ -187,11 +205,11 @@ function FormRecruitment(props) {
                 province: province,
                 district: district ? district : '',
             },
-            jobCareer: career,
-            jobField: jobField,
-            jobForm: jobForm,
-            experience: exp,
-            jobPosition: jobPosition,
+            jobCareer: career.career,
+            jobField: jobField.field,
+            jobForm: jobForm.form,
+            experience: exp.exp,
+            jobPosition: jobPosition.position,
             applicationDeadline: applicationDeadline,
             jobDescription: jobDescription,
             jobRequirement: jobRequirement,
@@ -205,13 +223,14 @@ function FormRecruitment(props) {
             axiosPrivate,
             props.id
         )
+        // }
     }
 
     return (
         <Form onSubmit={handleSubmit} style={{ paddingBottom: '3rem' }}>
             <Container>
-                <Row>
-                    <StyledCol className="col-md-8">
+                <Row className='d-flex'>
+                    <StyledCol>
                         <TitleInput>Tiêu đề</TitleInput>
                         <InputForm2
                             placeholder="Ví dụ: Thực tập sinh ReactJS"
@@ -225,16 +244,16 @@ function FormRecruitment(props) {
                         <DropdownListComponent
                             data={getExp}
                             item="exp"
-                            value={props.id ? recruitmentDetail.experience : ''}
+                            value={exp}
                             title={'kinh nghiệm'}
-                            onSelect={(selected) => {
-                                setExp(selected.exp)
+                            onChange={(e) => {
+                                setExp(e.target.value)
                             }}
                         />
                     </StyledCol>
                 </Row>
-                <Row>
-                    <StyledCol className="col-lg-4">
+                <Row className='d-flex justify-content-between'>
+                    <StyledCol>
                         <TitleInput>Ngày hết hạn nộp hồ sơ</TitleInput>
                         <DatePickerCustom
                             showIcon
@@ -243,13 +262,7 @@ function FormRecruitment(props) {
                             onChange={(date) => {
                                 setApplicationDeadline(date)
                             }}
-                            value={
-                                props
-                                    ? Date.parse(
-                                          recruitmentDetail.applicationDeadline
-                                      )
-                                    : applicationDeadline
-                            }
+                            value={applicationDeadline}
                             minDate={new Date()}
                             locale={vn}
                             icon={
@@ -290,7 +303,7 @@ function FormRecruitment(props) {
                             onChange={(e) => setQuantity(e.target.value)}
                         />
                     </StyledCol>
-                    <StyledCol className="col-lg-4">
+                    <StyledCol>
                         <TitleInput>Mức lương</TitleInput>
                         <InputForm2
                             type="text"
@@ -299,28 +312,28 @@ function FormRecruitment(props) {
                         />
                     </StyledCol>
                 </Row>
-                <Row>
-                    <StyledCol className="col-xs-3">
+                <Row className='d-flex'>
+                    <StyledCol>
                         <TitleInput>Ngành nghề</TitleInput>
                         <DropdownListComponent
-                            data={getCareer}
+                            data={careerList}
                             title={'ngành nghề'}
-                            value={props.id ? recruitmentDetail.jobCareer : ''}
                             item="career"
-                            onSelect={(selected) => {
-                                setCareer(selected.career)
+                            value={career}
+                            onChange={(e) => {
+                                setCareer(e.target.value)
                             }}
                         />
                     </StyledCol>
-                    <StyledCol className="col-xs-3">
+                    <StyledCol>
                         <TitleInput>Lĩnh vực</TitleInput>
                         <DropdownListComponent
-                            data={getJobField}
+                            data={jobFieldList}
                             item="field"
                             title={'lĩnh vực'}
-                            value={props.id ? recruitmentDetail.jobField : ''}
-                            onSelect={(selected) => {
-                                setJobField(selected.field)
+                            value={jobField}
+                            onChange={(e) => {
+                                setJobField(e.target.value)
                             }}
                         />
                     </StyledCol>
@@ -329,26 +342,24 @@ function FormRecruitment(props) {
                     <StyledCol className="col-xs-3 ">
                         <TitleInput>Hình thức </TitleInput>
                         <DropdownListComponent
-                            data={getJobForm}
+                            data={jobFormList}
                             item="form"
                             title={'hình thức'}
-                            value={props.id ? recruitmentDetail.jobForm : ''}
-                            onSelect={(selected) => {
-                                setJobForm(selected.form)
+                            value={jobForm}
+                            onChange={(e) => {
+                                setJobForm(e.target.value)
                             }}
                         />
                     </StyledCol>
                     <StyledCol>
                         <TitleInput>Chức vụ</TitleInput>
                         <DropdownListComponent
-                            data={getJobPositon}
+                            data={jobPositionList}
                             item="position"
                             title={'chức vụ'}
-                            value={
-                                props.id ? recruitmentDetail.jobPosition : ''
-                            }
-                            onSelect={(selected) => {
-                                setJobPosition(selected.position)
+                            value={jobPosition}
+                            onChange={(e) => {
+                                setJobPosition(e.target.value)
                             }}
                         />
                     </StyledCol>
@@ -402,12 +413,12 @@ function FormRecruitment(props) {
                                     justifyContent: 'center',
                                 }}>
                                 <DropdownListComponent
-                                    data={getProvince}
-                                    item="name"
+                                    data={provinceList}
                                     title={'tỉnh thành'}
-                                    onSelect={(selected) => {
-                                        setProvince(selected.name)
-                                        setDistrictList(selected.districts)
+                                    item="name"
+                                    value={provinceList.find(pro => pro.name === province)}
+                                    onSelect={(e) => {
+                                        setProvince(e.name)
                                     }}
                                 />
                             </Col>
@@ -419,10 +430,11 @@ function FormRecruitment(props) {
                                 }}>
                                 <DropdownListComponent
                                     data={districtList}
-                                    item="name"
                                     title={'quận huyện'}
-                                    onSelect={(selected) => {
-                                        setDistrict(selected.name)
+                                    item="name"
+                                    value={districtList?.find(dis => dis.name === district)}
+                                    onChange={(e) => {
+                                        setDistrict(e.target.value)
                                     }}
                                 />
                             </Col>

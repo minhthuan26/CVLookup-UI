@@ -25,13 +25,15 @@ function DropdownListComponent(props) {
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 {props.data && props.data.length > 0 ? (
-                    props.data.map((items) => (
-                        <Dropdown.Item
-                            key={items.id}
-                            onClick={() => handleItemClick(items)}>
-                            {items[props.item]}
-                        </Dropdown.Item>
-                    ))
+                    props.data.map((items) => {
+                        return (
+                            <Dropdown.Item
+                                key={items.id}
+                                onClick={() => handleItemClick(items)}>
+                                {items[props.item]}
+                            </Dropdown.Item>
+                        )
+                    })
                 ) : (
                     <Dropdown.Item disabled>
                         --Không có {props.title}--

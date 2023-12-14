@@ -9,12 +9,14 @@ import usePrivateAxios from '~/action/AxiosCredentials'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import useNotificationBox from '~/hooks/useNotificationBox'
 import { Badge } from 'react-bootstrap'
+import { useLocation } from 'react-router-dom'
 
 function Header() {
     const { setIsDisplay } = useNotificationBox()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector((state) => state.auth.credentials.user)
+    const location = useLocation()
     const accessToken = useSelector(
         (state) => state.auth.credentials.accessToken
     )
@@ -22,7 +24,9 @@ function Header() {
     const handleLogout = (e) => {
         const logout = async (axiosPrivate, dispatch, navigate, from) =>
             await doLogout(axiosPrivate, dispatch, navigate, from)
-        logout(axiosPrivate, dispatch, navigate, '/login')
+        logout(axiosPrivate, dispatch, navigate, '/').then(data => {
+            location.from = '/'
+        })
     }
     const handleOpenNotificationBox = (e) => {
         e.preventDefault()
@@ -83,11 +87,10 @@ function Header() {
                                 <NotificationsIcon />
                                 <Badge
                                     style={{
-                                        visibility: `${
-                                            isNewNotification
-                                                ? 'visible'
-                                                : 'hidden'
-                                        }`,
+                                        visibility: `${isNewNotification
+                                            ? 'visible'
+                                            : 'hidden'
+                                            }`,
                                     }}
                                     bg="danger"
                                     className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
