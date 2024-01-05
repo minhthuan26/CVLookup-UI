@@ -266,7 +266,7 @@ const Profile = ({ user, role, avatarBase64 }) => {
                             </Form.Group>
                             {role === 'Candidate' ? (
                                 <Form.Group className="pb-3">
-                                    <Form.Label>Date of birth</Form.Label>
+                                    <Form.Label>Ngày sinh</Form.Label>
                                     <Form.Control
                                         style={{
                                             fontWeight: '600',
@@ -292,7 +292,7 @@ const Profile = ({ user, role, avatarBase64 }) => {
                                 <></>
                             )}
                             <Form.Group className="pb-3">
-                                <Form.Label>Phone</Form.Label>
+                                <Form.Label>Số điện thoại</Form.Label>
                                 <Form.Control
                                     style={{
                                         fontWeight: '600',
@@ -336,7 +336,7 @@ const Profile = ({ user, role, avatarBase64 }) => {
                                         />
                                     </Form.Group>
                                     <Form.Group className="pb-3">
-                                        <Form.Label>Address</Form.Label>
+                                        <Form.Label>Địa chỉ</Form.Label>
                                         <Form.Control
                                             style={{
                                                 fontWeight: '600',
@@ -357,7 +357,7 @@ const Profile = ({ user, role, avatarBase64 }) => {
                                         />
                                     </Form.Group>
                                     <Form.Group className="pb-3">
-                                        <Form.Label>Description</Form.Label>
+                                        <Form.Label>Giới thiệu</Form.Label>
                                         <Form.Control
                                             style={{
                                                 fontWeight: '600',
